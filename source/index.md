@@ -41,14 +41,14 @@ curl "api_endpoint_here"
 
 > Make sure to replace `meowmeowmeow` with your API key.
 
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
+AcceptOn requires an API key to gain access to the API. After logging into accepton.com, you'll find your API key by clicking your email address in the top right, My Profile, and then Edit.
 
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
+AcceptOn expects for the API key to be included in all API requests to the server in a header that looks like the following:
 
-`Authorization: meowmeowmeow`
+`Authorization: <INSERT API KEY HERE>`
 
 <aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
+You must replace <code><INSERT API KEY HERE></code> with your personal API key.
 </aside>
 
 # Kittens
@@ -56,10 +56,11 @@ You must replace <code>meowmeowmeow</code> with your personal API key.
 ## Get All Kittens
 
 ```ruby
-require 'kittn'
+require 'accepton-ruby'
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
+API_KEY     = 'pkey_5e37fbc4d108f542'
+environment = :production
+client = AcceptOn::Client.new(api_key: API_KEY, environment: environment)
 ```
 
 ```python
@@ -70,8 +71,8 @@ api.kittens.get()
 ```
 
 ```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
+curl "https://checkout.accepton.com/v1/ping"
+  -H "Authorization: <INSERT API KEY HERE>"
 ```
 
 > The above command returns JSON structured like this:
