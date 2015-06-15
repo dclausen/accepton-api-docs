@@ -9,21 +9,41 @@ toc_footers:
 
 includes:
   - errors
+  - support
 
 search: true
 ---
 
 # Introduction
 
-Welcome to the AcceptOn's API!
+Welcome to the AcceptOn's API! Our API is heavily inspired by [REST](https://en.wikipedia.org/wiki/Representational_state_transfer)
+All responses from our API should be returned in [JSON](http://www.json.org) format.
+Please only use HTTPS to ensure data privacy.
 
 Client libraries:
 
+* [Ruby](https://github.com/dclausen/accepton-ruby)
 
-* ruby: [https://github.com/dclausen/accepton-ruby](https://github.com/dclausen/accepton-ruby)
+# Environments
+
+In order to allow for testing, the AcceptOn API is available in the following locations:
+
+* Staging: https://staging-checkout.accepton.com
+* Production: https://checkout.accepton.com
+
+The staging environment should be used for testing. Please keep in mind that 
+the data can be deleted at any time.
+
+To actually process payments, the production environment must be used.
+
+# Getting Started
+
+1. If you haven't done so already, please create an account in the Staging environment
+[https://staging.accepton.com](https://staging.accepton.com)
+1. Retrieve your API key here: <TODO>
+1. Make a request to ping the client using your API key <TODO>
 
 # Authentication
-
 > To authorize, use this code:
 
 ```ruby
@@ -50,113 +70,4 @@ AcceptOn expects for the API key to be included in all API requests to the serve
 <aside class="notice">
 You must replace API KEY with your personal API key.
 </aside>
-
-# Kittens
-
-## Get All Kittens
-
-```ruby
-require 'accepton-ruby'
-
-API_KEY     = 'pkey_5e37fbc4d108f542'
-environment = :production
-client = AcceptOn::Client.new(api_key: API_KEY, environment: environment)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
-
-```shell
-curl "https://checkout.accepton.com/v1/ping"
-  -H "Authorization: <INSERT API KEY HERE>"
-```
-
-> The above command returns JSON structured like this:
-
-```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Isis",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
-]
-```
-
-This endpoint retrieves all kittens.
-
-### HTTP Request
-
-`GET http://example.com/kittens`
-
-### Query Parameters
-
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
-
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
-## Get a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/3"
-  -H "Authorization: meowmeowmeow"
-```
-
-> The above command returns JSON structured like this:
-
-```json
-{
-  "id": 2,
-  "name": "Isis",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
-}
-```
-
-This endpoint retrieves a specific kitten.
-
-<aside class="warning">If you're not using an administrator API key, note that some kittens will return 403 Forbidden if they are hidden for admins only.</aside>
-
-### HTTP Request
-
-`GET http://example.com/kittens/<ID>`
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-ID | The ID of the cat to retrieve
 
