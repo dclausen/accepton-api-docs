@@ -17,38 +17,38 @@ search: true
 
 Welcome to the AcceptOn's API!
 
+Client libraries:
+
+
+* ruby: [https://github.com/dclausen/accepton-ruby](https://github.com/dclausen/accepton-ruby)
+
 # Authentication
 
 > To authorize, use this code:
 
 ```ruby
-require 'kittn'
+require 'accepton-ruby'
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
+API_KEY     = 'pkey_5e37fbc4d108f542'
+environment = :production
+client = AcceptOn::Client.new(api_key: API_KEY, environment: environment)
 ```
 
 ```shell
 # With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
+curl "https://checkout.accepton.com/v1/ping" -H "Authorization: <INSERT API KEY HERE>"
 ```
 
-> Make sure to replace `meowmeowmeow` with your API key.
+> Make sure to replace `<API KEY>` with your API key.
 
 AcceptOn requires an API key to gain access to the API. After logging into accepton.com, you'll find your API key by clicking your email address in the top right, My Profile, and then Edit.
 
 AcceptOn expects for the API key to be included in all API requests to the server in a header that looks like the following:
 
-`Authorization: <INSERT API KEY HERE>`
+`Authorization: <API KEY>`
 
 <aside class="notice">
-You must replace <code><INSERT API KEY HERE></code> with your personal API key.
+You must replace API KEY with your personal API key.
 </aside>
 
 # Kittens
