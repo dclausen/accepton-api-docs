@@ -40,10 +40,12 @@ To actually process payments, the production environment must be used.
 
 1. If you haven't done so already, please create an account in the Staging environment
 [https://staging.accepton.com](https://staging.accepton.com)
-1. Retrieve your API key here: <TODO>
-1. Make a request to ping the client using your API key <TODO>
+1. Retrieve your API key here: TODO
+1. Make a request to ping the client using your API key TODO
+1. View all resources located at [Resources](#resources) for further API actions.
 
 # Authentication
+
 > To authorize, use this code:
 
 ```ruby
@@ -70,4 +72,17 @@ AcceptOn expects for the API key to be included in all API requests to the serve
 <aside class="notice">
 You must replace API KEY with your personal API key.
 </aside>
+
+# Resources
+
+## Transaction token
+
+### Attributes
+| Attribute | Description |
+------------|-------------|
+| amount    | The amount in cents of the transaction |
+| application_fee    | The application fee in cents to be passed on to the processor |
+| currency    | The currency to charge in (default: usd) |
+| description | A description of the transaction |
+| merchant_paypal_account | The merchant's Paypal account when you want to pay a merchant instead of yourself. Can be used with an application fee |
 
