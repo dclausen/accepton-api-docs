@@ -1,0 +1,50 @@
+@charset "utf-8";
+@import 'normalize';
+@import 'compass';
+@import 'variables';
+@import 'syntax';
+@import 'icon-font';
+
+html, body {
+  -webkit-font-smoothing: subpixel-antialiased;
+}
+
+.tocify-wrapper > img {
+  width: 230px;
+  height: 52px;
+  margin-top: 8px;
+}
+
+.tocify-wrapper .tocify-subheader {
+  font-weight: 400;
+}
+
+.tocify-wrapper .tocify-focus {
+  @include box-shadow(none !important);
+}
+
+.content aside {
+  @include text-shadow(none !important);
+  color: #fff;
+}
+
+.content code, .content pre {
+  font-size: 14px;
+}
+
+.tocify-wrapper {
+  background: $nav-bg url('https://accepton.com/images/banner-img1.jpg') no-repeat top right;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+.tocify-wrapper > .search input {
+  background: #fff;
+  color: #424242;
+}
+
+.tocify-wrapper > .search:before {
+  color: #ccc;
+  margin-left: 4px;
+  margin-top: 2px;
+}
