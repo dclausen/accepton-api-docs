@@ -74,8 +74,9 @@ the data can be deleted at any time.</p>
 <ol>
 <li>If you haven&rsquo;t done so already, please create an account in the Staging environment
 <a href="https://staging.accepton.com">https://staging.accepton.com</a></li>
-<li>Retrieve your API key here: <TODO></li>
-<li>Make a request to ping the client using your API key <TODO></li>
+<li>Retrieve your API key here: TODO</li>
+<li>Make a request to ping the client using your API key TODO</li>
+<li>View all resources located at <a href="#resources">Resources</a> for further API actions.</li>
 </ol>
 
 <h1 id="authentication">Authentication</h1>
@@ -106,6 +107,40 @@ curl <span class="s2">"https://checkout.accepton.com/v1/ping"</span> -H <span cl
 <aside class="notice">
 You must replace API KEY with your personal API key.
 </aside>
+
+<h1 id="resources">Resources</h1>
+
+<h2 id="transaction-token">Transaction token</h2>
+
+<h3 id="attributes">Attributes</h3>
+
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>amount</td>
+<td>The amount in cents of the transaction</td>
+</tr>
+<tr>
+<td>application_fee</td>
+<td>The application fee in cents to be passed on to the processor</td>
+</tr>
+<tr>
+<td>currency</td>
+<td>The currency to charge in (default: usd)</td>
+</tr>
+<tr>
+<td>description</td>
+<td>A description of the transaction</td>
+</tr>
+<tr>
+<td>merchant_paypal_account</td>
+<td>The merchant&rsquo;s Paypal account when you want to pay a merchant instead of yourself. Can be used with an application fee</td>
+</tr>
+</tbody></table>
 
           <h1 id="errors">Errors</h1>
 
