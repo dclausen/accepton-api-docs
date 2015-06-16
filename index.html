@@ -84,19 +84,14 @@ the data can be deleted at any time.</p>
 <blockquote>
 <p>To authorize, use this code:</p>
 </blockquote>
+<pre class="highlight shell"><code><span class="c"># With shell, you can just pass the correct header with each request</span>
+curl <span class="s2">"https://checkout.accepton.com/v1/ping"</span> -H <span class="s2">"Authorization: &lt;API KEY&gt;"</span>
+</code></pre>
 <pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'accepton-ruby'</span>
 
-<span class="no">API_KEY</span>     <span class="o">=</span> <span class="s1">'pkey_5e37fbc4d108f542'</span>
 <span class="n">environment</span> <span class="o">=</span> <span class="ss">:production</span>
 <span class="n">client</span> <span class="o">=</span> <span class="no">AcceptOn</span><span class="o">::</span><span class="no">Client</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">api_key: </span><span class="no">API_KEY</span><span class="p">,</span> <span class="ss">environment: </span><span class="n">environment</span><span class="p">)</span>
 </code></pre>
-<pre class="highlight shell"><code><span class="c"># With shell, you can just pass the correct header with each request</span>
-curl <span class="s2">"https://checkout.accepton.com/v1/ping"</span> -H <span class="s2">"Authorization: &lt;INSERT API KEY HERE&gt;"</span>
-</code></pre>
-
-<blockquote>
-<p>Make sure to replace <code class="prettyprint">&lt;API KEY&gt;</code> with your API key.</p>
-</blockquote>
 
 <p>AcceptOn requires an API key to gain access to the API. After logging into accepton.com, you&rsquo;ll find your API key by clicking your email address in the top right, My Profile, and then Edit.</p>
 
@@ -110,37 +105,67 @@ You must replace API KEY with your personal API key.
 
 <h1 id="resources">Resources</h1>
 
-<h2 id="transaction-token">Transaction token</h2>
+<h2 id="transaction-tokens">Transaction tokens</h2>
 
-<h3 id="attributes">Attributes</h3>
+<p>A transaction token is used to allow for details such as the amount to charge, 
+the currency, and application fee to be created dynamically from a trusted
+source. This is to ensure that no tampering has been performed prior to
+the charge being completed.</p>
 
-<table><thead>
-<tr>
-<th>Attribute</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>amount</td>
-<td>The amount in cents of the transaction</td>
-</tr>
-<tr>
-<td>application_fee</td>
-<td>The application fee in cents to be passed on to the processor</td>
-</tr>
-<tr>
-<td>currency</td>
-<td>The currency to charge in (default: usd)</td>
-</tr>
-<tr>
-<td>description</td>
-<td>A description of the transaction</td>
-</tr>
-<tr>
-<td>merchant_paypal_account</td>
-<td>The merchant&rsquo;s Paypal account when you want to pay a merchant instead of yourself. Can be used with an application fee</td>
-</tr>
-</tbody></table>
+<h3 id="the-transaction-token-object">The Transaction token object</h3>
+
+<h4 id="attributes">Attributes</h4>
+
+<table>
+<tr><th>Attribute</th><th>Description</th></tr>
+<tr><td><strong>id</strong><br/><em>string</em></td><td>A unique id.</td></tr>
+<tr><td><strong>type</strong><br/><em>string</em></td><td>Always &ldquo;transaction&rdquo;.</td></tr>
+<tr><td><strong>created</strong><br/><em>string</em></td><td>When the token was created, in iso8601 format.</td></tr>
+<tr><td><strong>amount</strong><br/><em>integer</em></td><td>The amount in cents of the transaction.</td></tr>
+<tr><td><strong>application_fee</strong><br/><em>integer</em></td><td>The application fee in cents to be passed on to the processor.</td></tr>
+<tr><td><strong>currency</strong><br/><em>string</em></td><td>The currency to charge in (default: usd).</td></tr>
+<tr><td><strong>description</strong><br/><em>string</em></td><td>A description of the transaction for your own identification purposes. It could be used to include a name of the item purchased, or a confirmation number, etc.</td></tr>
+</table>
+
+<h3 id="create-a-transaction-token">Create a Transaction token</h3>
+
+<blockquote>
+<p>Create a Transaction token request</p>
+</blockquote>
+<pre class="highlight shell"><code>curl -X POST https://checkout.accepton.com/v1/tokens/create -H <span class="s2">"Authorization: &lt;API KEY&gt;"</span>
+</code></pre>
+<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'accepton-ruby'</span>
+
+<span class="n">environment</span> <span class="o">=</span> <span class="ss">:production</span>
+<span class="n">client</span> <span class="o">=</span> <span class="no">AcceptOn</span><span class="o">::</span><span class="no">Client</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">api_key: </span><span class="no">API_KEY</span><span class="p">,</span> <span class="ss">environment: </span><span class="n">environment</span><span class="p">)</span>
+
+<span class="n">client</span><span class="p">.</span><span class="nf">create_token</span><span class="p">(</span><span class="ss">amount: </span><span class="mi">10_00</span><span class="p">)</span>
+</code></pre>
+
+<blockquote>
+<p>Create a Transaction token response</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="s2">"txn_643f20df91f94ff3b6cd614b63228419"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"type"</span><span class="p">:</span><span class="s2">"transaction"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"created"</span><span class="p">:</span><span class="s2">"2015-01-16T20:08:17.837Z"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"amount"</span><span class="p">:</span><span class="mi">1000</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"application_fee"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"currency"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"description"</span><span class="p">:</span><span class="s2">""</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<h4 id="attributes">Attributes</h4>
+
+<table>
+<tr><th>Attribute</th><th>Description</th></tr>
+<tr><td><strong>amount</strong><br/><em>integer, required</em></td><td>The amount in cents of the transaction.</td></tr>
+<tr><td><strong>application_fee</strong><br/><em>integer, optional</em></td><td>The application fee in cents to be passed on to the processor.</td></tr>
+<tr><td><strong>currency</strong><br/><em>string, optional</em></td><td>The currency to charge in (default: usd).</td></tr>
+<tr><td><strong>description</strong><br/><em>string, optional</em></td><td>A description of the transaction for your own identification purposes. It could be used to include a name of the item purchased, or a confirmation number, etc.</td></tr>
+<tr><td><strong>merchant_paypal_account</strong><br/><em>string, optional</em></td><td>The merchant&rsquo;s Paypal account when you want to pay a merchant instead of yourself. Can be used with an application fee.</td></tr>
+</table>
 
           <h1 id="errors">Errors</h1>
 
