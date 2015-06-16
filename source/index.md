@@ -48,20 +48,17 @@ To actually process payments, the production environment must be used.
 
 > To authorize, use this code:
 
+```shell
+# With shell, you can just pass the correct header with each request
+curl "https://checkout.accepton.com/v1/ping" -H "Authorization: <API KEY>"
+```
+
 ```ruby
 require 'accepton-ruby'
 
-API_KEY     = 'pkey_5e37fbc4d108f542'
 environment = :production
 client = AcceptOn::Client.new(api_key: API_KEY, environment: environment)
 ```
-
-```shell
-# With shell, you can just pass the correct header with each request
-curl "https://checkout.accepton.com/v1/ping" -H "Authorization: <INSERT API KEY HERE>"
-```
-
-> Make sure to replace `<API KEY>` with your API key.
 
 AcceptOn requires an API key to gain access to the API. After logging into accepton.com, you'll find your API key by clicking your email address in the top right, My Profile, and then Edit.
 
@@ -75,14 +72,63 @@ You must replace API KEY with your personal API key.
 
 # Resources
 
-## Transaction token
+## Transaction tokens
+A transaction token is used to allow for details such as the amount to charge, 
+the currency, and application fee to be created dynamically from a trusted
+source. This is to ensure that no tampering has been performed prior to
+the charge being completed.
 
-### Attributes
-| Attribute | Description |
-------------|-------------|
-| amount    | The amount in cents of the transaction |
-| application_fee    | The application fee in cents to be passed on to the processor |
-| currency    | The currency to charge in (default: usd) |
-| description | A description of the transaction |
-| merchant_paypal_account | The merchant's Paypal account when you want to pay a merchant instead of yourself. Can be used with an application fee |
+### The Transaction token object
+
+#### Attributes
+<table>
+<tr><th>Attribute</th><th>Description</th></tr>
+<tr><td><strong>id</strong><br/><em>string</em></td><td>A unique id.</td></tr>
+<tr><td><strong>type</strong><br/><em>string</em></td><td>Always "transaction".</td></tr>
+<tr><td><strong>created</strong><br/><em>string</em></td><td>When the token was created, in iso8601 format.</td></tr>
+<tr><td><strong>amount</strong><br/><em>integer</em></td><td>The amount in cents of the transaction.</td></tr>
+<tr><td><strong>application_fee</strong><br/><em>integer</em></td><td>The application fee in cents to be passed on to the processor.</td></tr>
+<tr><td><strong>currency</strong><br/><em>string</em></td><td>The currency to charge in (default: usd).</td></tr>
+<tr><td><strong>description</strong><br/><em>string</em></td><td>A description of the transaction for your own identification purposes. It could be used to include a name of the item purchased, or a confirmation number, etc.</td></tr>
+</table>
+
+### Create a Transaction token
+> Create a Transaction token request
+
+```shell
+curl -X POST https://checkout.accepton.com/v1/tokens/create -H "Authorization: <API KEY>"
+```
+
+```ruby
+require 'accepton-ruby'
+
+environment = :production
+client = AcceptOn::Client.new(api_key: API_KEY, environment: environment)
+
+client.create_token(amount: 10_00)
+```
+
+> Create a Transaction token response
+
+```json
+{
+  "id":"txn_643f20df91f94ff3b6cd614b63228419",
+  "type":"transaction",
+  "created":"2015-01-16T20:08:17.837Z",
+  "amount":1000,
+  "application_fee":null,
+  "currency":null,
+  "description":""
+}
+```
+
+#### Attributes
+<table>
+<tr><th>Attribute</th><th>Description</th></tr>
+<tr><td><strong>amount</strong><br/><em>integer, required</em></td><td>The amount in cents of the transaction.</td></tr>
+<tr><td><strong>application_fee</strong><br/><em>integer, optional</em></td><td>The application fee in cents to be passed on to the processor.</td></tr>
+<tr><td><strong>currency</strong><br/><em>string, optional</em></td><td>The currency to charge in (default: usd).</td></tr>
+<tr><td><strong>description</strong><br/><em>string, optional</em></td><td>A description of the transaction for your own identification purposes. It could be used to include a name of the item purchased, or a confirmation number, etc.</td></tr>
+<tr><td><strong>merchant_paypal_account</strong><br/><em>string, optional</em></td><td>The merchant's Paypal account when you want to pay a merchant instead of yourself. Can be used with an application fee.</td></tr>
+</table>
 
