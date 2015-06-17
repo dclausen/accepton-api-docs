@@ -18,11 +18,13 @@ search: true
 
 Welcome to the AcceptOn's API! Our API is heavily inspired by [REST](https://en.wikipedia.org/wiki/Representational_state_transfer)
 All responses from our API should be returned in [JSON](http://www.json.org) format.
-Please only use HTTPS to ensure data privacy.
+Please only use HTTPS to ensure data privacy, otherwise, we will send flying monkeys to hunt you down.
+Beware the monkeys! Seriously, they hurt.
 
-Client libraries:
+Available client libraries:
 
 * [Ruby](https://github.com/dclausen/accepton-ruby)
+* More to come Real Soon Now, pinky swear!
 
 # Environments
 
@@ -31,12 +33,15 @@ In order to allow for testing, the AcceptOn API is available in the following lo
 * Staging: https://staging-checkout.accepton.com
 * Production: https://checkout.accepton.com
 
-The staging environment should be used for testing. Please keep in mind that 
+The staging environment should be used for testing. Please keep in mind that
 the data can be deleted at any time.
 
 To actually process payments, the production environment must be used.
+To switch to production, simply update the URL and corresponding API KEY,
+and if the moon is in the right (meaning both correct and directional) quadrant of the sky, it should "Just Work"!
 
 # Getting Started
+## Retrieve your API credentials
 
 1. If you haven't done so already, please create an account in the Staging environment
 [https://staging.accepton.com](https://staging.accepton.com)
@@ -44,13 +49,19 @@ To actually process payments, the production environment must be used.
 1. Make a request to ping the client using your API key TODO
 1. View all resources located at [Resources](#resources) for further API actions.
 
+## Create your first transaction
+
+1. Generate a [transaction token](#create-a-transaction-token)
+1. Pass the token into the configuration of the AcceptOn form
+1. Profit!
+
 # Authentication
 
 > To authorize, use this code:
 
 ```shell
-# With shell, you can just pass the correct header with each request
-curl "https://checkout.accepton.com/v1/ping" -H "Authorization: <API KEY>"
+curl "https://staging-checkout.accepton.com/ping" \
+  -H "Authorization: Bearer <API KEY>"
 ```
 
 ```ruby
@@ -58,16 +69,19 @@ require 'accepton-ruby'
 
 environment = :production
 client = AcceptOn::Client.new(api_key: API_KEY, environment: environment)
+response = client.create_token(amount: 10_00, description: "Hipster Flannel Tshirt")
 ```
 
-AcceptOn requires an API key to gain access to the API. After logging into accepton.com, you'll find your API key by clicking your email address in the top right, My Profile, and then Edit.
+AcceptOn requires an API key to gain access to the API. After logging into accepton.com, you'll find your API key by clicking your email address in the top right, My Profile, and then looking under the section entitled "API KEY".
 
 AcceptOn expects for the API key to be included in all API requests to the server in a header that looks like the following:
 
-`Authorization: <API KEY>`
+`Authorization: Bearer <API KEY>`
+
+For the super efficient types (aka lazy), you can also append your API KEY as a parameter named access_token to any request if modifying headers isn't your thing.
 
 <aside class="notice">
-You must replace API KEY with your personal API key.
+  Remember, you must replace API KEY with your personal API key.
 </aside>
 
 # Resources
@@ -96,16 +110,18 @@ the charge being completed.
 > Create a Transaction token request
 
 ```shell
-curl -X POST https://checkout.accepton.com/v1/tokens/create -H "Authorization: <API KEY>"
+curl https://staging-checkout.accepton.com/v1/tokens/create \
+  -X POST \
+  -H "Authorization: Bearer <API KEY>" \
+  -d amount=1000 \
+  -d description="Hipster Flannel Tshirt"
 ```
 
 ```ruby
 require 'accepton-ruby'
 
-environment = :production
-client = AcceptOn::Client.new(api_key: API_KEY, environment: environment)
-
-client.create_token(amount: 10_00)
+client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
+response = client.create_token(amount: 10_00, description: "Hipster Flannel Tshirt")
 ```
 
 > Create a Transaction token response
@@ -132,3 +148,27 @@ client.create_token(amount: 10_00)
 <tr><td><strong>merchant_paypal_account</strong><br/><em>string, optional</em></td><td>The merchant's Paypal account when you want to pay a merchant instead of yourself. Can be used with an application fee.</td></tr>
 </table>
 
+### Retrieve an existing Transaction token
+> Retreive a Transaction token request
+
+```shell
+curl https://staging-checkout.accepton.com/v1/tokens/txn_643f20df91f94ff3b6cd614b63228419 \
+  -X GET \
+  -H "Authorization: Bearer <API KEY>"
+```
+
+```ruby
+TODO
+```
+
+```json
+{
+  "id":"txn_643f20df91f94ff3b6cd614b63228419",
+  "type":"transaction",
+  "created":"2015-01-16T20:08:17.837Z",
+  "amount":1000,
+  "application_fee":null,
+  "currency":null,
+  "description":""
+}
+```
