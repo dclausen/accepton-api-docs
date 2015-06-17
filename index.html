@@ -75,21 +75,27 @@ and if the moon is in the right (meaning both correct and directional) quadrant 
 
 <h1 id="getting-started">Getting Started</h1>
 
-<h2 id="retrieve-your-api-credentials">Retrieve your API credentials</h2>
+<p>First, you&rsquo;ll need to create an account and retrieve your API credentials:</p>
 
 <ol>
 <li>If you haven&rsquo;t done so already, please create an account in the Staging environment
 <a href="https://staging.accepton.com">https://staging.accepton.com</a></li>
-<li>Retrieve your API key here: TODO</li>
-<li>Make a request to ping the client using your API key TODO</li>
-<li>View all resources located at <a href="#resources">Resources</a> for further API actions.</li>
+<li>Link a payment processor such as Stripe or Braintree</li>
+<li>Retrieve your API key here: <a href="https://staging.accepton.com/admin/user/profile">https://staging.accepton.com/admin/user/profile</a></li>
 </ol>
 
-<h2 id="create-your-first-transaction">Create your first transaction</h2>
+<p>Next, create a payment form that you&rsquo;ll use to collect payment:</p>
+
+<ol>
+<li>Click &ldquo;Create a Form&rdquo; in the bottom left area of the navigation</li>
+<li>Copy and paste the generated code to your site</li>
+</ol>
+
+<p>Then, make your first transaction using the form:</p>
 
 <ol>
 <li>Generate a <a href="#create-a-transaction-token">transaction token</a></li>
-<li>Pass the token into the configuration of the AcceptOn form</li>
+<li>Pass the id attribute of the response (aka the token) into the configuration of the AcceptOn form</li>
 <li>Profit!</li>
 </ol>
 
@@ -124,10 +130,18 @@ and if the moon is in the right (meaning both correct and directional) quadrant 
 
 <h2 id="transaction-tokens">Transaction tokens</h2>
 
-<p>A transaction token is used to allow for details such as the amount to charge, 
+<p>A transaction token is used to allow for details such as the amount to charge,
 the currency, and application fee to be created dynamically from a trusted
 source. This is to ensure that no tampering has been performed prior to
 the charge being completed.</p>
+
+<p>This can either be done one time using the &ldquo;Create a Form&rdquo; link after signing
+in to https://staging.accepton.com. This is useful for creating a form
+with a fixed price.</p>
+
+<p>Or, these tokens can be generated programmatically to support dynamic pricing
+using an API client. For instance, this allows for the price and relevant
+options to be delayed until the end of the checkout process.</p>
 
 <h3 id="the-transaction-token-object">The Transaction token object</h3>
 
@@ -171,20 +185,24 @@ the charge being completed.</p>
   </span><span class="s2">"amount"</span><span class="p">:</span><span class="mi">1000</span><span class="p">,</span><span class="w">
   </span><span class="s2">"application_fee"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
   </span><span class="s2">"currency"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"description"</span><span class="p">:</span><span class="s2">""</span><span class="w">
+  </span><span class="s2">"description"</span><span class="p">:</span><span class="s2">"Hipster Flannel Tshirt"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 
-<h4 id="attributes">Attributes</h4>
+<h4 id="arguments">Arguments</h4>
 
 <table>
-<tr><th>Attribute</th><th>Description</th></tr>
+<tr><th>Argument</th><th>Description</th></tr>
 <tr><td><strong>amount</strong><br/><em>integer, required</em></td><td>The amount in cents of the transaction.</td></tr>
 <tr><td><strong>application_fee</strong><br/><em>integer, optional</em></td><td>The application fee in cents to be passed on to the processor.</td></tr>
 <tr><td><strong>currency</strong><br/><em>string, optional</em></td><td>The currency to charge in (default: usd).</td></tr>
 <tr><td><strong>description</strong><br/><em>string, optional</em></td><td>A description of the transaction for your own identification purposes. It could be used to include a name of the item purchased, or a confirmation number, etc.</td></tr>
 <tr><td><strong>merchant_paypal_account</strong><br/><em>string, optional</em></td><td>The merchant&rsquo;s Paypal account when you want to pay a merchant instead of yourself. Can be used with an application fee.</td></tr>
 </table>
+
+<h4 id="returns">Returns</h4>
+
+<p>A transaction token object.</p>
 
 <h3 id="retrieve-an-existing-transaction-token">Retrieve an existing Transaction token</h3>
 
@@ -197,6 +215,10 @@ the charge being completed.</p>
 </code></pre>
 <pre class="highlight ruby"><code><span class="no">TODO</span>
 </code></pre>
+
+<blockquote>
+<p>Retreive a Transaction token response</p>
+</blockquote>
 <pre class="highlight json"><code><span class="p">{</span><span class="w">
   </span><span class="s2">"id"</span><span class="p">:</span><span class="s2">"txn_643f20df91f94ff3b6cd614b63228419"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"type"</span><span class="p">:</span><span class="s2">"transaction"</span><span class="p">,</span><span class="w">
@@ -204,9 +226,23 @@ the charge being completed.</p>
   </span><span class="s2">"amount"</span><span class="p">:</span><span class="mi">1000</span><span class="p">,</span><span class="w">
   </span><span class="s2">"application_fee"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
   </span><span class="s2">"currency"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"description"</span><span class="p">:</span><span class="s2">""</span><span class="w">
+  </span><span class="s2">"description"</span><span class="p">:</span><span class="s2">"Hipster Flannel Tshirt"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
+
+<p>Used to retrieve the details of a transaction token that has previously been
+created.</p>
+
+<h4 id="arguments">Arguments</h4>
+
+<table>
+<tr><th>Argument</th><th>Description</th></tr>
+<tr><td><strong>id</strong><br/><em>string, required</em></td><td>The unique id of the transaction.</td></tr>
+</table>
+
+<h4 id="returns">Returns</h4>
+
+<p>A transaction token object.</p>
 
           <h1 id="errors">Errors</h1>
 
@@ -236,7 +272,7 @@ the charge being completed.</p>
 </tr>
 <tr>
 <td>503</td>
-<td>Service Unavailable &ndash; We&rsquo;re temporarially offline for maintanance. Please try again later.</td>
+<td>Service Unavailable &ndash; We&rsquo;re temporarily offline for maintenance. Please try again later.</td>
 </tr>
 </tbody></table>
 
