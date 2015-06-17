@@ -47,12 +47,14 @@
 
 <p>Welcome to the AcceptOn&rsquo;s API! Our API is heavily inspired by <a href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST</a>
 All responses from our API should be returned in <a href="http://www.json.org">JSON</a> format.
-Please only use HTTPS to ensure data privacy.</p>
+Please only use HTTPS to ensure data privacy, otherwise, we will send flying monkeys to hunt you down.
+Beware the monkeys! Seriously, they hurt.</p>
 
-<p>Client libraries:</p>
+<p>Available client libraries:</p>
 
 <ul>
 <li><a href="https://github.com/dclausen/accepton-ruby">Ruby</a></li>
+<li>More to come Real Soon Now, pinky swear!</li>
 </ul>
 
 <h1 id="environments">Environments</h1>
@@ -64,12 +66,16 @@ Please only use HTTPS to ensure data privacy.</p>
 <li>Production: https://checkout.accepton.com</li>
 </ul>
 
-<p>The staging environment should be used for testing. Please keep in mind that 
+<p>The staging environment should be used for testing. Please keep in mind that
 the data can be deleted at any time.</p>
 
-<p>To actually process payments, the production environment must be used.</p>
+<p>To actually process payments, the production environment must be used.
+To switch to production, simply update the URL and corresponding API KEY,
+and if the moon is in the right (meaning both correct and directional) quadrant of the sky, it should &ldquo;Just Work&rdquo;!</p>
 
 <h1 id="getting-started">Getting Started</h1>
+
+<h2 id="retrieve-your-api-credentials">Retrieve your API credentials</h2>
 
 <ol>
 <li>If you haven&rsquo;t done so already, please create an account in the Staging environment
@@ -79,28 +85,39 @@ the data can be deleted at any time.</p>
 <li>View all resources located at <a href="#resources">Resources</a> for further API actions.</li>
 </ol>
 
+<h2 id="create-your-first-transaction">Create your first transaction</h2>
+
+<ol>
+<li>Generate a <a href="#create-a-transaction-token">transaction token</a></li>
+<li>Pass the token into the configuration of the AcceptOn form</li>
+<li>Profit!</li>
+</ol>
+
 <h1 id="authentication">Authentication</h1>
 
 <blockquote>
 <p>To authorize, use this code:</p>
 </blockquote>
-<pre class="highlight shell"><code><span class="c"># With shell, you can just pass the correct header with each request</span>
-curl <span class="s2">"https://checkout.accepton.com/v1/ping"</span> -H <span class="s2">"Authorization: &lt;API KEY&gt;"</span>
+<pre class="highlight shell"><code>curl <span class="s2">"https://staging-checkout.accepton.com/ping"</span> <span class="se">\</span>
+  -H <span class="s2">"Authorization: Bearer &lt;API KEY&gt;"</span>
 </code></pre>
 <pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'accepton-ruby'</span>
 
 <span class="n">environment</span> <span class="o">=</span> <span class="ss">:production</span>
 <span class="n">client</span> <span class="o">=</span> <span class="no">AcceptOn</span><span class="o">::</span><span class="no">Client</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">api_key: </span><span class="no">API_KEY</span><span class="p">,</span> <span class="ss">environment: </span><span class="n">environment</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="nf">create_token</span><span class="p">(</span><span class="ss">amount: </span><span class="mi">10_00</span><span class="p">,</span> <span class="ss">description: </span><span class="s2">"Hipster Flannel Tshirt"</span><span class="p">)</span>
 </code></pre>
 
-<p>AcceptOn requires an API key to gain access to the API. After logging into accepton.com, you&rsquo;ll find your API key by clicking your email address in the top right, My Profile, and then Edit.</p>
+<p>AcceptOn requires an API key to gain access to the API. After logging into accepton.com, you&rsquo;ll find your API key by clicking your email address in the top right, My Profile, and then looking under the section entitled &ldquo;API KEY&rdquo;.</p>
 
 <p>AcceptOn expects for the API key to be included in all API requests to the server in a header that looks like the following:</p>
 
-<p><code class="prettyprint">Authorization: &lt;API KEY&gt;</code></p>
+<p><code class="prettyprint">Authorization: Bearer &lt;API KEY&gt;</code></p>
+
+<p>For the super efficient types (aka lazy), you can also append your API KEY as a parameter named access_token to any request if modifying headers isn&rsquo;t your thing.</p>
 
 <aside class="notice">
-You must replace API KEY with your personal API key.
+  Remember, you must replace API KEY with your personal API key.
 </aside>
 
 <h1 id="resources">Resources</h1>
@@ -132,14 +149,16 @@ the charge being completed.</p>
 <blockquote>
 <p>Create a Transaction token request</p>
 </blockquote>
-<pre class="highlight shell"><code>curl -X POST https://checkout.accepton.com/v1/tokens/create -H <span class="s2">"Authorization: &lt;API KEY&gt;"</span>
+<pre class="highlight shell"><code>curl https://staging-checkout.accepton.com/v1/tokens/create <span class="se">\</span>
+  -X POST <span class="se">\</span>
+  -H <span class="s2">"Authorization: Bearer &lt;API KEY&gt;"</span> <span class="se">\</span>
+  -d <span class="nv">amount</span><span class="o">=</span>1000 <span class="se">\</span>
+  -d <span class="nv">description</span><span class="o">=</span><span class="s2">"Hipster Flannel Tshirt"</span>
 </code></pre>
 <pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'accepton-ruby'</span>
 
-<span class="n">environment</span> <span class="o">=</span> <span class="ss">:production</span>
-<span class="n">client</span> <span class="o">=</span> <span class="no">AcceptOn</span><span class="o">::</span><span class="no">Client</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">api_key: </span><span class="no">API_KEY</span><span class="p">,</span> <span class="ss">environment: </span><span class="n">environment</span><span class="p">)</span>
-
-<span class="n">client</span><span class="p">.</span><span class="nf">create_token</span><span class="p">(</span><span class="ss">amount: </span><span class="mi">10_00</span><span class="p">)</span>
+<span class="n">client</span> <span class="o">=</span> <span class="no">AcceptOn</span><span class="o">::</span><span class="no">Client</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">api_key: </span><span class="no">API_KEY</span><span class="p">,</span> <span class="ss">environment: :staging</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="nf">create_token</span><span class="p">(</span><span class="ss">amount: </span><span class="mi">10_00</span><span class="p">,</span> <span class="ss">description: </span><span class="s2">"Hipster Flannel Tshirt"</span><span class="p">)</span>
 </code></pre>
 
 <blockquote>
@@ -166,6 +185,28 @@ the charge being completed.</p>
 <tr><td><strong>description</strong><br/><em>string, optional</em></td><td>A description of the transaction for your own identification purposes. It could be used to include a name of the item purchased, or a confirmation number, etc.</td></tr>
 <tr><td><strong>merchant_paypal_account</strong><br/><em>string, optional</em></td><td>The merchant&rsquo;s Paypal account when you want to pay a merchant instead of yourself. Can be used with an application fee.</td></tr>
 </table>
+
+<h3 id="retrieve-an-existing-transaction-token">Retrieve an existing Transaction token</h3>
+
+<blockquote>
+<p>Retreive a Transaction token request</p>
+</blockquote>
+<pre class="highlight shell"><code>curl https://staging-checkout.accepton.com/v1/tokens/txn_643f20df91f94ff3b6cd614b63228419 <span class="se">\</span>
+  -X GET <span class="se">\</span>
+  -H <span class="s2">"Authorization: Bearer &lt;API KEY&gt;"</span>
+</code></pre>
+<pre class="highlight ruby"><code><span class="no">TODO</span>
+</code></pre>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="s2">"txn_643f20df91f94ff3b6cd614b63228419"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"type"</span><span class="p">:</span><span class="s2">"transaction"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"created"</span><span class="p">:</span><span class="s2">"2015-01-16T20:08:17.837Z"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"amount"</span><span class="p">:</span><span class="mi">1000</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"application_fee"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"currency"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"description"</span><span class="p">:</span><span class="s2">""</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
 
           <h1 id="errors">Errors</h1>
 
