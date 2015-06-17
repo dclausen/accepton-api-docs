@@ -72,16 +72,16 @@ client = AcceptOn::Client.new(api_key: API_KEY, environment: environment)
 response = client.create_token(amount: 10_00, description: "Hipster Flannel Tshirt")
 ```
 
-AcceptOn requires an API key to gain access to the API. After logging into accepton.com, you'll find your API key by clicking your email address in the top right, My Profile, and then looking under the section entitled "API KEY".
+AcceptOn requires an API key to gain access to, well, the actual API. After logging into accepton.com, you'll find your API key by clicking your email address in the top right, My Profile, and then use the Secret key found under the section entitled "API KEYS".
 
-AcceptOn expects for the API key to be included in all API requests to the server in a header that looks like the following:
+AcceptOn expects for this super secret API key to be included in all API requests found in a header that looks like the following:
 
 `Authorization: Bearer <API KEY>`
 
-For the super efficient types (aka lazy), you can also append your API KEY as a parameter named access_token to any request if modifying headers isn't your thing.
+For the work efficient types (aka lazy), you can also append your API KEY as a parameter named access_token to any request if modifying headers isn't your thing.
 
 <aside class="notice">
-  Remember, you must replace API KEY with your personal API key.
+  Remember, you must replace API KEY with your unique Secret API key.
 </aside>
 
 # Resources
