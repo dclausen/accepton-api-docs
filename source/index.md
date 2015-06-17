@@ -41,18 +41,23 @@ To switch to production, simply update the URL and corresponding API KEY,
 and if the moon is in the right (meaning both correct and directional) quadrant of the sky, it should "Just Work"!
 
 # Getting Started
-## Retrieve your API credentials
+
+First, you'll need to create an account and retrieve your API credentials:
 
 1. If you haven't done so already, please create an account in the Staging environment
 [https://staging.accepton.com](https://staging.accepton.com)
-1. Retrieve your API key here: TODO
-1. Make a request to ping the client using your API key TODO
-1. View all resources located at [Resources](#resources) for further API actions.
+1. Link a payment processor such as Stripe or Braintree
+1. Retrieve your API key here: [https://staging.accepton.com/admin/user/profile](https://staging.accepton.com/admin/user/profile)
 
-## Create your first transaction
+Next, create a payment form that you'll use to collect payment:
+
+1. Click "Create a Form" in the bottom left area of the navigation
+1. Copy and paste the generated code to your site
+
+Then, make your first transaction using the form:
 
 1. Generate a [transaction token](#create-a-transaction-token)
-1. Pass the token into the configuration of the AcceptOn form
+1. Pass the id attribute of the response (aka the token) into the configuration of the AcceptOn form
 1. Profit!
 
 # Authentication
@@ -87,10 +92,18 @@ For the work efficient types (aka lazy), you can also append your API KEY as a p
 # Resources
 
 ## Transaction tokens
-A transaction token is used to allow for details such as the amount to charge, 
+A transaction token is used to allow for details such as the amount to charge,
 the currency, and application fee to be created dynamically from a trusted
 source. This is to ensure that no tampering has been performed prior to
 the charge being completed.
+
+This can either be done one time using the "Create a Form" link after signing
+in to https://staging.accepton.com. This is useful for creating a form
+with a fixed price.
+
+Or, these tokens can be generated programmatically to support dynamic pricing
+using an API client. For instance, this allows for the price and relevant
+options to be delayed until the end of the checkout process.
 
 ### The Transaction token object
 
@@ -134,19 +147,22 @@ response = client.create_token(amount: 10_00, description: "Hipster Flannel Tshi
   "amount":1000,
   "application_fee":null,
   "currency":null,
-  "description":""
+  "description":"Hipster Flannel Tshirt"
 }
 ```
 
-#### Attributes
+#### Arguments
 <table>
-<tr><th>Attribute</th><th>Description</th></tr>
+<tr><th>Argument</th><th>Description</th></tr>
 <tr><td><strong>amount</strong><br/><em>integer, required</em></td><td>The amount in cents of the transaction.</td></tr>
 <tr><td><strong>application_fee</strong><br/><em>integer, optional</em></td><td>The application fee in cents to be passed on to the processor.</td></tr>
 <tr><td><strong>currency</strong><br/><em>string, optional</em></td><td>The currency to charge in (default: usd).</td></tr>
 <tr><td><strong>description</strong><br/><em>string, optional</em></td><td>A description of the transaction for your own identification purposes. It could be used to include a name of the item purchased, or a confirmation number, etc.</td></tr>
 <tr><td><strong>merchant_paypal_account</strong><br/><em>string, optional</em></td><td>The merchant's Paypal account when you want to pay a merchant instead of yourself. Can be used with an application fee.</td></tr>
 </table>
+
+#### Returns
+A transaction token object.
 
 ### Retrieve an existing Transaction token
 > Retreive a Transaction token request
@@ -161,6 +177,8 @@ curl https://staging-checkout.accepton.com/v1/tokens/txn_643f20df91f94ff3b6cd614
 TODO
 ```
 
+> Retreive a Transaction token response
+
 ```json
 {
   "id":"txn_643f20df91f94ff3b6cd614b63228419",
@@ -169,6 +187,18 @@ TODO
   "amount":1000,
   "application_fee":null,
   "currency":null,
-  "description":""
+  "description":"Hipster Flannel Tshirt"
 }
 ```
+
+Used to retrieve the details of a transaction token that has previously been
+created.
+
+#### Arguments
+<table>
+<tr><th>Argument</th><th>Description</th></tr>
+<tr><td><strong>id</strong><br/><em>string, required</em></td><td>The unique id of the transaction.</td></tr>
+</table>
+
+#### Returns
+A transaction token object.
