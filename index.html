@@ -39,6 +39,9 @@
         <ul class="search-results"></ul>
       <div id="toc">
       </div>
+        <ul class="toc-footer">
+            <li><a href='guides/applications.html'>Applications guide</a></li>
+        </ul>
     </div>
     <div class="page-wrapper">
       <div class="dark-box"></div>
@@ -53,7 +56,7 @@ Beware the monkeys! Seriously, they hurt.</p>
 <p>Available client libraries:</p>
 
 <ul>
-<li><a href="https://github.com/dclausen/accepton-ruby">Ruby</a></li>
+<li><a href="https://github.com/accepton/accepton-ruby">Ruby</a></li>
 <li>More to come Real Soon Now, pinky swear!</li>
 </ul>
 
@@ -79,7 +82,7 @@ and if the moon is in the right (meaning both correct and directional) quadrant 
 
 <ol>
 <li>If you haven&rsquo;t done so already, please create an account in the Staging environment
-<a href="https://staging.accepton.com">https://staging.accepton.com</a></li>
+<a href="https://staging.accepton.com/sign_up">https://staging.accepton.com/sign_up</a></li>
 <li>Link a payment processor such as Stripe or Braintree</li>
 <li>Retrieve your API key here: <a href="https://staging.accepton.com/admin/user/profile">https://staging.accepton.com/admin/user/profile</a></li>
 </ol>
@@ -153,7 +156,7 @@ options to be delayed until the end of the checkout process.</p>
 <tr><td><strong>type</strong><br/><em>string</em></td><td>Always &ldquo;transaction&rdquo;.</td></tr>
 <tr><td><strong>created</strong><br/><em>string</em></td><td>When the token was created, in iso8601 format.</td></tr>
 <tr><td><strong>amount</strong><br/><em>integer</em></td><td>The amount in cents of the transaction.</td></tr>
-<tr><td><strong>application_fee</strong><br/><em>integer</em></td><td>The application fee in cents to be passed on to the processor.</td></tr>
+<tr><td><strong>application_fee</strong><br/><em>integer</em></td><td>The application fee in cents to be passed on to the processor. For use only by <a href="guides/applications.html">Applications</a></td></tr>
 <tr><td><strong>currency</strong><br/><em>string</em></td><td>The currency to charge in (default: usd).</td></tr>
 <tr><td><strong>description</strong><br/><em>string</em></td><td>A description of the transaction for your own identification purposes. It could be used to include a name of the item purchased, or a confirmation number, etc.</td></tr>
 </table>
