@@ -6,6 +6,7 @@ language_tabs:
   - ruby
 
 toc_footers:
+ - <a href='guides/applications.html'>Applications guide</a>
 
 includes:
   - errors
@@ -45,7 +46,7 @@ and if the moon is in the right (meaning both correct and directional) quadrant 
 First, you'll need to create an account and retrieve your API credentials:
 
 1. If you haven't done so already, please create an account in the Staging environment
-[https://staging.accepton.com](https://staging.accepton.com)
+[https://staging.accepton.com/sign_up](https://staging.accepton.com/sign_up)
 1. Link a payment processor such as Stripe or Braintree
 1. Retrieve your API key here: [https://staging.accepton.com/admin/user/profile](https://staging.accepton.com/admin/user/profile)
 
@@ -114,7 +115,7 @@ options to be delayed until the end of the checkout process.
 <tr><td><strong>type</strong><br/><em>string</em></td><td>Always "transaction".</td></tr>
 <tr><td><strong>created</strong><br/><em>string</em></td><td>When the token was created, in iso8601 format.</td></tr>
 <tr><td><strong>amount</strong><br/><em>integer</em></td><td>The amount in cents of the transaction.</td></tr>
-<tr><td><strong>application_fee</strong><br/><em>integer</em></td><td>The application fee in cents to be passed on to the processor.</td></tr>
+<tr><td><strong>application_fee</strong><br/><em>integer</em></td><td>The application fee in cents to be passed on to the processor. For use only by <a href="guides/applications.html">Applications</a></td></tr>
 <tr><td><strong>currency</strong><br/><em>string</em></td><td>The currency to charge in (default: usd).</td></tr>
 <tr><td><strong>description</strong><br/><em>string</em></td><td>A description of the transaction for your own identification purposes. It could be used to include a name of the item purchased, or a confirmation number, etc.</td></tr>
 </table>
