@@ -57,6 +57,7 @@ Beware the monkeys! Seriously, they hurt.</p>
 
 <ul>
 <li><a href="https://github.com/accepton/accepton-ruby">Ruby</a></li>
+<li><a href="https://github.com/accepton/accepton-python">Python</a></li>
 <li>More to come Real Soon Now, pinky swear!</li>
 </ul>
 
@@ -157,7 +158,7 @@ options to be delayed until the end of the checkout process.</p>
 <tr><td><strong>created</strong><br/><em>string</em></td><td>When the token was created, in iso8601 format.</td></tr>
 <tr><td><strong>amount</strong><br/><em>integer</em></td><td>The amount in cents of the transaction.</td></tr>
 <tr><td><strong>application_fee</strong><br/><em>integer</em></td><td>The application fee in cents to be passed on to the processor. For use only by <a href="guides/applications.html">Applications</a></td></tr>
-<tr><td><strong>currency</strong><br/><em>string</em></td><td>The currency to charge in (default: usd).</td></tr>
+<tr><td><strong>currency</strong><br/><em>string</em></td><td>The currency to charge in ISO format (default: usd).</td></tr>
 <tr><td><strong>description</strong><br/><em>string</em></td><td>A description of the transaction for your own identification purposes. It could be used to include a name of the item purchased, or a confirmation number, etc.</td></tr>
 </table>
 
@@ -166,7 +167,7 @@ options to be delayed until the end of the checkout process.</p>
 <blockquote>
 <p>Create a Transaction token request</p>
 </blockquote>
-<pre class="highlight shell"><code>curl https://staging-checkout.accepton.com/v1/tokens/create <span class="se">\</span>
+<pre class="highlight shell"><code>curl https://staging-checkout.accepton.com/v1/tokens <span class="se">\</span>
   -X POST <span class="se">\</span>
   -H <span class="s2">"Authorization: Bearer &lt;API KEY&gt;"</span> <span class="se">\</span>
   -d <span class="nv">amount</span><span class="o">=</span>1000 <span class="se">\</span>
@@ -198,7 +199,7 @@ options to be delayed until the end of the checkout process.</p>
 <tr><th>Argument</th><th>Description</th></tr>
 <tr><td><strong>amount</strong><br/><em>integer, required</em></td><td>The amount in cents of the transaction.</td></tr>
 <tr><td><strong>application_fee</strong><br/><em>integer, optional</em></td><td>The application fee in cents to be passed on to the processor.</td></tr>
-<tr><td><strong>currency</strong><br/><em>string, optional</em></td><td>The currency to charge in (default: usd).</td></tr>
+<tr><td><strong>currency</strong><br/><em>string</em></td><td>The currency to charge in ISO format (default: usd).</td></tr>
 <tr><td><strong>description</strong><br/><em>string, optional</em></td><td>A description of the transaction for your own identification purposes. It could be used to include a name of the item purchased, or a confirmation number, etc.</td></tr>
 <tr><td><strong>merchant_paypal_account</strong><br/><em>string, optional</em></td><td>The merchant&rsquo;s Paypal account when you want to pay a merchant instead of yourself. Can be used with an application fee.</td></tr>
 </table>
@@ -245,7 +246,69 @@ created.</p>
 
 <h4 id="returns">Returns</h4>
 
-<p>A transaction token object.</p>
+<p>A Transaction token object.</p>
+
+<h2 id="refunds">Refunds</h2>
+
+<p>Refunds allow the reversal of a charge that has not already been fully
+refunded. Partial refunds are accepted up to the total amount of the
+original charge.</p>
+
+<h3 id="the-refund-object">The Refund object</h3>
+
+<h4 id="attributes">Attributes</h4>
+
+<table>
+<tr><th>Attribute</th><th>Description</th></tr>
+<tr><td><strong>id</strong><br/><em>string</em></td><td>A unique id.</td></tr>
+<tr><td><strong>amount</strong><br/><em>integer</em></td><td>The amount in cents of the refund.</td></tr>
+<tr><td><strong>created</strong><br/><em>datetime</em></td><td>The time the refund was created.</td></tr>
+<tr><td><strong>currency</strong><br/><em>string</em></td><td>The currency to charge in ISO format (default: usd).</td></tr>
+<tr><td><strong>metadata</strong><br/><em>hash</em></td><td>Any metadata associated with the refund.</td></tr>
+<tr><td><strong>reason</strong><br/><em>string</em></td><td>The reason for the refund.</td></tr>
+</table>
+
+<h3 id="create-a-refund">Create a Refund</h3>
+
+<blockquote>
+<p>Create a Refund request</p>
+</blockquote>
+<pre class="highlight shell"><code>curl https://staging-checkout.accepton.com/v1/refunds <span class="se">\</span>
+  -X POST <span class="se">\</span>
+  -H <span class="s2">"Authorization: Bearer &lt;API KEY&gt;"</span> <span class="se">\</span>
+  -d <span class="nv">amount</span><span class="o">=</span>1000 <span class="se">\</span>
+  -d <span class="nv">authorization_id</span><span class="o">=</span><span class="s2">"chg_123"</span>
+</code></pre>
+<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'accepton-ruby'</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="no">AcceptOn</span><span class="o">::</span><span class="no">Client</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">api_key: </span><span class="no">API_KEY</span><span class="p">,</span> <span class="ss">environment: :staging</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="nf">refund</span><span class="p">(</span><span class="ss">amount: </span><span class="mi">10_00</span><span class="p">,</span> <span class="ss">authorization_id: </span><span class="s2">"chg_123"</span><span class="p">)</span>
+</code></pre>
+
+<blockquote>
+<p>Create a Transaction token response</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ref_123"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-01-16T22:45:18.357Z"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"usd"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"metadata"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"reason"</span><span class="p">:</span><span class="w"> </span><span class="s2">"requested_by_customer"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<h4 id="arguments">Arguments</h4>
+
+<table>
+<tr><th>Argument</th><th>Description</th></tr>
+<tr><td><strong>amount</strong><br/><em>integer, required</em></td><td>The amount in cents to refund.</td></tr>
+<tr><td><strong>authorization_id</strong><br/><em>string, required</em></td><td>The id of the charge to associate with the refund.</td></tr>
+</table>
+
+<h4 id="returns">Returns</h4>
+
+<p>A Refund object.</p>
 
           <h1 id="errors">Errors</h1>
 
