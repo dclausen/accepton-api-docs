@@ -23,7 +23,7 @@ All responses from our API should be returned in [JSON](http://www.json.org) for
 Please only use HTTPS to ensure data privacy, otherwise, we will send flying monkeys to hunt you down.
 Beware the monkeys! Seriously, they hurt.
 
-Available client libraries:
+Available client libraries are located at:
 
 * [Ruby](https://github.com/accepton/accepton-ruby)
 * [Python](https://github.com/accepton/accepton-python)
