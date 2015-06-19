@@ -25,6 +25,7 @@ Beware the monkeys! Seriously, they hurt.
 Available client libraries:
 
 * [Ruby](https://github.com/accepton/accepton-ruby)
+* [Python](https://github.com/accepton/accepton-python)
 * More to come Real Soon Now, pinky swear!
 
 # Environments
