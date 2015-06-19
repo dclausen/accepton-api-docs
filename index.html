@@ -15,7 +15,7 @@
 
       <script>
         $(function() {
-          setupLanguages(["shell","ruby"]);
+          setupLanguages(["shell","ruby","python"]);
         });
       </script>
   </head>
@@ -32,6 +32,7 @@
         <div class="lang-selector">
               <a href="#" data-language-name="shell">shell</a>
               <a href="#" data-language-name="ruby">ruby</a>
+              <a href="#" data-language-name="python">python</a>
         </div>
         <div class="search">
           <input type="text" class="search" id="input-search" placeholder="Search">
@@ -115,7 +116,10 @@ and if the moon is in the right (meaning both correct and directional) quadrant 
 
 <span class="n">environment</span> <span class="o">=</span> <span class="ss">:production</span>
 <span class="n">client</span> <span class="o">=</span> <span class="no">AcceptOn</span><span class="o">::</span><span class="no">Client</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">api_key: </span><span class="no">API_KEY</span><span class="p">,</span> <span class="ss">environment: </span><span class="n">environment</span><span class="p">)</span>
-<span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="nf">create_token</span><span class="p">(</span><span class="ss">amount: </span><span class="mi">10_00</span><span class="p">,</span> <span class="ss">description: </span><span class="s2">"Hipster Flannel Tshirt"</span><span class="p">)</span>
+</code></pre>
+<pre class="highlight python"><code><span class="kn">from</span> <span class="nn">accepton</span> <span class="kn">import</span> <span class="n">Client</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">API_KEY</span><span class="p">,</span> <span class="n">environment</span><span class="o">=</span><span class="s">'staging'</span><span class="p">)</span>
 </code></pre>
 
 <p>AcceptOn requires an API key to gain access to, well, the actual API. After logging into accepton.com, you&rsquo;ll find your API key by clicking your email address in the top right, My Profile, and then use the Secret key found under the section entitled &ldquo;API KEYS&rdquo;.</p>
@@ -175,8 +179,15 @@ options to be delayed until the end of the checkout process.</p>
 </code></pre>
 <pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'accepton-ruby'</span>
 
-<span class="n">client</span> <span class="o">=</span> <span class="no">AcceptOn</span><span class="o">::</span><span class="no">Client</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">api_key: </span><span class="no">API_KEY</span><span class="p">,</span> <span class="ss">environment: :staging</span><span class="p">)</span>
+<span class="n">environment</span> <span class="o">=</span> <span class="ss">:production</span>
+<span class="n">client</span> <span class="o">=</span> <span class="no">AcceptOn</span><span class="o">::</span><span class="no">Client</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">api_key: </span><span class="no">API_KEY</span><span class="p">,</span> <span class="ss">environment: </span><span class="n">environment</span><span class="p">)</span>
 <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="nf">create_token</span><span class="p">(</span><span class="ss">amount: </span><span class="mi">10_00</span><span class="p">,</span> <span class="ss">description: </span><span class="s2">"Hipster Flannel Tshirt"</span><span class="p">)</span>
+</code></pre>
+<pre class="highlight python"><code><span class="kn">from</span> <span class="nn">accepton</span> <span class="kn">import</span> <span class="n">Client</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">API_KEY</span><span class="p">,</span> <span class="n">environment</span><span class="o">=</span><span class="s">'staging'</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_token</span><span class="p">(</span><span class="n">amount</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">currency</span><span class="o">=</span><span class="s">'usd'</span><span class="p">,</span>
+                               <span class="n">description</span><span class="o">=</span><span class="s">'Hipster Flannel Tshirt'</span><span class="p">)</span>
 </code></pre>
 
 <blockquote>
@@ -284,6 +295,11 @@ original charge.</p>
 <span class="n">client</span> <span class="o">=</span> <span class="no">AcceptOn</span><span class="o">::</span><span class="no">Client</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">api_key: </span><span class="no">API_KEY</span><span class="p">,</span> <span class="ss">environment: :staging</span><span class="p">)</span>
 <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="nf">refund</span><span class="p">(</span><span class="ss">amount: </span><span class="mi">10_00</span><span class="p">,</span> <span class="ss">authorization_id: </span><span class="s2">"chg_123"</span><span class="p">)</span>
 </code></pre>
+<pre class="highlight python"><code><span class="kn">from</span> <span class="nn">accepton</span> <span class="kn">import</span> <span class="n">Client</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">API_KEY</span><span class="p">,</span> <span class="n">environment</span><span class="o">=</span><span class="s">'staging'</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">refund</span><span class="p">(</span><span class="n">amount</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">authorization_id</span><span class="o">=</span><span class="s">"chg_123"</span><span class="p">)</span>
+</code></pre>
 
 <blockquote>
 <p>Create a Transaction token response</p>
@@ -351,6 +367,7 @@ original charge.</p>
           <div class="lang-selector">
                 <a href="#" data-language-name="shell">shell</a>
                 <a href="#" data-language-name="ruby">ruby</a>
+                <a href="#" data-language-name="python">python</a>
           </div>
       </div>
     </div>
