@@ -40,7 +40,7 @@
         <h1 id="introduction">Introduction</h1>
 
 <p>AcceptOn allows businesses and individuals alike to organize users and
-transactions created on their behalf by creating what we refer to as
+transactions created on their behalf by creating what is referred to as
 an &ldquo;Application&rdquo;. This scenario applies best to a business that 
 identifies as a marketplace where they desire to use AcceptOn on behalf
 of their customer.</p>
@@ -52,7 +52,8 @@ of their customer.</p>
 <p>First off, if you haven&rsquo;t already, create an account at 
 <a href="https://staging.accepton.com/sign_up">https://staging.accepton.com/sign_up</a></p>
 
-<p>Next, create a new Application by clicking on your email address, then Apps, then Create. TODO</p>
+<p>Next, create a new Application by clicking on your email address, then Apps,
+then Create. TODO</p>
 
 <h1 id="retrieve-your-signup-url">Retrieve your signup URL</h1>
 
@@ -65,6 +66,54 @@ using this URL will be associated with your Application.</p>
 collected by a Marketplace will work as expected when using AcceptOn
 by ensuring that the application_fee argument is used when <a href="/#create-a-transaction-token">creating a 
 Transaction Token</a></p>
+
+<h1 id="store-the-keys">Store the keys</h1>
+
+<p>Once a user has created an account, they will be redirected back to
+your system with a public and secret key pair. Please store these keys
+within the marketplace as they will be used shortly. The public key
+is passed into the form to identify the user. The secret key is used
+to perform any API requests on the user&rsquo;s behalf.</p>
+
+<h1 id="configure-the-form">Configure the form</h1>
+
+<blockquote>
+<p>If you&rsquo;d like to use a modal popup to display the payment form, use this:</p>
+</blockquote>
+<pre class="highlight html"><code><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://staging-js.accepton.com/scripts/accepton.js"</span> 
+  <span class="na">class=</span><span class="s">"accepton-button"</span>
+  <span class="na">data-public-key=</span><span class="s">"PUBLIC_KEY"</span>
+  <span class="na">data-redirect-uri=</span><span class="s">"REDIRECT_URI_OR_BLANK"</span>
+  <span class="na">data-token=</span><span class="s">"GENERATED_TRANSACTION_TOKEN"</span>
+  <span class="na">data-customer-email=</span><span class="s">"EMAIL_ADDRESS_OR_BLANK"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/script&gt;</span>
+</code></pre>
+
+<blockquote>
+<p>Or, to use an inline iframe for the payment form, try this:</p>
+</blockquote>
+<pre class="highlight html"><code><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"accepton-form"</span><span class="nt">&gt;&lt;/div&gt;</span> 
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://staging-js.accepton.com/scripts/accepton.js"</span> 
+  <span class="na">class=</span><span class="s">"accepton-button"</span>
+  <span class="na">data-public-key=</span><span class="s">"PUBLIC_KEY"</span>
+  <span class="na">data-redirect-uri=</span><span class="s">"REDIRECT_URI_OR_BLANK"</span>
+  <span class="na">data-token=</span><span class="s">"GENERATED_TRANSACTION_TOKEN"</span>
+  <span class="na">data-customer-email=</span><span class="s">"EMAIL_ADDRESS_OR_BLANK"</span>
+  <span class="na">data-target=</span><span class="s">"accepton-form"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/script&gt;</span>
+</code></pre>
+
+<p>Now, we need to configure the payment form. To do so, you&rsquo;ll need your 
+user&rsquo;s public key, a Transaction token, and an optional URL to redirect
+the user to once the transaction is successful. Please select from the 
+following 2 methods of displaying the payment form: modal or iframe.</p>
+
+<p>Please see <a href="/#create-a-transaction-token">creating a Transaction Token</a>
+for more information on the available options.</p>
+
+<h1 id="webhooks">Webhooks</h1>
+
+<p>TODO</p>
 
       </div>
       <div class="dark-box">
