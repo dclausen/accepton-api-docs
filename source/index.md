@@ -4,6 +4,7 @@ title: AcceptOn API Reference
 language_tabs:
   - shell
   - ruby
+  - python
 
 toc_footers:
  - <a href='guides/applications.html'>Applications guide</a>
@@ -76,7 +77,12 @@ require 'accepton-ruby'
 
 environment = :production
 client = AcceptOn::Client.new(api_key: API_KEY, environment: environment)
-response = client.create_token(amount: 10_00, description: "Hipster Flannel Tshirt")
+```
+
+```python
+from accepton import Client
+
+client = Client(api_key=API_KEY, environment='staging')
 ```
 
 AcceptOn requires an API key to gain access to, well, the actual API. After logging into accepton.com, you'll find your API key by clicking your email address in the top right, My Profile, and then use the Secret key found under the section entitled "API KEYS".
@@ -135,8 +141,17 @@ curl https://staging-checkout.accepton.com/v1/tokens \
 ```ruby
 require 'accepton-ruby'
 
-client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
+environment = :production
+client = AcceptOn::Client.new(api_key: API_KEY, environment: environment)
 response = client.create_token(amount: 10_00, description: "Hipster Flannel Tshirt")
+```
+
+```python
+from accepton import Client
+
+client = Client(api_key=API_KEY, environment='staging')
+response = client.create_token(amount=1000, currency='usd',
+                               description='Hipster Flannel Tshirt')
 ```
 
 > Create a Transaction token response
@@ -239,6 +254,13 @@ require 'accepton-ruby'
 
 client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
 response = client.refund(amount: 10_00, authorization_id: "chg_123")
+```
+
+```python
+from accepton import Client
+
+client = Client(api_key=API_KEY, environment='staging')
+response = client.refund(amount=1000, authorization_id="chg_123")
 ```
 
 > Create a Transaction token response
