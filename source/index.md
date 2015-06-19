@@ -117,7 +117,7 @@ options to be delayed until the end of the checkout process.
 <tr><td><strong>created</strong><br/><em>string</em></td><td>When the token was created, in iso8601 format.</td></tr>
 <tr><td><strong>amount</strong><br/><em>integer</em></td><td>The amount in cents of the transaction.</td></tr>
 <tr><td><strong>application_fee</strong><br/><em>integer</em></td><td>The application fee in cents to be passed on to the processor. For use only by <a href="guides/applications.html">Applications</a></td></tr>
-<tr><td><strong>currency</strong><br/><em>string</em></td><td>The currency to charge in (default: usd).</td></tr>
+<tr><td><strong>currency</strong><br/><em>string</em></td><td>The currency to charge in ISO format (default: usd).</td></tr>
 <tr><td><strong>description</strong><br/><em>string</em></td><td>A description of the transaction for your own identification purposes. It could be used to include a name of the item purchased, or a confirmation number, etc.</td></tr>
 </table>
 
@@ -125,7 +125,7 @@ options to be delayed until the end of the checkout process.
 > Create a Transaction token request
 
 ```shell
-curl https://staging-checkout.accepton.com/v1/tokens/create \
+curl https://staging-checkout.accepton.com/v1/tokens \
   -X POST \
   -H "Authorization: Bearer <API KEY>" \
   -d amount=1000 \
@@ -158,7 +158,7 @@ response = client.create_token(amount: 10_00, description: "Hipster Flannel Tshi
 <tr><th>Argument</th><th>Description</th></tr>
 <tr><td><strong>amount</strong><br/><em>integer, required</em></td><td>The amount in cents of the transaction.</td></tr>
 <tr><td><strong>application_fee</strong><br/><em>integer, optional</em></td><td>The application fee in cents to be passed on to the processor.</td></tr>
-<tr><td><strong>currency</strong><br/><em>string, optional</em></td><td>The currency to charge in (default: usd).</td></tr>
+<tr><td><strong>currency</strong><br/><em>string</em></td><td>The currency to charge in ISO format (default: usd).</td></tr>
 <tr><td><strong>description</strong><br/><em>string, optional</em></td><td>A description of the transaction for your own identification purposes. It could be used to include a name of the item purchased, or a confirmation number, etc.</td></tr>
 <tr><td><strong>merchant_paypal_account</strong><br/><em>string, optional</em></td><td>The merchant's Paypal account when you want to pay a merchant instead of yourself. Can be used with an application fee.</td></tr>
 </table>
@@ -203,4 +203,63 @@ created.
 </table>
 
 #### Returns
-A transaction token object.
+A Transaction token object.
+
+## Refunds
+Refunds allow the reversal of a charge that has not already been fully
+refunded. Partial refunds are accepted up to the total amount of the
+original charge.
+
+### The Refund object
+
+#### Attributes
+<table>
+<tr><th>Attribute</th><th>Description</th></tr>
+<tr><td><strong>id</strong><br/><em>string</em></td><td>A unique id.</td></tr>
+<tr><td><strong>amount</strong><br/><em>integer</em></td><td>The amount in cents of the refund.</td></tr>
+<tr><td><strong>created</strong><br/><em>datetime</em></td><td>The time the refund was created.</td></tr>
+<tr><td><strong>currency</strong><br/><em>string</em></td><td>The currency to charge in ISO format (default: usd).</td></tr>
+<tr><td><strong>metadata</strong><br/><em>hash</em></td><td>Any metadata associated with the refund.</td></tr>
+<tr><td><strong>reason</strong><br/><em>string</em></td><td>The reason for the refund.</td></tr>
+</table>
+
+### Create a Refund
+> Create a Refund request
+
+```shell
+curl https://staging-checkout.accepton.com/v1/refunds \
+  -X POST \
+  -H "Authorization: Bearer <API KEY>" \
+  -d amount=1000 \
+  -d authorization_id="chg_123"
+```
+
+```ruby
+require 'accepton-ruby'
+
+client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
+response = client.refund(amount: 10_00, authorization_id: "chg_123")
+```
+
+> Create a Transaction token response
+
+```json
+{
+  "id": "ref_123",
+  "amount": 1000,
+  "created_at": "2015-01-16T22:45:18.357Z",
+  "currency": "usd",
+  "metadata": null,
+  "reason": "requested_by_customer"
+}
+```
+
+#### Arguments
+<table>
+<tr><th>Argument</th><th>Description</th></tr>
+<tr><td><strong>amount</strong><br/><em>integer, required</em></td><td>The amount in cents to refund.</td></tr>
+<tr><td><strong>authorization_id</strong><br/><em>string, required</em></td><td>The id of the charge to associate with the refund.</td></tr>
+</table>
+
+#### Returns
+A Refund object.
