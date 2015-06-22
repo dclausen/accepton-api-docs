@@ -246,21 +246,21 @@ curl https://staging-checkout.accepton.com/v1/refunds \
   -X POST \
   -H "Authorization: Bearer <API KEY>" \
   -d amount=1000 \
-  -d authorization_id="chg_123"
+  -d charge_id="chg_123"
 ```
 
 ```ruby
 require 'accepton-ruby'
 
 client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
-response = client.refund(amount: 10_00, authorization_id: "chg_123")
+response = client.refund(amount: 10_00, charge_id: "chg_123")
 ```
 
 ```python
 from accepton import Client
 
 client = Client(api_key=API_KEY, environment='staging')
-response = client.refund(amount=1000, authorization_id="chg_123")
+response = client.refund(amount=1000, charge_id="chg_123")
 ```
 
 > Create a Transaction token response
@@ -280,7 +280,7 @@ response = client.refund(amount=1000, authorization_id="chg_123")
 <table>
 <tr><th>Argument</th><th>Description</th></tr>
 <tr><td><strong>amount</strong><br/><em>integer, required</em></td><td>The amount in cents to refund.</td></tr>
-<tr><td><strong>authorization_id</strong><br/><em>string, required</em></td><td>The id of the charge to associate with the refund.</td></tr>
+<tr><td><strong>charge_id</strong><br/><em>string, required</em></td><td>The id of the charge to associate with the refund.</td></tr>
 </table>
 
 #### Returns
