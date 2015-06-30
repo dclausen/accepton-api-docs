@@ -220,6 +220,80 @@ created.
 #### Returns
 A Transaction token object.
 
+## Charges
+To charge a customer, you create a charge object using the AcceptOn form.
+You can query charges singularly by the id or search through the history of
+charges on your account.
+
+### The Charge object
+<table>
+<tr><th>Attribute</th><th>Description</th></tr>
+<tr><td><strong>id</strong><br/><em>string</em></td><td>The unique charge identifier.</td></tr>
+<tr><td><strong>amount</strong><br/><em>integer</em></td><td>The amount charged in cents.</td></tr>
+<tr><td><strong>created</strong><br/><em>datetime</em></td><td>The time the charge was created.</td></tr>
+<tr><td><strong>currency</strong><br/><em>string</em></td><td>The currency to charge in ISO format (default: usd).</td></tr>
+<tr><td><strong>description</strong><br/><em>string</em></td><td>The description of the charge.</td></tr>
+<tr><td><strong>metadata</strong><br/><em>hash</em></td><td>Any metadata associated with the charge.</td></tr>
+<tr><td><strong>refunded</strong><br/><em>boolean</em></td><td>Whether the charge has been refunded.</td></tr>
+<tr><td><strong>remote_id</strong><br/><em>boolean</em></td><td>The identifier of the charge on the processor.</td></tr>
+<tr><td><strong>status</strong><br/><em>string</em></td><td>The status of the charge.</td></tr>
+</table>
+
+### Retrieve a Charge
+
+> Retrieve a charge.
+
+```shell
+curl https://staging-checkout.accepton.com/v1/charges/chg_123 \
+  -X GET \
+  -H "Authorization: Bearer <API KEY>"
+```
+
+```ruby
+require 'accepton-ruby'
+
+client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
+response = client.charge('chg_123')
+```
+
+```python
+from accepton import Client
+
+client = Client(api_key=API_KEY, environment='staging')
+response = client.charges("chg_123")
+```
+
+### Search Previous Charges
+
+> Search for previous charges within a data range, sorted by the field you
+specify.
+
+```shell
+curl https://staging-checkout.accepton.com/v1/charges \
+  -X GET \
+  -H "Authorization: Bearer <API KEY>" \
+  -d amount=1000 \
+  -d charge_id="chg_123" \
+  -d start_date="2015-06-01" \
+  -d end_date="2015-07-01" \
+  -d order_by="created_at" \
+  -d order="asc"
+```
+
+```ruby
+require 'accepton-ruby'
+
+client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
+response = client.charges(start_date: '2015-06-01', end_date: '2015-07-01', order_by: 'created_at', order: 'asc')
+```
+
+```python
+from accepton import Client
+
+client = Client(api_key=API_KEY, environment='staging')
+response = client.charges(start_date='2015-06-01', end_date='2015-07-01', order_by='created_at', order='asc')
+```
+
 ## Refunds
 Refunds allow the reversal of a charge that has not already been fully
 refunded. Partial refunds are accepted up to the total amount of the
