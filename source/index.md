@@ -239,8 +239,6 @@ charges on your account.
 <tr><td><strong>status</strong><br/><em>string</em></td><td>The status of the charge.</td></tr>
 </table>
 
-### Retrieve a Charge
-
 > Retrieve a charge.
 
 ```shell
@@ -263,7 +261,18 @@ client = Client(api_key=API_KEY, environment='staging')
 response = client.charges("chg_123")
 ```
 
-### Search Previous Charges
+### Retrieve a Charge
+
+Used to retrieve the details of a charge has previously been created.
+
+#### Arguments
+<table>
+<tr><th>Argument</th><th>Description</th></tr>
+<tr><td><strong>id</strong><br/><em>string, required</em></td><td>The unique id of the charge.</td></tr>
+</table>
+
+#### Returns
+A Charge object.
 
 > Search for previous charges within a data range, sorted by the field you
 specify.
@@ -293,6 +302,22 @@ from accepton import Client
 client = Client(api_key=API_KEY, environment='staging')
 response = client.charges(start_date='2015-06-01', end_date='2015-07-01', order_by='created_at', order='asc')
 ```
+
+### List Previous Charges
+
+#### Arguments
+<table>
+<tr><th>Argument</th><th>Description</th></tr>
+<tr><td><strong>amount</strong><br/><em>integer</em></td><td>List any charges with the amount.</td></tr>
+<tr><td><strong>charge_id</strong><br/><em>string</em></td><td>The unique id of the charge.</td></tr>
+<tr><td><strong>start_date</strong><br/><em>string</em></td><td>List any charges created after the date.</td></tr>
+<tr><td><strong>end_date</strong><br/><em>string</em></td><td>List any charges created before the date.</td></tr>
+<tr><td><strong>order_by</strong><br/><em>string</em></td><td>The name of the attribute to order by.</td></tr>
+<tr><td><strong>order</strong><br/><em>string</em></td><td>The ordering of the list (asc, desc).</td></tr>
+</table>
+
+#### Returns
+An array of Charges.
 
 ## Refunds
 Refunds allow the reversal of a charge that has not already been fully
