@@ -18,10 +18,10 @@ search: true
 
 # Introduction
 
-Welcome to the AcceptOn's API! Our API is heavily inspired by [REST](https://en.wikipedia.org/wiki/Representational_state_transfer)
-All responses from our API should be returned in [JSON](http://www.json.org) format.
-Please only use HTTPS to ensure data privacy, otherwise, we will send flying monkeys to hunt you down.
-Beware the monkeys! Seriously, they hurt.
+Welcome to AcceptOn's API! Our API is heavily inspired by [REST][rest]. All
+responses from our API should be returned in [JSON][json] format. Please
+only use HTTPS to ensure data privacy, otherwise, we will send flying monkeys
+to hunt you down. Beware the monkeys! Seriously, they hurt.
 
 Available client libraries are located at:
 
@@ -29,9 +29,13 @@ Available client libraries are located at:
 * [Python](https://github.com/accepton/accepton-python)
 * More to come Real Soon Now, pinky swear!
 
+[json]: http://www.json.org
+[rest]: https://en.wikipedia.org/wiki/Representational_state_transfer
+
 # Environments
 
-In order to allow for testing, the AcceptOn API is available in the following locations:
+In order to allow for testing, the AcceptOn API is available in the following
+locations:
 
 * Staging: https://staging-checkout.accepton.com
 * Production: https://checkout.accepton.com
@@ -39,17 +43,18 @@ In order to allow for testing, the AcceptOn API is available in the following lo
 The staging environment should be used for testing. Please keep in mind that
 the data can be deleted at any time.
 
-To actually process payments, the production environment must be used.
-To switch to production, simply update the URL and corresponding API KEY,
-and if the moon is in the right (meaning both correct and directional) quadrant of the sky, it should "Just Work"!
+To actually process payments, the production environment must be used. To
+switch to production, simply update the URL and corresponding API key, and if
+the moon is in the right (meaning both correct and directional) quadrant of the
+sky, it should "Just Work"!
 
 # Getting Started
 
 First, you'll need to create an account and retrieve your API credentials:
 
-1. If you haven't done so already, please create an account in the Staging environment
+1. If you haven't done so already, please create an account in the staging environment
 [https://staging.accepton.com/sign_up](https://staging.accepton.com/sign_up)
-1. Link a payment processor such as Stripe or Braintree
+1. Link a payment processor such as Stripe or PayPal
 1. Retrieve your API key here: [https://staging.accepton.com/admin/user/profile](https://staging.accepton.com/admin/user/profile)
 
 Next, create a payment form that you'll use to collect payment:
@@ -60,7 +65,8 @@ Next, create a payment form that you'll use to collect payment:
 Then, make your first transaction using the form:
 
 1. Generate a [transaction token](#create-a-transaction-token)
-1. Pass the id attribute of the response (aka the token) into the configuration of the AcceptOn form
+1. Pass the id attribute of the response (aka the token) into the configuration
+   of the AcceptOn form
 1. Profit!
 
 # Authentication
@@ -73,10 +79,9 @@ curl "https://staging-checkout.accepton.com/ping" \
 ```
 
 ```ruby
-require 'accepton-ruby'
+require 'accepton'
 
-environment = :production
-client = AcceptOn::Client.new(api_key: API_KEY, environment: environment)
+client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
 ```
 
 ```python
@@ -85,50 +90,62 @@ from accepton import Client
 client = Client(api_key=API_KEY, environment='staging')
 ```
 
-AcceptOn requires an API key to gain access to, well, the actual API. After logging into accepton.com, you'll find your API key by clicking your email address in the top right, My Profile, and then use the Secret key found under the section entitled "API KEYS".
+AcceptOn requires an API key to gain access to, well, the actual API. After
+logging into accepton.com, you'll find your API key by clicking your email
+address in the top right, My Profile, and then use the Secret key found under
+the section entitled "API keys".
 
-AcceptOn expects for this super secret API key to be included in all API requests found in a header that looks like the following:
+AcceptOn expects for this super secret API key to be included in all API
+requests found in a header that looks like the following:
 
 `Authorization: Bearer <API KEY>`
 
-For the work efficient types (aka lazy), you can also append your API KEY as a parameter named access_token to any request if modifying headers isn't your thing.
+For the work efficient types (aka lazy), you can also append your API key as
+a parameter named access_token to any request if modifying headers isn't your
+thing.
 
 <aside class="notice">
-  Remember, you must replace API KEY with your unique Secret API key.
+  Remember, you must replace &lt;API KEY&gt; with your unique Secret API key.
 </aside>
 
 # Resources
 
-## Transaction tokens
+## Transaction Tokens
+
 A transaction token is used to allow for details such as the amount to charge,
 the currency, and application fee to be created dynamically from a trusted
-source. This is to ensure that no tampering has been performed prior to
-the charge being completed.
+source. This is to ensure that no one has tampered with your transaction prior
+to the charge being completed.
 
 This can either be done one time using the "Create a Form" link after signing
 in to https://staging.accepton.com. This is useful for creating a form
 with a fixed price.
 
-Or, these tokens can be generated programmatically to support dynamic pricing
-using an API client. For instance, this allows for the price and relevant
-options to be delayed until the end of the checkout process.
+Alternatively, these tokens can be generated programmatically to support
+dynamic pricing using an API client. For instance, this allows for the price
+and relevant options to be delayed until the end of the checkout process.
 
-### The Transaction token object
+### The Transaction Token object
 
 #### Attributes
-<table>
-<tr><th>Attribute</th><th>Description</th></tr>
-<tr><td><strong>id</strong><br/><em>string</em></td><td>A unique id.</td></tr>
-<tr><td><strong>type</strong><br/><em>string</em></td><td>Always "transaction".</td></tr>
-<tr><td><strong>created</strong><br/><em>string</em></td><td>When the token was created, in iso8601 format.</td></tr>
-<tr><td><strong>amount</strong><br/><em>integer</em></td><td>The amount in cents of the transaction.</td></tr>
-<tr><td><strong>application_fee</strong><br/><em>integer</em></td><td>The application fee in cents to be passed on to the processor. For use only by <a href="guides/applications.html">Applications</a></td></tr>
-<tr><td><strong>currency</strong><br/><em>string</em></td><td>The currency to charge in ISO format (default: usd).</td></tr>
-<tr><td><strong>description</strong><br/><em>string</em></td><td>A description of the transaction for your own identification purposes. It could be used to include a name of the item purchased, or a confirmation number, etc.</td></tr>
-</table>
 
-### Create a Transaction token
-> Create a Transaction token request
+ Attribute                          | Description
+------------------------------------|--------------
+ **id** <br> *string*               | A unique id.
+ **type** <br> *string*             | Always "transaction".
+ **created** <br> *string*          | When the token was created, in [ISO 8601][iso8601] format.
+ **amount** <br> *integer*          | The amount in cents of the transaction.
+ **application_fee** <br> *integer* | The application fee in cents to be passed on to the processor. For use only by [Applications][applications].
+ **currency** <br> *string*         | The currency to charge in [ISO 4217][iso4217] format (default: usd).
+ **description** <br> *string*      | A description of the transaction for your own identification purposes. It could be used to include a name of the item purchased, a confirmation number, or any other identifier you want to use.
+
+[applications]: /guides/applications.html
+[iso8601]: https://en.wikipedia.org/wiki/ISO_8601
+[iso4217]: https://en.wikipedia.org/wiki/ISO_4217
+
+### Create a Transaction Token
+
+> Create a Transaction Token request
 
 ```shell
 curl https://staging-checkout.accepton.com/v1/tokens \
@@ -139,10 +156,9 @@ curl https://staging-checkout.accepton.com/v1/tokens \
 ```
 
 ```ruby
-require 'accepton-ruby'
+require 'accepton'
 
-environment = :production
-client = AcceptOn::Client.new(api_key: API_KEY, environment: environment)
+client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
 response = client.create_token(amount: 10_00, description: "Hipster Flannel Tshirt")
 ```
 
@@ -154,7 +170,7 @@ response = client.create_token(amount=1000, currency='usd',
                                description='Hipster Flannel Tshirt')
 ```
 
-> Create a Transaction token response
+> Create a Transaction Token response
 
 ```json
 {
@@ -169,20 +185,25 @@ response = client.create_token(amount=1000, currency='usd',
 ```
 
 #### Arguments
-<table>
-<tr><th>Argument</th><th>Description</th></tr>
-<tr><td><strong>amount</strong><br/><em>integer, required</em></td><td>The amount in cents of the transaction.</td></tr>
-<tr><td><strong>application_fee</strong><br/><em>integer, optional</em></td><td>The application fee in cents to be passed on to the processor.</td></tr>
-<tr><td><strong>currency</strong><br/><em>string</em></td><td>The currency to charge in ISO format (default: usd).</td></tr>
-<tr><td><strong>description</strong><br/><em>string, optional</em></td><td>A description of the transaction for your own identification purposes. It could be used to include a name of the item purchased, or a confirmation number, etc.</td></tr>
-<tr><td><strong>merchant_paypal_account</strong><br/><em>string, optional</em></td><td>The merchant's Paypal account when you want to pay a merchant instead of yourself. Can be used with an application fee.</td></tr>
-</table>
+
+ Argument                           | Description
+------------------------------------|----------------------------------------
+ **amount** <br> *integer*          | The amount in cents of the transaction.
+ **application_fee** <br> *integer* | The application fee in cents to be passed on to the processor. For use only by [Applications][applications].
+ **currency** <br> *string*         | The currency to charge in [ISO 4217][iso4217] format (default: usd).
+ **description** <br> *string*      | A description of the transaction for your own identification purposes. It could be used to include a name of the item purchased, a confirmation number, or any other identifier you want to use.
+ **merchant_paypal_account** <br> *string, optional* | The merchant's Paypal account when you want to pay a merchant instead of yourself. Can be used with an application fee.
 
 #### Returns
+
 A transaction token object.
 
-### Retrieve an existing Transaction token
-> Retreive a Transaction token request
+### Retrieve an existing Transaction Token
+
+Used to retrieve the details of a transaction token that has previously been
+created.
+
+> Retreive a Transaction Token request
 
 ```shell
 curl https://staging-checkout.accepton.com/v1/tokens/txn_643f20df91f94ff3b6cd614b63228419 \
@@ -194,7 +215,11 @@ curl https://staging-checkout.accepton.com/v1/tokens/txn_643f20df91f94ff3b6cd614
 TODO
 ```
 
-> Retreive a Transaction token response
+```python
+TODO
+```
+
+> Retreive a Transaction Token response
 
 ```json
 {
@@ -208,17 +233,15 @@ TODO
 }
 ```
 
-Used to retrieve the details of a transaction token that has previously been
-created.
-
 #### Arguments
-<table>
-<tr><th>Argument</th><th>Description</th></tr>
-<tr><td><strong>id</strong><br/><em>string, required</em></td><td>The unique id of the transaction.</td></tr>
-</table>
+
+ Argument                       | Description
+--------------------------------|-----------------------------------
+ **id** <br> *string, required* | The unique id of the transaction.
 
 #### Returns
-A Transaction token object.
+
+A Transaction Token object.
 
 ## Charges
 To charge a customer, you create a charge object using the AcceptOn form.
@@ -320,6 +343,7 @@ response = client.charges(start_date='2015-06-01', end_date='2015-07-01', order_
 An array of Charges.
 
 ## Refunds
+
 Refunds allow the reversal of a charge that has not already been fully
 refunded. Partial refunds are accepted up to the total amount of the
 original charge.
@@ -327,17 +351,18 @@ original charge.
 ### The Refund object
 
 #### Attributes
-<table>
-<tr><th>Attribute</th><th>Description</th></tr>
-<tr><td><strong>id</strong><br/><em>string</em></td><td>A unique id.</td></tr>
-<tr><td><strong>amount</strong><br/><em>integer</em></td><td>The amount in cents of the refund.</td></tr>
-<tr><td><strong>created</strong><br/><em>datetime</em></td><td>The time the refund was created.</td></tr>
-<tr><td><strong>currency</strong><br/><em>string</em></td><td>The currency to charge in ISO format (default: usd).</td></tr>
-<tr><td><strong>metadata</strong><br/><em>hash</em></td><td>Any metadata associated with the refund.</td></tr>
-<tr><td><strong>reason</strong><br/><em>string</em></td><td>The reason for the refund.</td></tr>
-</table>
+
+ Attribute                   | Description
+-----------------------------|----------------------------------------------------------------------
+ **id** <br> *string*        | A unique id.
+ **amount** <br> *integer*   | The amount in cents of the refund.
+ **created** <br> *datetime* | The time the refund was created, in [ISO 8601][iso8601] format.
+ **currency** <br> *string*  | The currency to charge in [ISO 4217][iso4217] format (default: usd).
+ **metadata** <br> *hash*    | Any metadata associated with the refund.
+ **reason** <br> *string*    | The reason for the refund.
 
 ### Create a Refund
+
 > Create a Refund request
 
 ```shell
@@ -349,7 +374,7 @@ curl https://staging-checkout.accepton.com/v1/refunds \
 ```
 
 ```ruby
-require 'accepton-ruby'
+require 'accepton'
 
 client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
 response = client.refund(amount: 10_00, charge_id: "chg_123")
@@ -362,7 +387,7 @@ client = Client(api_key=API_KEY, environment='staging')
 response = client.refund(amount=1000, charge_id="chg_123")
 ```
 
-> Create a Transaction token response
+> Create a Refund response
 
 ```json
 {
@@ -376,11 +401,231 @@ response = client.refund(amount=1000, charge_id="chg_123")
 ```
 
 #### Arguments
-<table>
-<tr><th>Argument</th><th>Description</th></tr>
-<tr><td><strong>amount</strong><br/><em>integer, required</em></td><td>The amount in cents to refund.</td></tr>
-<tr><td><strong>charge_id</strong><br/><em>string, required</em></td><td>The id of the charge to associate with the refund.</td></tr>
-</table>
+
+ Argument                              | Description
+---------------------------------------|----------------------------------------------------
+ **amount** <br> *integer, required*   | The amount in cents to refund.
+ **charge_id** <br> *string, required* | The id of the charge to associate with the refund.
 
 #### Returns
+
 A Refund object.
+
+## Promo Codes
+
+Promo codes allow you to create a code that offers a discount to your
+customers. When they are checking out, they will be offered the option on the
+form to enter a promo code, which you can give to them in marketing materials.
+
+### The Promo Code object
+
+#### Attributes
+
+ Attribute                          | Description
+------------------------------------|----------------------------------------------------------------------
+ **created_at** <br> *datetime*     | The time the promo code was created, in [ISO 8601][iso8601] format.
+ **name** <br> *string*             | The promo code that you give your customers.
+ **promo_type** <br> *string*       | The type of promotion. One of: "amount" (for amount off purchase), "fixed_price" (to set a transaction price, i.e. of $5.00), or "percentage" (for percent off purchase).
+ **value** <br> *float or integer*  | The value of the promotion. For an "amount" or "fixed_price" type, the amount in cents (i.e. 1000 is $10.00). For a "percentage" type, the percent off as a decimal (i.e. 10.0 is 10%).
+
+### Create a Promo Code
+
+> Create a Promo Code request
+
+```shell
+curl https://staging-checkout.accepton.com/v1/promo_codes \
+  -X POST \
+  -H "Authorization: Bearer <API KEY>" \
+  -d name="20OFF" \
+  -d promo_type="amount" \
+  -d value=2000
+```
+
+```ruby
+require 'accepton'
+
+client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
+response = client.create_promo_code(name: '20OFF', promo_type: 'amount', value: 20_00)
+```
+
+```python
+from accepton import Client
+
+client = Client(api_key=API_KEY, environment='staging')
+response = client.create_promo_code(name="20OFF", promo_type="amount", value=2000)
+```
+
+> Create a Promo Code response
+
+```json
+{
+  "object": "promo_code",
+  "created_at": "2015-07-16T22:47:29.591+00:00",
+  "name": "20OFF",
+  "promo_type": "amount",
+  "value": 2000
+}
+```
+
+#### Arguments
+
+ Attribute                          | Description
+------------------------------------|----------------------------------------------
+ **name** <br> *string*             | The promo code that you give your customers.
+ **promo_type** <br> *string*       | The type of promotion. One of: "amount" (for amount off purchase), "fixed_price" (to set a transaction price, i.e. of $5.00), or "percentage" (for percent off purchase).
+ **value** <br> *float or integer*  | The value of the promotion. For an "amount" or "fixed_price" type, the amount in cents (i.e. 1000 is $10.00). For a "percentage" type, the percent off as a decimal (i.e. 10.0 is 10%).
+
+#### Returns
+
+A Promo Code object.
+
+### Retrieve a Promo Code
+
+> Retrieve a Promo Code request
+
+```shell
+curl https://staging-checkout.accepton.com/v1/promo_codes/20OFF \
+  -X POST \
+  -H "Authorization: Bearer <API KEY>"
+```
+
+```ruby
+require 'accepton'
+
+client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
+response = client.promo_code('20OFF')
+```
+
+```python
+from accepton import Client
+
+client = Client(api_key=API_KEY, environment='staging')
+response = client.promo_code("20OFF")
+```
+
+> Retrieve a Promo Code response
+
+```json
+{
+  "object": "promo_code",
+  "created_at": "2015-07-16T22:47:29.591+00:00",
+  "name": "20OFF",
+  "promo_type": "amount",
+  "value": 2000
+}
+```
+
+#### Arguments
+
+ Argument                         | Description
+----------------------------------|-----------------------------
+ **name** <br> *string, required* | The name of the promo code.
+
+#### Returns
+
+A Promo Code object.
+
+### Update a Promo Code
+
+> Update a Promo Code request
+
+```shell
+curl https://staging-checkout.accepton.com/v1/promo_codes/20OFF \
+  -X POST \
+  -H "Authorization: Bearer <API KEY>" \
+  -d name="21OFF" \
+  -d promo_type="amount" \
+  -d value=2100
+```
+
+```ruby
+require 'accepton'
+
+client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
+promo_code = client.promo_code('20OFF')
+promo_code.name = '21OFF'
+promo_code.value = 21_00
+promo_code = client.update_promo_code(promo_code)
+```
+
+```python
+from accepton import Client
+
+client = Client(api_key=API_KEY, environment='staging')
+promo_code = client.promo_code("20OFF")
+promo_code.name = "21OFF"
+promo_code.value = 2100
+promo_code = client.update_promo_code(promo_code)
+```
+
+> Update a Promo Code response
+
+```json
+{
+  "object": "promo_code",
+  "created_at": "2015-07-16T22:47:29.591+00:00",
+  "name": "21OFF",
+  "promo_type": "amount",
+  "value": 2100
+}
+```
+
+#### Arguments
+
+ Argument                           | Description
+------------------------------------|-----------------------------
+ **name** <br> *string*             | The new promo code that you give your customers.
+ **promo_type** <br> *string*       | The new type of promotion. One of: "amount" (for amount off purchase), "fixed_price" (to set a transaction price, i.e. of $5.00), or "percentage" (for percent off purchase).
+ **value** <br> *float or integer*  | The new value of the promotion. For an "amount" or "fixed_price" type, the amount in cents (i.e. 1000 is $10.00). For a "percentage" type, the percent off as a decimal (i.e. 10.0 is 10%).
+
+#### Returns
+
+The updated Promo Code object.
+
+### Delete a Promo Code
+
+> Delete a Promo Code request
+
+```shell
+curl https://staging-checkout.accepton.com/v1/promo_codes/20OFF \
+  -X POST \
+  -H "Authorization: Bearer <API KEY>"
+```
+
+```ruby
+require 'accepton'
+
+client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
+promo_code = client.promo_code('20OFF')
+deleted = client.delete_promo_code(promo_code)
+```
+
+```python
+from accepton import Client
+
+client = Client(api_key=API_KEY, environment='staging')
+promo_code = client.promo_code("20OFF")
+deleted = client.delete_promo_code(promo_code)
+```
+
+> Delete a Promo Code response
+
+```json
+{
+  "object": "promo_code",
+  "created_at": "2015-07-16T22:47:29.591+00:00",
+  "name": "20OFF",
+  "promo_type": "amount",
+  "value": 2000
+}
+```
+
+#### Arguments
+
+ Argument                           | Description
+------------------------------------|-----------------------------------------------------
+ **name** <br> *string*             | The name of the promo code that you want to delete.
+
+#### Returns
+
+The deleted Promo Code object.
