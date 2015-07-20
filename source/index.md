@@ -212,11 +212,17 @@ curl https://staging-checkout.accepton.com/v1/tokens/txn_643f20df91f94ff3b6cd614
 ```
 
 ```ruby
-TODO
+require 'accepton'
+
+client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
+response = client.token('txn_b43a7e1e51410639979ab2047c156caa')
 ```
 
 ```python
-TODO
+from accepton import Client
+
+client = Client(api_key=API_KEY, environment='staging')
+response = client.token('txn_b43a7e1e51410639979ab2047c156caa')
 ```
 
 > Retreive a Transaction Token response
