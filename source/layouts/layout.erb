@@ -43,6 +43,11 @@ under the License.
   </head>
 
   <body class="<%= page_classes %>">
+    <div id="top-menu">
+      <ul>
+        <li><a href="https://accepton.com/admin/dashboard" title="AcceptOn Dashboard">Return to Dashboard</a></li>
+      </ul>
+    </div>
     <a href="#" id="nav-button">
       <span>
         NAV
@@ -50,7 +55,10 @@ under the License.
       </span>
     </a>
     <div class="tocify-wrapper">
-      <%= image_tag "logo.png" %>
+      <a class="logo" href="https://accepton.com" title="AcceptOn">
+        <h1 class="toc-ignore">AcceptOn Developer Documentation</h1>
+        <%= image_tag "logo.png" %>
+      </a>
       <% if language_tabs %>
         <div class="lang-selector">
           <% language_tabs.each do |lang| %>

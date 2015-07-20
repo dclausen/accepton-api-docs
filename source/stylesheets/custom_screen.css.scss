@@ -5,22 +5,84 @@
 @import 'syntax';
 @import 'icon-font';
 
+$top-nav-height: 35px;
+
 html, body {
   -webkit-font-smoothing: subpixel-antialiased;
 }
 
-.tocify-wrapper > img {
+.content a {
+  color: $nav-active-bg;
+}
+
+.logo {
+  text-decoration: none;
+}
+
+.logo h1 {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+
+.logo img {
   width: 230px;
   height: 52px;
   margin-top: 8px;
 }
 
-.tocify-wrapper .tocify-subheader {
-  font-weight: 400;
+.dashboard-link {
+  font-size: 11px;
+  font-weight: normal;
+  color: #fff;
 }
 
-.tocify-wrapper .tocify-focus {
-  @include box-shadow(none !important);
+#top-menu {
+  position: fixed;
+  width: 100%;
+  height: $top-nav-height;
+  background: $nav-bg;
+  z-index: 99999;
+  font-size: 11px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+#top-menu a {
+  color: #fff;
+}
+
+#top-menu ul {
+  padding: 0 20px 0 20px;
+  margin: 0;
+  float: right;
+}
+
+#top-menu li {
+  display: inline-block;
+  line-height: $top-nav-height;
+  padding: 0 0 0 2em;
+  list-style: none;
+}
+
+#nav-button {
+  top: 35px;
+}
+
+.page-wrapper {
+  padding-top: $top-nav-height;
+}
+
+.page-wrapper .dark-box, .page-wrapper .lang-selector {
+  top: $top-nav-height;
+}
+
+.content {
+  margin-top: $top-nav-height;
 }
 
 .content aside {
@@ -33,9 +95,18 @@ html, body {
 }
 
 .tocify-wrapper {
+  top: $top-nav-height;
   background: $nav-bg url('https://accepton.com/images/banner-img1.jpg') no-repeat top right;
   background-size: cover;
   background-attachment: fixed;
+}
+
+.tocify-wrapper .tocify-subheader {
+  font-weight: 400;
+}
+
+.tocify-wrapper .tocify-focus {
+  @include box-shadow(none !important);
 }
 
 .tocify-wrapper > .search input {
@@ -47,4 +118,8 @@ html, body {
   color: #ccc;
   margin-left: 4px;
   margin-top: 2px;
+}
+
+.content, .content > h1, .content > h2, .content > h3, .content > h4, .content > h5, .content > h6, .content > p, .content > table, .content > ul, .content > ol, .content > aside, .content > dl {
+  text-shadow: none;
 }
