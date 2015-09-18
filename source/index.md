@@ -531,6 +531,73 @@ response = client.promo_code("20OFF")
 
 A Promo Code object.
 
+### List Promo Codes
+
+> List Promo Codes request
+
+```shell
+curl https://staging-checkout.accepton.com/v1/promo_codes/20OFF \
+  -X POST \
+  -H "Authorization: Bearer <API KEY>" \
+  -d page=1 \
+  -d per_page=20 \
+  -d promo_type="amount"
+```
+
+```ruby
+require 'accepton'
+
+client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
+response = client.promo_codes(page: 1, per_page: 20, promo_type: 'amount')
+```
+
+```python
+from accepton import Client
+
+client = Client(api_key=API_KEY, environment='staging')
+response = client.promo_codes(page=1, per_page=20, promo_type='amount')
+```
+
+> List Promo Codes response
+
+```json
+{
+  "object": "list",
+    "total": 2,
+    "data": [
+      {
+        "object": "promo_code",
+        "created_at": "2015-09-08T21:32:56.164+00:00",
+        "name": "30OFF",
+        "promo_type": "amount",
+        "value": 3000
+      },
+      {
+        "object": "promo_code",
+        "created_at": "2015-07-16T22:47:29.591+00:00",
+        "name": "20OFF",
+        "promo_type": "amount",
+        "value": 2000
+      }
+    ]
+}
+```
+
+#### Arguments
+
+ Argument                         | Description
+----------------------------------|-----------------------------
+ **name** <br> *string, required* | The name of the promo code.
+ **order_by** <br> *string*       | The name of the attribute to order by.
+ **order** <br> *string*          | The ordering of the list (asc, desc).
+ **page** <br> *integer*          | The page number to retrieve.
+ **per_page** <br> *integer*      | The size of the page to retrieve (max: 100).
+ **promo_type** <br> *string*     | The type of promo code to filter by.
+
+#### Returns
+
+An array of Promo Codes.
+
 ### Update a Promo Code
 
 > Update a Promo Code request
