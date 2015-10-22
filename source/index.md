@@ -311,7 +311,6 @@ curl https://staging-checkout.accepton.com/v1/charges \
   -X GET \
   -H "Authorization: Bearer <API KEY>" \
   -d amount=1000 \
-  -d charge_id="chg_123" \
   -d start_date="2015-06-01" \
   -d end_date="2015-07-01" \
   -d order_by="created_at" \
@@ -338,7 +337,6 @@ response = client.charges(start_date='2015-06-01', end_date='2015-07-01', order_
 <table>
 <tr><th>Argument</th><th>Description</th></tr>
 <tr><td><strong>amount</strong><br/><em>integer</em></td><td>List any charges with the amount.</td></tr>
-<tr><td><strong>charge_id</strong><br/><em>string</em></td><td>The unique id of the charge.</td></tr>
 <tr><td><strong>start_date</strong><br/><em>string</em></td><td>List any charges created after the date.</td></tr>
 <tr><td><strong>end_date</strong><br/><em>string</em></td><td>List any charges created before the date.</td></tr>
 <tr><td><strong>order_by</strong><br/><em>string</em></td><td>The name of the attribute to order by.</td></tr>
