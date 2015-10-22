@@ -491,7 +491,7 @@ A Promo Code object.
 
 ```shell
 curl https://staging-checkout.accepton.com/v1/promo_codes/20OFF \
-  -X POST \
+  -X GET \
   -H "Authorization: Bearer <API KEY>"
 ```
 
@@ -536,8 +536,8 @@ A Promo Code object.
 > List Promo Codes request
 
 ```shell
-curl https://staging-checkout.accepton.com/v1/promo_codes/20OFF \
-  -X POST \
+curl https://staging-checkout.accepton.com/v1/promo_codes \
+  -X GET \
   -H "Authorization: Bearer <API KEY>" \
   -d page=1 \
   -d per_page=20 \
@@ -587,7 +587,6 @@ response = client.promo_codes(page=1, per_page=20, promo_type='amount')
 
  Argument                         | Description
 ----------------------------------|-----------------------------
- **name** <br> *string, required* | The name of the promo code.
  **order_by** <br> *string*       | The name of the attribute to order by.
  **order** <br> *string*          | The ordering of the list (asc, desc).
  **page** <br> *integer*          | The page number to retrieve.
@@ -604,7 +603,7 @@ An array of Promo Codes.
 
 ```shell
 curl https://staging-checkout.accepton.com/v1/promo_codes/20OFF \
-  -X POST \
+  -X PUT \
   -H "Authorization: Bearer <API KEY>" \
   -d name="21OFF" \
   -d promo_type="amount" \
@@ -661,7 +660,7 @@ The updated Promo Code object.
 
 ```shell
 curl https://staging-checkout.accepton.com/v1/promo_codes/20OFF \
-  -X POST \
+  -X DELETE \
   -H "Authorization: Bearer <API KEY>"
 ```
 
