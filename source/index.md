@@ -415,6 +415,278 @@ response = client.refund(amount=1000, charge_id="chg_123")
 
 A Refund object.
 
+## Plans
+
+Plans are objects containing pricing information for a recurring product(s) (usually a service).
+An example of a plan is a monthly gym membership named Bronze for $25/month.
+
+### The Plan object
+
+#### Attributes
+
+ Attribute                          | Description
+------------------------------------|----------------------------------------------------------------------
+ **id** <br> *string*               | The unique id of the plan.
+ **created_at** <br> *datetime*     | The time the plan was created, in [ISO 8601][iso8601] format.
+ **name** <br> *string*             | The plan that you give your customers.
+ **amount** <br> *integer*          | The amount in cents to be charged for the plan.
+ **currency** <br> *string*         | The currency to charge in [ISO 4217][iso4217] format (default: usd).
+ **period_unit** <br> *string*      | The unit of frequency of charge to be made (month or year).
+
+### Create a Plan
+
+> Create a Plan request
+
+```shell
+curl https://staging-checkout.accepton.com/v1/plans \
+  -X POST \
+  -H "Authorization: Bearer <API KEY>" \
+  -d name="Test Plan" \
+  -d amount=1000 \
+  -d currency="usd" \
+  -d period_unit="month"
+```
+
+> Create a Plan response
+
+```json
+{
+  "object": "plan",
+  "id": "pln_123",
+  "amount": 1000,
+  "created_at": "2015-08-21T20:20:14.690+00:00",
+  "currency": "usd",
+  "name": "Test Plan",
+  "period_unit": "month"
+}
+```
+
+#### Arguments
+
+ Attribute                                | Description
+------------------------------------------|----------------------------------------------
+ **name** <br> *string, required*         | The plan that you give your customers.
+ **amount** <br> *string, required*       | The amount to be charged in cents.
+ **currency** <br> *string*               | The currency to charge in [ISO 4217][iso4217] format (default: usd).
+ **period_unit** <br> *string, required*  | The unit of frequency of charge to be made (month or year).
+
+#### Returns
+
+A Plan object.
+
+### Retrieve a Plan
+
+> Retrieve a Plan request
+
+```shell
+curl https://staging-checkout.accepton.com/v1/plans/pln_123 \
+  -X GET \
+  -H "Authorization: Bearer <API KEY>"
+```
+
+> Retrieve a Plan response
+
+```json
+{
+  "object": "plan",
+  "id": "pln_123",
+  "amount": 1000,
+  "created_at": "2015-08-21T20:20:14.690+00:00",
+  "currency": "usd",
+  "name": "Test Plan",
+  "period_unit": "month"
+}
+```
+
+#### Arguments
+
+ Argument                         | Description
+----------------------------------|-----------------------------
+ **id** <br> *string, required*   | The unique id of the plan.
+
+#### Returns
+
+A Plan object.
+
+### List Plans
+
+> List Plans request
+
+```shell
+curl https://staging-checkout.accepton.com/v1/plans \
+  -X GET \
+  -H "Authorization: Bearer <API KEY>"
+```
+
+> List Plans response
+
+```json
+[
+  {
+    "object": "plan",
+    "id": "pln_123",
+    "amount": 1000,
+    "created_at": "2015-08-21T20:20:14.690+00:00",
+    "currency": "usd",
+    "name": "Test Plan",
+    "period_unit": "month"
+  }
+]
+```
+
+#### Returns
+
+An array of Plans.
+
+## Subscriptions
+
+Subscriptions are recurring payments for a service or product from a customer for certain period of time. Subscriptions are associated to a Plan object.
+
+### The Subscription object
+
+#### Attributes
+
+ Attribute                          | Description
+------------------------------------|----------------------------------------------------------------------
+ **id** <br> *string*               | The unique id of the subscription.
+ **last_billed_at** <br> *datetime* | The last time the subscription was charged, in [ISO 8601][iso8601] format.
+ **email** <br> *string*            | The email address associated with the subscription.
+ **active** <br> *boolean*          | The activity status of the subscription.
+ **plan** <br> *hash*               | The plan associated with the subscription.
+
+### Cancel a Subscription
+
+> Cancel a Subscription request
+
+```shell
+curl https://staging-checkout.accepton.com/v1/subscriptions/sub_123/cancel \
+  -X POST \
+  -H "Authorization: Bearer <API KEY>"
+```
+
+> Cancel a Subscription response
+
+```json
+{
+  "object": "subscription",
+  "id": "sub_123",
+  "active": false,
+  "email": "mycustomer@email.com",
+  "last_billed_at": "2015-08-21T22:43:34.096+00:00",
+  "plan": {
+    "object": "plan",
+    "id": "pln_965d6898b660d85b",
+    "amount": 1000,
+    "created_at": "2015-08-21T20:20:14.690Z",
+    "currency": "usd",
+    "name": "Test Plan",
+    "period_unit": "month"
+  }
+}
+```
+
+#### Arguments
+
+ Attribute                                      | Description
+------------------------------------------------|----------------------------------------------
+ **id** <br> *string, required*                 | The unique id of the subscription.
+
+#### Returns
+
+A Subscription object.
+
+### Retrieve a Subscription
+
+> Retrieve a Subscription request
+
+```shell
+curl https://staging-checkout.accepton.com/v1/subscriptions/sub_123 \
+  -X GET \
+  -H "Authorization: Bearer <API KEY>"
+```
+
+> Retrieve a Subscription response
+
+```json
+{
+  "object": "subscription",
+  "id": "sub_123",
+  "active": true,
+  "email": "mycustomer@email.com",
+  "last_billed_at": "2015-08-21T22:43:34.096+00:00",
+  "plan": {
+    "object": "plan",
+    "id": "pln_965d6898b660d85b",
+    "amount": 1000,
+    "created_at": "2015-08-21T20:20:14.690Z",
+    "currency": "usd",
+    "name": "Test Plan",
+    "period_unit": "month"
+  }
+}
+```
+
+#### Arguments
+
+ Argument                         | Description
+----------------------------------|-----------------------------
+ **id** <br> *string, required*   | The unique id of the subscription.
+
+#### Returns
+
+A Subscription object.
+
+### List Subscriptions
+
+> List Subscriptions request
+
+```shell
+curl https://staging-checkout.accepton.com/v1/subscriptions \
+  -X GET \
+  -H "Authorization: Bearer <API KEY>"
+```
+
+> List Subscriptions response
+
+```json
+{
+  "object": "list",
+  "total": 1,
+  "data": [
+    {
+      "object": "subscription",
+      "id": "sub_123",
+      "active": true,
+      "email": "mycustomer@email.com",
+      "last_billed_at": "2015-08-21T22:43:34.096+00:00",
+      "plan": {
+        "object": "plan",
+        "id": "pln_965d6898b660d85b",
+        "amount": 1000,
+        "created_at": "2015-08-21T20:20:14.690Z",
+        "currency": "usd",
+        "name": "Test Plan",
+        "period_unit": "month"
+      }
+    }
+  ]
+}
+```
+
+#### Arguments
+
+ Argument                         | Description
+----------------------------------|-----------------------------
+ **order_by** <br> *string*       | The name of the attribute to order by.
+ **order** <br> *string*          | The ordering of the list (asc, desc).
+ **page** <br> *integer*          | The page number to retrieve.
+ **per_page** <br> *integer*      | The size of the page to retrieve (max: 100).
+ **plan.token** <br> *string*     | The plan id to filter by.
+
+#### Returns
+
+An array of Subscriptions.
+
 ## Promo Codes
 
 Promo codes allow you to create a code that offers a discount to your
