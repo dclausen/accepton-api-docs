@@ -447,6 +447,13 @@ curl https://staging-checkout.accepton.com/v1/plans \
   -d period_unit="month"
 ```
 
+```ruby
+require 'accepton'
+
+client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
+response = client.create_plan(name: 'Test Plan', amount: 1000, currency: 'usd', period_unit: 'month')
+```
+
 > Create a Plan response
 
 ```json
@@ -484,6 +491,13 @@ curl https://staging-checkout.accepton.com/v1/plans/pln_123 \
   -H "Authorization: Bearer <API KEY>"
 ```
 
+```ruby
+require 'accepton'
+
+client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
+response = client.plan('pln_123')
+```
+
 > Retrieve a Plan response
 
 ```json
@@ -516,6 +530,13 @@ A Plan object.
 curl https://staging-checkout.accepton.com/v1/plans \
   -X GET \
   -H "Authorization: Bearer <API KEY>"
+```
+
+```ruby
+require 'accepton'
+
+client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
+response = client.plans
 ```
 
 > List Plans response
@@ -564,6 +585,13 @@ curl https://staging-checkout.accepton.com/v1/subscriptions/sub_123/cancel \
   -H "Authorization: Bearer <API KEY>"
 ```
 
+```ruby
+require 'accepton'
+
+client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
+response = client.cancel_subscription('sub_123')
+```
+
 > Cancel a Subscription response
 
 ```json
@@ -605,6 +633,13 @@ curl https://staging-checkout.accepton.com/v1/subscriptions/sub_123 \
   -H "Authorization: Bearer <API KEY>"
 ```
 
+```ruby
+require 'accepton'
+
+client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
+response = client.subscription('sub_123')
+```
+
 > Retrieve a Subscription response
 
 ```json
@@ -644,6 +679,13 @@ A Subscription object.
 curl https://staging-checkout.accepton.com/v1/subscriptions \
   -X GET \
   -H "Authorization: Bearer <API KEY>"
+```
+
+```ruby
+require 'accepton'
+
+client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
+response = client.subscriptions(page: 1, per_page: 20, active: true)
 ```
 
 > List Subscriptions response
