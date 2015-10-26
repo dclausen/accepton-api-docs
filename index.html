@@ -395,7 +395,6 @@ specify.</p>
   -X GET <span class="se">\</span>
   -H <span class="s2">"Authorization: Bearer &lt;API KEY&gt;"</span> <span class="se">\</span>
   -d <span class="nv">amount</span><span class="o">=</span>1000 <span class="se">\</span>
-  -d <span class="nv">charge_id</span><span class="o">=</span><span class="s2">"chg_123"</span> <span class="se">\</span>
   -d <span class="nv">start_date</span><span class="o">=</span><span class="s2">"2015-06-01"</span> <span class="se">\</span>
   -d <span class="nv">end_date</span><span class="o">=</span><span class="s2">"2015-07-01"</span> <span class="se">\</span>
   -d <span class="nv">order_by</span><span class="o">=</span><span class="s2">"created_at"</span> <span class="se">\</span>
@@ -419,7 +418,6 @@ specify.</p>
 <table>
 <tr><th>Argument</th><th>Description</th></tr>
 <tr><td><strong>amount</strong><br/><em>integer</em></td><td>List any charges with the amount.</td></tr>
-<tr><td><strong>charge_id</strong><br/><em>string</em></td><td>The unique id of the charge.</td></tr>
 <tr><td><strong>start_date</strong><br/><em>string</em></td><td>List any charges created after the date.</td></tr>
 <tr><td><strong>end_date</strong><br/><em>string</em></td><td>List any charges created before the date.</td></tr>
 <tr><td><strong>order_by</strong><br/><em>string</em></td><td>The name of the attribute to order by.</td></tr>
@@ -529,6 +527,419 @@ original charge.</p>
 
 <p>A Refund object.</p>
 
+<h2 id="plans">Plans</h2>
+
+<p>Plans are objects containing pricing information for a recurring product(s) (usually a service).
+An example of a plan is a monthly gym membership named Bronze for $25/month.</p>
+
+<h3 id="the-plan-object">The Plan object</h3>
+
+<h4 id="attributes">Attributes</h4>
+
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>id</strong> <br> <em>string</em></td>
+<td>The unique id of the plan.</td>
+</tr>
+<tr>
+<td><strong>created_at</strong> <br> <em>datetime</em></td>
+<td>The time the plan was created, in <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> format.</td>
+</tr>
+<tr>
+<td><strong>name</strong> <br> <em>string</em></td>
+<td>The plan that you give your customers.</td>
+</tr>
+<tr>
+<td><strong>amount</strong> <br> <em>integer</em></td>
+<td>The amount in cents to be charged for the plan.</td>
+</tr>
+<tr>
+<td><strong>currency</strong> <br> <em>string</em></td>
+<td>The currency to charge in <a href="https://en.wikipedia.org/wiki/ISO_4217">ISO 4217</a> format (default: usd).</td>
+</tr>
+<tr>
+<td><strong>period_unit</strong> <br> <em>string</em></td>
+<td>The unit of frequency of charge to be made (month or year).</td>
+</tr>
+</tbody></table>
+
+<h3 id="create-a-plan">Create a Plan</h3>
+
+<blockquote>
+<p>Create a Plan request</p>
+</blockquote>
+<pre class="highlight shell"><code>curl https://staging-checkout.accepton.com/v1/plans <span class="se">\</span>
+  -X POST <span class="se">\</span>
+  -H <span class="s2">"Authorization: Bearer &lt;API KEY&gt;"</span> <span class="se">\</span>
+  -d <span class="nv">name</span><span class="o">=</span><span class="s2">"Test Plan"</span> <span class="se">\</span>
+  -d <span class="nv">amount</span><span class="o">=</span>1000 <span class="se">\</span>
+  -d <span class="nv">currency</span><span class="o">=</span><span class="s2">"usd"</span> <span class="se">\</span>
+  -d <span class="nv">period_unit</span><span class="o">=</span><span class="s2">"month"</span>
+</code></pre>
+<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'accepton'</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="no">AcceptOn</span><span class="o">::</span><span class="no">Client</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">api_key: </span><span class="no">API_KEY</span><span class="p">,</span> <span class="ss">environment: :staging</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="nf">create_plan</span><span class="p">(</span><span class="ss">name: </span><span class="s1">'Test Plan'</span><span class="p">,</span> <span class="ss">amount: </span><span class="mi">1000</span><span class="p">,</span> <span class="ss">currency: </span><span class="s1">'usd'</span><span class="p">,</span> <span class="ss">period_unit: </span><span class="s1">'month'</span><span class="p">)</span>
+</code></pre>
+
+<blockquote>
+<p>Create a Plan response</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"object"</span><span class="p">:</span><span class="w"> </span><span class="s2">"plan"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pln_123"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-08-21T20:20:14.690+00:00"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"usd"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Test Plan"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"period_unit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"month"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<h4 id="arguments">Arguments</h4>
+
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>name</strong> <br> <em>string, required</em></td>
+<td>The name of the plan.</td>
+</tr>
+<tr>
+<td><strong>amount</strong> <br> <em>string, required</em></td>
+<td>The amount to be charged in cents.</td>
+</tr>
+<tr>
+<td><strong>currency</strong> <br> <em>string</em></td>
+<td>The currency to charge in <a href="https://en.wikipedia.org/wiki/ISO_4217">ISO 4217</a> format (default: usd).</td>
+</tr>
+<tr>
+<td><strong>period_unit</strong> <br> <em>string, required</em></td>
+<td>The unit of frequency of charge to be made (month or year).</td>
+</tr>
+</tbody></table>
+
+<h4 id="returns">Returns</h4>
+
+<p>A Plan object.</p>
+
+<h3 id="retrieve-a-plan">Retrieve a Plan</h3>
+
+<blockquote>
+<p>Retrieve a Plan request</p>
+</blockquote>
+<pre class="highlight shell"><code>curl https://staging-checkout.accepton.com/v1/plans/pln_123 <span class="se">\</span>
+  -X GET <span class="se">\</span>
+  -H <span class="s2">"Authorization: Bearer &lt;API KEY&gt;"</span>
+</code></pre>
+<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'accepton'</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="no">AcceptOn</span><span class="o">::</span><span class="no">Client</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">api_key: </span><span class="no">API_KEY</span><span class="p">,</span> <span class="ss">environment: :staging</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="nf">plan</span><span class="p">(</span><span class="s1">'pln_123'</span><span class="p">)</span>
+</code></pre>
+
+<blockquote>
+<p>Retrieve a Plan response</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"object"</span><span class="p">:</span><span class="w"> </span><span class="s2">"plan"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pln_123"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-08-21T20:20:14.690+00:00"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"usd"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Test Plan"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"period_unit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"month"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<h4 id="arguments">Arguments</h4>
+
+<table><thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>id</strong> <br> <em>string, required</em></td>
+<td>The unique id of the plan.</td>
+</tr>
+</tbody></table>
+
+<h4 id="returns">Returns</h4>
+
+<p>A Plan object.</p>
+
+<h3 id="list-plans">List Plans</h3>
+
+<blockquote>
+<p>List Plans request</p>
+</blockquote>
+<pre class="highlight shell"><code>curl https://staging-checkout.accepton.com/v1/plans <span class="se">\</span>
+  -X GET <span class="se">\</span>
+  -H <span class="s2">"Authorization: Bearer &lt;API KEY&gt;"</span>
+</code></pre>
+<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'accepton'</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="no">AcceptOn</span><span class="o">::</span><span class="no">Client</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">api_key: </span><span class="no">API_KEY</span><span class="p">,</span> <span class="ss">environment: :staging</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="nf">plans</span>
+</code></pre>
+
+<blockquote>
+<p>List Plans response</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"object"</span><span class="p">:</span><span class="w"> </span><span class="s2">"plan"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pln_123"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-08-21T20:20:14.690+00:00"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"usd"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Test Plan"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"period_unit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"month"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+
+<h4 id="returns">Returns</h4>
+
+<p>An array of Plans.</p>
+
+<h2 id="subscriptions">Subscriptions</h2>
+
+<p>Subscriptions are recurring payments for a service or product from a customer for certain period of time. Subscriptions are associated to a Plan object.</p>
+
+<h3 id="the-subscription-object">The Subscription object</h3>
+
+<h4 id="attributes">Attributes</h4>
+
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>id</strong> <br> <em>string</em></td>
+<td>The unique id of the subscription.</td>
+</tr>
+<tr>
+<td><strong>last_billed_at</strong> <br> <em>datetime</em></td>
+<td>The last time the subscription was charged, in <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> format.</td>
+</tr>
+<tr>
+<td><strong>email</strong> <br> <em>string</em></td>
+<td>The email address associated with the subscription.</td>
+</tr>
+<tr>
+<td><strong>active</strong> <br> <em>boolean</em></td>
+<td>The activity status of the subscription.</td>
+</tr>
+<tr>
+<td><strong>plan</strong> <br> <em>hash</em></td>
+<td>The plan associated with the subscription.</td>
+</tr>
+</tbody></table>
+
+<h3 id="cancel-a-subscription">Cancel a Subscription</h3>
+
+<blockquote>
+<p>Cancel a Subscription request</p>
+</blockquote>
+<pre class="highlight shell"><code>curl https://staging-checkout.accepton.com/v1/subscriptions/sub_123/cancel <span class="se">\</span>
+  -X POST <span class="se">\</span>
+  -H <span class="s2">"Authorization: Bearer &lt;API KEY&gt;"</span>
+</code></pre>
+<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'accepton'</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="no">AcceptOn</span><span class="o">::</span><span class="no">Client</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">api_key: </span><span class="no">API_KEY</span><span class="p">,</span> <span class="ss">environment: :staging</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="nf">cancel_subscription</span><span class="p">(</span><span class="s1">'sub_123'</span><span class="p">)</span>
+</code></pre>
+
+<blockquote>
+<p>Cancel a Subscription response</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"object"</span><span class="p">:</span><span class="w"> </span><span class="s2">"subscription"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sub_123"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"active"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mycustomer@email.com"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"last_billed_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-08-21T22:43:34.096+00:00"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"plan"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"object"</span><span class="p">:</span><span class="w"> </span><span class="s2">"plan"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pln_965d6898b660d85b"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-08-21T20:20:14.690Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"usd"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Test Plan"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"period_unit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"month"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<h4 id="arguments">Arguments</h4>
+
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>id</strong> <br> <em>string, required</em></td>
+<td>The unique id of the subscription.</td>
+</tr>
+</tbody></table>
+
+<h4 id="returns">Returns</h4>
+
+<p>A Subscription object.</p>
+
+<h3 id="retrieve-a-subscription">Retrieve a Subscription</h3>
+
+<blockquote>
+<p>Retrieve a Subscription request</p>
+</blockquote>
+<pre class="highlight shell"><code>curl https://staging-checkout.accepton.com/v1/subscriptions/sub_123 <span class="se">\</span>
+  -X GET <span class="se">\</span>
+  -H <span class="s2">"Authorization: Bearer &lt;API KEY&gt;"</span>
+</code></pre>
+<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'accepton'</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="no">AcceptOn</span><span class="o">::</span><span class="no">Client</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">api_key: </span><span class="no">API_KEY</span><span class="p">,</span> <span class="ss">environment: :staging</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="nf">subscription</span><span class="p">(</span><span class="s1">'sub_123'</span><span class="p">)</span>
+</code></pre>
+
+<blockquote>
+<p>Retrieve a Subscription response</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"object"</span><span class="p">:</span><span class="w"> </span><span class="s2">"subscription"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sub_123"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"active"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mycustomer@email.com"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"last_billed_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-08-21T22:43:34.096+00:00"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"plan"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"object"</span><span class="p">:</span><span class="w"> </span><span class="s2">"plan"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pln_965d6898b660d85b"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-08-21T20:20:14.690Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"usd"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Test Plan"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"period_unit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"month"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<h4 id="arguments">Arguments</h4>
+
+<table><thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>id</strong> <br> <em>string, required</em></td>
+<td>The unique id of the subscription.</td>
+</tr>
+</tbody></table>
+
+<h4 id="returns">Returns</h4>
+
+<p>A Subscription object.</p>
+
+<h3 id="list-subscriptions">List Subscriptions</h3>
+
+<blockquote>
+<p>List Subscriptions request</p>
+</blockquote>
+<pre class="highlight shell"><code>curl https://staging-checkout.accepton.com/v1/subscriptions <span class="se">\</span>
+  -X GET <span class="se">\</span>
+  -H <span class="s2">"Authorization: Bearer &lt;API KEY&gt;"</span> <span class="se">\</span>
+  -d <span class="nv">page</span><span class="o">=</span>1 <span class="se">\</span>
+  -d <span class="nv">per_page</span><span class="o">=</span>20 <span class="se">\</span>
+  -d <span class="nv">active</span><span class="o">=</span><span class="s2">"true"</span>
+</code></pre>
+<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'accepton'</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="no">AcceptOn</span><span class="o">::</span><span class="no">Client</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">api_key: </span><span class="no">API_KEY</span><span class="p">,</span> <span class="ss">environment: :staging</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="nf">subscriptions</span><span class="p">(</span><span class="ss">page: </span><span class="mi">1</span><span class="p">,</span> <span class="ss">per_page: </span><span class="mi">20</span><span class="p">,</span> <span class="ss">active: </span><span class="kp">true</span><span class="p">)</span>
+</code></pre>
+
+<blockquote>
+<p>List Subscriptions response</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"object"</span><span class="p">:</span><span class="w"> </span><span class="s2">"list"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"total"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"object"</span><span class="p">:</span><span class="w"> </span><span class="s2">"subscription"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sub_123"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"active"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mycustomer@email.com"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"last_billed_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-08-21T22:43:34.096+00:00"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"plan"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"object"</span><span class="p">:</span><span class="w"> </span><span class="s2">"plan"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pln_965d6898b660d85b"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-08-21T20:20:14.690Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"usd"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Test Plan"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"period_unit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"month"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<h4 id="arguments">Arguments</h4>
+
+<table><thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>order_by</strong> <br> <em>string</em></td>
+<td>The name of the attribute to order by.</td>
+</tr>
+<tr>
+<td><strong>order</strong> <br> <em>string</em></td>
+<td>The ordering of the list (asc, desc).</td>
+</tr>
+<tr>
+<td><strong>page</strong> <br> <em>integer</em></td>
+<td>The page number to retrieve.</td>
+</tr>
+<tr>
+<td><strong>per_page</strong> <br> <em>integer</em></td>
+<td>The size of the page to retrieve (max: 100).</td>
+</tr>
+<tr>
+<td><strong>active</strong> <br> <em>boolean</em></td>
+<td>The activity status to filter by.</td>
+</tr>
+<tr>
+<td><strong>plan.token</strong> <br> <em>string</em></td>
+<td>The plan id to filter by.</td>
+</tr>
+</tbody></table>
+
+<h4 id="returns">Returns</h4>
+
+<p>An array of Subscriptions.</p>
+
 <h2 id="promo-codes">Promo Codes</h2>
 
 <p>Promo codes allow you to create a code that offers a discount to your
@@ -630,7 +1041,7 @@ form to enter a promo code, which you can give to them in marketing materials.</
 <p>Retrieve a Promo Code request</p>
 </blockquote>
 <pre class="highlight shell"><code>curl https://staging-checkout.accepton.com/v1/promo_codes/20OFF <span class="se">\</span>
-  -X POST <span class="se">\</span>
+  -X GET <span class="se">\</span>
   -H <span class="s2">"Authorization: Bearer &lt;API KEY&gt;"</span>
 </code></pre>
 <pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'accepton'</span>
@@ -679,8 +1090,8 @@ form to enter a promo code, which you can give to them in marketing materials.</
 <blockquote>
 <p>List Promo Codes request</p>
 </blockquote>
-<pre class="highlight shell"><code>curl https://staging-checkout.accepton.com/v1/promo_codes/20OFF <span class="se">\</span>
-  -X POST <span class="se">\</span>
+<pre class="highlight shell"><code>curl https://staging-checkout.accepton.com/v1/promo_codes <span class="se">\</span>
+  -X GET <span class="se">\</span>
   -H <span class="s2">"Authorization: Bearer &lt;API KEY&gt;"</span> <span class="se">\</span>
   -d <span class="nv">page</span><span class="o">=</span>1 <span class="se">\</span>
   -d <span class="nv">per_page</span><span class="o">=</span>20 <span class="se">\</span>
@@ -731,10 +1142,6 @@ form to enter a promo code, which you can give to them in marketing materials.</
 </tr>
 </thead><tbody>
 <tr>
-<td><strong>name</strong> <br> <em>string, required</em></td>
-<td>The name of the promo code.</td>
-</tr>
-<tr>
 <td><strong>order_by</strong> <br> <em>string</em></td>
 <td>The name of the attribute to order by.</td>
 </tr>
@@ -766,7 +1173,7 @@ form to enter a promo code, which you can give to them in marketing materials.</
 <p>Update a Promo Code request</p>
 </blockquote>
 <pre class="highlight shell"><code>curl https://staging-checkout.accepton.com/v1/promo_codes/20OFF <span class="se">\</span>
-  -X POST <span class="se">\</span>
+  -X PUT <span class="se">\</span>
   -H <span class="s2">"Authorization: Bearer &lt;API KEY&gt;"</span> <span class="se">\</span>
   -d <span class="nv">name</span><span class="o">=</span><span class="s2">"21OFF"</span> <span class="se">\</span>
   -d <span class="nv">promo_type</span><span class="o">=</span><span class="s2">"amount"</span> <span class="se">\</span>
@@ -833,7 +1240,7 @@ form to enter a promo code, which you can give to them in marketing materials.</
 <p>Delete a Promo Code request</p>
 </blockquote>
 <pre class="highlight shell"><code>curl https://staging-checkout.accepton.com/v1/promo_codes/20OFF <span class="se">\</span>
-  -X POST <span class="se">\</span>
+  -X DELETE <span class="se">\</span>
   -H <span class="s2">"Authorization: Bearer &lt;API KEY&gt;"</span>
 </code></pre>
 <pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'accepton'</span>
