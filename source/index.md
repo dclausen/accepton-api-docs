@@ -472,7 +472,7 @@ response = client.create_plan(name: 'Test Plan', amount: 1000, currency: 'usd', 
 
  Attribute                                | Description
 ------------------------------------------|----------------------------------------------
- **name** <br> *string, required*         | The plan that you give your customers.
+ **name** <br> *string, required*         | The name of the plan.
  **amount** <br> *string, required*       | The amount to be charged in cents.
  **currency** <br> *string*               | The currency to charge in [ISO 4217][iso4217] format (default: usd).
  **period_unit** <br> *string, required*  | The unit of frequency of charge to be made (month or year).
@@ -678,7 +678,10 @@ A Subscription object.
 ```shell
 curl https://staging-checkout.accepton.com/v1/subscriptions \
   -X GET \
-  -H "Authorization: Bearer <API KEY>"
+  -H "Authorization: Bearer <API KEY>" \
+  -d page=1 \
+  -d per_page=20 \
+  -d active="true"
 ```
 
 ```ruby
@@ -723,6 +726,7 @@ response = client.subscriptions(page: 1, per_page: 20, active: true)
  **order** <br> *string*          | The ordering of the list (asc, desc).
  **page** <br> *integer*          | The page number to retrieve.
  **per_page** <br> *integer*      | The size of the page to retrieve (max: 100).
+ **active** <br> *boolean*        | The activity status to filter by.
  **plan.token** <br> *string*     | The plan id to filter by.
 
 #### Returns
