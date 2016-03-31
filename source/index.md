@@ -43,6 +43,10 @@ locations:
 The staging environment should be used for testing. Please keep in mind that
 the data can be deleted at any time.
 
+**Important**: Your staging credentials do not work in the production environment
+and vice versa. Thus, in order to test, you will need to create an account in
+staging and then create an account in production when you're ready to deploy.
+
 To actually process payments, the production environment must be used. To
 switch to production, simply update the URL and corresponding API key, and if
 the moon is in the right (meaning both correct and directional) quadrant of the
