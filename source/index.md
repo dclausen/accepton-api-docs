@@ -8,6 +8,7 @@ language_tabs:
 
 toc_footers:
  - <a href='guides/applications.html'>Applications guide</a>
+ - <a href='guides/form_configuration.html'>Form Configuration</a>
 
 includes:
   - errors
