@@ -50,6 +50,7 @@
       </div>
         <ul class="toc-footer">
             <li><a href='guides/applications.html'>Applications guide</a></li>
+            <li><a href='guides/form_configuration.html'>Form Configuration</a></li>
         </ul>
     </div>
     <div class="page-wrapper">
@@ -82,6 +83,10 @@ locations:</p>
 
 <p>The staging environment should be used for testing. Please keep in mind that
 the data can be deleted at any time.</p>
+
+<p><strong>Important</strong>: Your staging credentials do not work in the production environment
+and vice versa. Thus, in order to test, you will need to create an account in
+staging and then create an account in production when you&rsquo;re ready to deploy.</p>
 
 <p>To actually process payments, the production environment must be used. To
 switch to production, simply update the URL and corresponding API key, and if
