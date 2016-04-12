@@ -2,9 +2,10 @@
 title: AcceptOn API Reference
 
 language_tabs:
-  - shell
-  - ruby
-  - python
+  - shell: cURL
+  - php: PHP
+  - python: Python
+  - ruby: Ruby
 
 toc_footers:
  - <a href='guides/applications.html'>Applications guide</a>
@@ -26,8 +27,9 @@ to hunt you down. Beware the monkeys! Seriously, they hurt.
 
 Available client libraries are located at:
 
-* [Ruby](https://github.com/accepton/accepton-ruby)
+* [PHP](https://github.com/accepton/accepton-php)
 * [Python](https://github.com/accepton/accepton-python)
+* [Ruby](https://github.com/accepton/accepton-ruby)
 * More to come Real Soon Now, pinky swear!
 
 [json]: http://www.json.org
@@ -87,6 +89,27 @@ curl "https://staging-checkout.accepton.com/ping" \
 require 'accepton'
 
 client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
+```
+
+```php
+<?php
+
+/*
+ * With service discovery
+ * See: https://github.com/accepton/accepton-php#getting-started
+ */
+
+use AcceptOn\Client;
+
+$client = Client.new(API_KEY, "staging");
+
+/* Without service discovery */
+
+use AcceptOn\Client;
+
+$client = Client.new(API_KEY, "staging");
+$client->setHttpClient(YOUR_HTTP_CLIENT);
+$client->setMessageFactory(YOUR_MESSAGE_FACTORY);
 ```
 
 ```python
@@ -165,6 +188,20 @@ require 'accepton'
 
 client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
 response = client.create_token(amount: 10_00, description: "Hipster Flannel Tshirt")
+```
+
+```php
+<?php
+
+use AcceptOn\Client;
+
+$client = Client.new(API_KEY, "staging");
+
+$params = array(
+  "amount" => 1000,
+  "description" => "Hipster Flannel Tshirt"
+);
+$response = $client->createToken($params);
 ```
 
 ```python
@@ -288,11 +325,21 @@ client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
 response = client.charge('chg_123')
 ```
 
+```php
+<?php
+
+use AcceptOn\Client;
+
+$client = Client.new(API_KEY, "staging");
+
+$response = $client->charge("chg_123");
+```
+
 ```python
 from accepton import Client
 
 client = Client(api_key=API_KEY, environment='staging')
-response = client.charges("chg_123")
+response = client.charge("chg_123")
 ```
 
 ### Retrieve a Charge
@@ -327,6 +374,22 @@ require 'accepton-ruby'
 
 client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
 response = client.charges(start_date: '2015-06-01', end_date: '2015-07-01', order_by: 'created_at', order: 'asc')
+```
+
+```php
+<?php
+
+use AcceptOn\Client;
+
+$client = Client.new(API_KEY, "staging");
+
+$params = array(
+  "start_date" => "2015-06-01",
+  "end_date" => "2015-07-01",
+  "order_by" => "created_at",
+  "order" => "asc"
+);
+$response = $client->charges($params);
 ```
 
 ```python
@@ -387,6 +450,20 @@ require 'accepton'
 
 client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
 response = client.refund(amount: 10_00, charge_id: "chg_123")
+```
+
+```php
+<?php
+
+use AcceptOn\Client;
+
+$client = Client.new(API_KEY, "staging");
+
+$params = array(
+  "amount" => 1000,
+  "charge_id" => "chg_123"
+);
+$response = $client->charges($params);
 ```
 
 ```python
@@ -459,6 +536,13 @@ client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
 response = client.create_plan(name: 'Test Plan', amount: 1000, currency: 'usd', period_unit: 'month')
 ```
 
+```python
+from accepton import Client
+
+client = Client(api_key=API_KEY, environment="staging")
+response = client.create_plan(name="Test Plan", amount=1000, currency="usd", period_unit="month")
+```
+
 > Create a Plan response
 
 ```json
@@ -503,6 +587,13 @@ client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
 response = client.plan('pln_123')
 ```
 
+```python
+from accepton import Client
+
+client = Client(api_key=API_KEY, environment="staging")
+response = client.plan("pln_123")
+```
+
 > Retrieve a Plan response
 
 ```json
@@ -542,6 +633,13 @@ require 'accepton'
 
 client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
 response = client.plans
+```
+
+```python
+from accepton import Client
+
+client = Client(api_key=API_KEY, environment="staging")
+response = client.plans()
 ```
 
 > List Plans response
@@ -597,6 +695,13 @@ client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
 response = client.cancel_subscription('sub_123')
 ```
 
+```python
+from accepton import Client
+
+client = Client(api_key=API_KEY, environment="staging")
+response = client.cancel_subscription("sub_123")
+```
+
 > Cancel a Subscription response
 
 ```json
@@ -643,6 +748,13 @@ require 'accepton'
 
 client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
 response = client.subscription('sub_123')
+```
+
+```python
+from accepton import Client
+
+client = Client(api_key=API_KEY, environment="staging")
+response = client.subscription("sub_123")
 ```
 
 > Retrieve a Subscription response
@@ -694,6 +806,13 @@ require 'accepton'
 
 client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
 response = client.subscriptions(page: 1, per_page: 20, active: true)
+```
+
+```python
+from accepton import Client
+
+client = Client(api_key=API_KEY, environment="staging")
+response = client.subscriptions(page=1, per_page=20, active=True)
 ```
 
 > List Subscriptions response
