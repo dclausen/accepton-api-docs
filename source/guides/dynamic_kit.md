@@ -7,7 +7,7 @@ language_tabs:
   - php
 
 toc_footers:
- - <a href='/guides/dynamic_kit_full_api.html'>DynamicKit Complete API Reference</a>
+ - <a href='dynamic_kit_full_api.html'>DynamicKit Complete API Reference</a>
 
 includes:
   - support
@@ -41,12 +41,12 @@ DynamicKit is for your server personal backend.  This kit isn't required to proc
 <table>
 <tr style='border-bottom-color: rgba(0, 0, 0, 0);'>
 <td style='width: 100px;'>
-<img src='/images/docs.png' />
+<img src='../images/docs.png' />
 </td>
 
 <td>
 To view the complete <em>REST</em>ful API for the DynamicKit, along with all API calls for supported languages, see:
-<a href='/guides/dynamic_kit_full_api.html' class='btn'><i class='api-icon'></i>DynamicKit API Reference</a>
+<a href='dynamic_kit_full_api.html' class='btn'><i class='api-icon'></i>DynamicKit API Reference</a>
 </td>
 </tr>
 </table>
@@ -63,13 +63,13 @@ DynamicKit comes in several editions, one for each of our supported programming 
 <table>
 <tr style='border-bottom-color: rgba(0, 0, 0, 0);'>
 <td style='width: 100px;'>
-<img src='/images/diy.png' />
+<img src='../images/diy.png' />
 </td>
 
 <td>
 If the language you are working in is not supported, you can put togeather your own <em>DynamicKit</em>.
 See the <em>shell</em> column in the full DynamicKit API reference:
-<a href='/guides/dynamic_kit_full_api.html' class='btn'><i class='api-icon'></i>DynamicKit API Reference</a>
+<a href='dynamic_kit_full_api.html' class='btn'><i class='api-icon'></i>DynamicKit API Reference</a>
 </td>
 </tr>
 </table>
@@ -180,7 +180,7 @@ txn_id = transaction_token.id
 ```php
 ```
 
-####See [Transaction Token Object](/guides/dynamic_kit_full_api.html#transaction-tokens) for a complete description of the retrieved transaction object
+####See [Transaction Token Object](dynamic_kit_full_api.html#transaction-tokens) for a complete description of the retrieved transaction object
 
 ## Retrieve and verify a charge
 When a charge has been completed on a client running an *AcceptOn* payment form, the client will receive a `charge identifier`
@@ -252,7 +252,7 @@ else:
 ```php
 ```
 
-####See [Charge Object](/guides/dynamic_kit_full_api.html#charges) for a complete description of the retrieved charge object
+####See [Charge Object](dynamic_kit_full_api.html#charges) for a complete description of the retrieved charge object
 
 ## Refunding a charge
 Given a *charge identifier*, you are able to refund a charge in partial increments up to the value of the original charge.
@@ -293,7 +293,7 @@ client.refund(amount=1000, charge_id=charge_id)
 ```php
 ```
 
-####See [Charge Object](/guides/dynamic_kit_full_api.html#charges) for a complete description of the retrieved charge object
+####See [Charge Object](dynamic_kit_full_api.html#charges) for a complete description of the retrieved charge object
 
 ## Create and retrieve plans
 Plans are used as a prototype subscription that users are able to subscribe to. A *Subscription* is the instance of a *Plan*.
@@ -369,7 +369,7 @@ for plan in plans:
 ```php
 ```
 
-####See [Plan Object](/guides/dynamic_kit_full_api.html#plans) for a complete description of the retrieved plan object
+####See [Plan Object](dynamic_kit_full_api.html#plans) for a complete description of the retrieved plan object
 
 ## Subscription Management
 A *Subscriptions* is an instance of a *Plan* bound to a particular user.
@@ -442,7 +442,7 @@ for subscription in subscriptions:
 ```php
 ```
 
-####See [Subscription Object](/guides/dynamic_kit_full_api.html#subscriptions) for a complete description of the retrieved subscription object
+####See [Subscription Object](dynamic_kit_full_api.html#subscriptions) for a complete description of the retrieved subscription object
 
 ## Promo Code Management
 Promotional codes are based on a percentage, amount, or fixed price. These apply to all items.
@@ -541,5 +541,5 @@ for promo_code in promo_codes:
 ```php
 ```
 
-####See [Promo Code Object](/guides/dynamic_kit_full_api.html#promo-codes) for a complete description of the promo-code object
+####See [Promo Code Object](dynamic_kit_full_api.html#promo-codes) for a complete description of the promo-code object
 

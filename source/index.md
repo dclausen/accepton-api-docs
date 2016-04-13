@@ -2,10 +2,10 @@
 title: AcceptOn Documentation
 
 toc_footers:
- - <a href='/guides/form_configuration.html'>Advanced Web Form Configuration</a>
- - <a href='/guides/dynamic_kit.html'>DynamicKit Getting Started Guide</a>
- - <a href='/guides/dynamic_kit_full_api.html'>DynamicKit Complete API Reference</a>
- - <a href='/guides/applications.html'>Applications Guide</a>
+ - <a href='guides/form_configuration.html'>Advanced Web Form Configuration</a>
+ - <a href='guides/dynamic_kit.html'>DynamicKit Getting Started Guide</a>
+ - <a href='guides/dynamic_kit_full_api.html'>DynamicKit Complete API Reference</a>
+ - <a href='guides/applications.html'>Applications Guide</a>
 
 search: true
 
@@ -67,23 +67,23 @@ Currently, we provide support for the following payment processors:
 <table style='width: 80%'>
 <tr>
 <td style='padding: 0;'>
- <img src='/images/amazon.png' width="32%" />
- <img src='/images/stripe.png' width="32%" />
- <img src='/images/braintree.png' width="32%" />
+ <img src='./images/amazon.png' width="32%" />
+ <img src='./images/stripe.png' width="32%" />
+ <img src='./images/braintree.png' width="32%" />
 </td>
 </tr>
 
 <tr style='border-bottom-color: rgba(0, 0, 0, 0);'>
 <td style='padding: 0;'>
- <img src='/images/paypal.png' width="33%" />
- <img src='/images/authorize_net.png' width="33%" />
+ <img src='./images/paypal.png' width="33%" />
+ <img src='./images/authorize_net.png' width="33%" />
 </td>
 </tr>
 </table>
 
 ### Additionally, our iOS Payment Form SDK contains support for ApplePay.
 <p style='text-align: center'>
-<img src='/images/apple_pay.png' width=200 />
+<img src='./images/apple_pay.png' width=200 />
 </p>
 
 ## Processing Credit Cards
@@ -157,12 +157,12 @@ for both the *Web/HTML5* edition and *iOS native* editions.
 <table>
 <tr style='border-bottom-color: rgba(0, 0, 0, 0);'>
 <td style='width: 100px;'>
-<img src='/images/settings.png' />
+<img src='./images/settings.png' />
 </td>
 
 <td>
 To view a listing of all options with the HTML form configurations, see:
-<a href='./guides/form_configuration.html' class='btn'>Advanced HTML Form Configuration</a>
+<a href='guides/form_configuration.html' class='btn'>Advanced HTML Form Configuration</a>
 </td>
 </tr>
 </table>
@@ -185,19 +185,19 @@ DynamicKit is for your server personal backend.  This kit isn't required to proc
   - Modify promotional codes dynamically
 
 
-<a href='./guides/dynamic_kit.html' class='btn btn-tall'><i class='dynamic-kit-icon'></i>Get Started with DynamicKit</a>
+<a href='guides/dynamic_kit.html' class='btn btn-tall'><i class='dynamic-kit-icon'></i>Get Started with DynamicKit</a>
 
 ### Looking for the complete API Docs?
 
 <table>
 <tr style='border-bottom-color: rgba(0, 0, 0, 0);'>
 <td style='width: 100px;'>
-<img src='/images/docs.png' />
+<img src='./images/docs.png' />
 </td>
 
 <td>
 To view the complete <em>REST</em>ful API for the DynamicKit, along with all API calls for supported languages, see:
-<a href='./guides/dynamic_kit_full_api.html' class='btn'><i class='api-icon'></i>DynamicKit API Reference</a>
+<a href='guides/dynamic_kit_full_api.html' class='btn'><i class='api-icon'></i>DynamicKit API Reference</a>
 </td>
 </tr>
 </table>

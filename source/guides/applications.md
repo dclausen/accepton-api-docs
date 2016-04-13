@@ -41,7 +41,7 @@ using this URL will be associated with your Application.
 As well, any payment providers that allow for application fees to be
 collected by a Marketplace will work as expected when using AcceptOn
 by ensuring that the application_fee argument is used when
- [creating a Transaction Token](/guides/dynamic_kit_full_api.html#transaction-tokens)
+ [creating a Transaction Token](dynamic_kit_full_api.html#transaction-tokens)
 
 # Store the keys
 
@@ -86,5 +86,5 @@ Here are two examples: one for a modal and one for an iframe:
 </script>
 ```
 
-Please see [creating a Transaction Token](/guides/dynamic_kit_full_api.html#transaction-tokens) for more 
+Please see [creating a Transaction Token](dynamic_kit_full_api.html#transaction-tokens) for more 
 information on the available options.

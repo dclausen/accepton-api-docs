@@ -8,7 +8,7 @@ language_tabs:
   - php
 
 toc_footers:
- - <a href='/guides/dynamic_kit.html'>DynamicKit Getting Started Guide</a>
+ - <a href='dynamic_kit.html'>DynamicKit Getting Started Guide</a>
 
 includes:
   - errors
@@ -36,12 +36,12 @@ responses from our API should be returned in [JSON][json] format.
 <table>
 <tr style='border-bottom-color: rgba(0, 0, 0, 0);'>
 <td style='width: 100px;'>
-<img src='/images/code.png' />
+<img src='../images/code.png' />
 </td>
 
 <td>
 To view the <em>DynamicKit Getting Started Guide</em> which provides examples, see:
-<a href='/guides/dynamic_kit.html' class='btn'></i>DynamicKit Getting Started Guide</a>
+<a href='dynamic_kit.html' class='btn'></i>DynamicKit Getting Started Guide</a>
 </td>
 </tr>
 </table>
@@ -187,7 +187,7 @@ and relevant options to be delayed until the end of the checkout process.
  **currency** <br> *string*         | The currency to charge in [ISO 4217][iso4217] format (default: usd).
  **description** <br> *string*      | A description of the transaction for your own identification purposes. It could be used to include a name of the item purchased, a confirmation number, or any other identifier you want to use.
 
-[applications]: /guides/applications.html
+[applications]: applications.html
 [iso8601]: https://en.wikipedia.org/wiki/ISO_8601
 [iso4217]: https://en.wikipedia.org/wiki/ISO_4217
 
