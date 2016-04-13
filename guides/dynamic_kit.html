@@ -1,0 +1,608 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>AcceptOn Dynamic Kit Setup Guide</title>
+
+    <link href="../stylesheets/screen.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="../stylesheets/print.css" rel="stylesheet" type="text/css" media="print" />
+    <link href="../stylesheets/custom_screen.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="../stylesheets/color_schemes.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="../stylesheets/icons.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="../stylesheets/buttons.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="../stylesheets/attributes.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="../stylesheets/contextual.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="../stylesheets/custom_print.css" rel="stylesheet" type="text/css" media="print" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+      <script src="../javascripts/all.js" type="text/javascript"></script>
+
+      <script>
+        $(function() {
+          setupLanguages(["ruby","python","php"]);
+        });
+      </script>
+  </head>
+
+  <body class="guides guides_dynamic_kit">
+
+      <!-- Top bar mimicking AcceptOn website -->
+      <div id="top-menu">
+        <a href='https://accepton.com'>
+          <div class='logo'> <span class='helper'></span>
+            <img src="../images/logo.png" />
+          </div>
+        </a>
+
+        <div class='title'>
+          <h1>Documentation Center</h1>
+        </div>
+
+        <div id='back-to-dash'>
+          <a href='https://accepton.com/admin/dashboard'>
+            <i class='back-arrow-icon'></i>
+            Return to Admin Dashboard
+          </a>
+        </div>
+      </div>
+
+    <div id="all-content">
+      <!-- Breadcrum -->
+        <div id='breadcrums'>
+              <a href='/'>Documentation Overview</a>
+              <p><span class='carrot'>></span> DynamicKit Guide</p>
+        </div>
+
+      <a href="#" id="nav-button">
+        <span>
+          NAV
+          <img src="../images/navbar.png" />
+        </span>
+      </a>
+
+      <!-- Table of contents -->
+      <div class="tocify-wrapper">
+          <div class="lang-selector">
+                <a href="#" data-language-name="ruby">ruby</a> 
+                <a href="#" data-language-name="python">python</a> 
+                <a href="#" data-language-name="php">php</a> 
+          </div>
+          <div class="search">
+            <input type="text" class="search" id="input-search" placeholder="Search">
+          </div>
+          <ul class="search-results"></ul>
+        <div id="toc">
+        </div>
+          <div class='toc-footer-container'>
+            <h2>Related Articles</h2>
+            <ul class="toc-footer">
+                <li><a href='dynamic_kit_full_api.html'>DynamicKit Complete API Reference</a></li>
+            </ul>
+          </div>
+      </div>
+      <div class="page-wrapper">
+        <div class="dark-box"></div>
+        <div id='fixed-above-content'>
+          <div class='pseudo-vanish'></div>
+          <div class='bar'></div>
+        </div>
+        <div class="content">
+          <div class='hidden-attr'></div>
+
+<h1 id="dynamickit">DynamicKit</h1>
+
+<div class='full-banner-attr'></div>
+
+<p><img alt="Dynamic Kit" src="../images/getting_started_guide.png" /></p>
+
+<p>DynamicKit is for your server personal backend.  This kit isn&rsquo;t required to process payments in AcceptOn, but you do need <em>DynamicKit</em> for things such as:</p>
+
+<h3 id="examples-where-you-might-need-dynamickit">Examples where you might need DynamicKit</h3>
+
+<ul>
+<li>Generating transaction tokens dynamically</li>
+<li>Verify that a charge completed and for the correct amount</li>
+<li>List and search charges</li>
+<li>Refunding a charge dynamically</li>
+<li>Create, read, and list plans dynamically</li>
+<li>Cancel, retrieve, and list subscriptions dynamically</li>
+<li>Modify promotional codes dynamically</li>
+</ul>
+
+<h3 id="looking-for-the-complete-api-docs?">Looking for the complete API Docs?</h3>
+
+<table>
+<tr style='border-bottom-color: rgba(0, 0, 0, 0);'>
+<td style='width: 100px;'>
+<img src='../images/docs.png' />
+</td>
+
+<td>
+To view the complete <em>REST</em>ful API for the DynamicKit, along with all API calls for supported languages, see:
+<a href='dynamic_kit_full_api.html' class='btn'><i class='api-icon'></i>DynamicKit API Reference</a>
+</td>
+</tr>
+</table>
+
+<h2 id="installation">Installation</h2>
+
+<p>DynamicKit comes in several editions, one for each of our supported programming languages.  Before continuing, please install one of these editions:</p>
+
+<p><a href='https://github.com/accepton/accepton-ruby' class='pretty_btn dk_bg'><i class='ruby-icon'></i>Rubyist Edition</a>
+<a href='https://github.com/accepton/accepton-python' class='pretty_btn dk_bg'><i class='python-icon'></i>Python Edition</a>
+<a href='https://github.com/accepton/accepton-php' class='pretty_btn dk_bg'><i class='php-icon'></i>PHP Edition</a></p>
+
+<h3 id="language-not-supported?">Language not supported?</h3>
+
+<table>
+<tr style='border-bottom-color: rgba(0, 0, 0, 0);'>
+<td style='width: 100px;'>
+<img src='../images/diy.png' />
+</td>
+
+<td>
+If the language you are working in is not supported, you can put togeather your own <em>DynamicKit</em>.
+See the <em>shell</em> column in the full DynamicKit API reference:
+<a href='dynamic_kit_full_api.html' class='btn'><i class='api-icon'></i>DynamicKit API Reference</a>
+</td>
+</tr>
+</table>
+
+<h1 id="environments">Environments</h1>
+
+<h3 id="staging-vs.-production">Staging vs. Production</h3>
+
+<p>In order to allow for testing, the AcceptOn DynamicKit can operate on the following two
+locations:</p>
+
+<ul>
+<li>Staging: https://staging-checkout.accepton.com</li>
+<li>Production: https://checkout.accepton.com</li>
+</ul>
+
+<p>The staging environment should be used for testing. Please keep in mind that
+the data can be deleted at any time.</p>
+
+<h3 id="staging-credentials-have-limitations">Staging Credentials have limitations</h3>
+
+<p>Your staging credentials do not work in the production environment
+and vice versa. Thus, in order to test, you will need to create an account in
+staging and then create an account in production when you&rsquo;re ready to deploy.</p>
+
+<p>To actually process payments, the production environment must be used. To
+switch to production, simply update the URL and corresponding API key, and if
+the moon is in the right (meaning both correct and directional) quadrant of the
+sky, it should &ldquo;Just Work&rdquo;!</p>
+
+<h1 id="using-dynamickit">Using DynamicKit</h1>
+
+<h2 id="create-a-client">Create a Client</h2>
+
+<p>For all flavors of DynamicKit, you will first need to create a new client.</p>
+
+<p>You have a choice between <code class="prettyprint">staging</code> and <code class="prettyprint">production</code> environments. Please note that 
+your staging credentials do not work in the production environment
+and vice versa. Staging is also unable to process payments.</p>
+
+<h3 id="code-sample">Code Sample</h3>
+<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'accepton'</span>
+
+<span class="c1">#Located under 'My Profile' in your accepton.com dashboard</span>
+<span class="no">ACCEPTON_SECRET_KEY</span> <span class="o">=</span> <span class="s1">'skey_xxx'</span>
+
+<span class="c1">#The environment may be either 'production' or 'staging'</span>
+<span class="n">client</span> <span class="o">=</span> <span class="no">AcceptOn</span><span class="o">::</span><span class="no">Client</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">api_key: </span><span class="no">ACCEPTON_SECRET_KEY</span><span class="p">,</span> <span class="ss">environment: :staging</span><span class="p">)</span>
+</code></pre>
+<pre class="highlight python"><code><span class="kn">from</span> <span class="nn">accepton</span> <span class="kn">import</span> <span class="n">Client</span>
+
+<span class="c">#Located under 'My Profile' in your accepton.com dashboard</span>
+<span class="n">ACCEPTON_SECRET_KEY</span> <span class="o">=</span> <span class="s">'skey_xxx'</span>
+
+<span class="c">#The environment may be either 'production' or 'staging'</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">ACCEPTON_SECRET_KEY</span><span class="p">,</span> <span class="n">environment</span><span class="o">=</span><span class="s">'staging'</span><span class="p">)</span>
+</code></pre>
+<pre class="highlight php"><code></code></pre>
+
+<h2 id="create-a-transaction-token">Create a transaction token</h2>
+
+<p>All payment forms accept a transaction token that they are able to load from. This transaction token
+encodes the name, description, and price of an item. If you created a payment form through
+the web interface, your payment form is using a static transaction token generated at the time of the form creation.</p>
+
+<p>Through <em>DynamicKit</em>, you can create a dynamic transaction token which you can forward to your client 
+to display a payment form based on the dynamic transaction token&rsquo;s bound information (description, price, etc.).</p>
+
+<p>This is necessary if you have a large inventory or products that need tight integration with other APIs for their 
+pricing.</p>
+
+<p>Let&rsquo;s create a dynamic transaction token through <em>DynamicKit</em> on our server:</p>
+
+<h3 id="code-sample">Code Sample</h3>
+<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'accepton'</span>
+
+<span class="c1">#Located under 'My Profile' in your accepton.com dashboard</span>
+<span class="no">ACCEPTON_SECRET_KEY</span> <span class="o">=</span> <span class="s1">'skey_xxx'</span>
+
+<span class="c1">#The environment may be either 'production' or 'staging'</span>
+<span class="n">client</span> <span class="o">=</span> <span class="no">AcceptOn</span><span class="o">::</span><span class="no">Client</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">api_key: </span><span class="no">ACCEPTON_SECRET_KEY</span><span class="p">,</span> <span class="ss">environment: :staging</span><span class="p">)</span>
+
+<span class="n">transaction_token</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="nf">create_token</span><span class="p">(</span><span class="ss">amount: </span><span class="mi">10_00</span><span class="p">,</span> <span class="ss">description: </span><span class="s2">"Hipster T-Shirt"</span><span class="p">)</span>
+
+<span class="c1">#Pass this along to your payment form</span>
+<span class="n">txn_id</span> <span class="o">=</span> <span class="n">transaction_token</span><span class="p">.</span><span class="nf">id</span>
+</code></pre>
+<pre class="highlight python"><code><span class="kn">from</span> <span class="nn">accepton</span> <span class="kn">import</span> <span class="n">Client</span>
+
+<span class="c">#Located under 'My Profile' in your accepton.com dashboard</span>
+<span class="n">ACCEPTON_SECRET_KEY</span> <span class="o">=</span> <span class="s">'skey_xxx'</span>
+
+<span class="c">#The environment may be either 'production' or 'staging'</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">ACCEPTON_SECRET_KEY</span><span class="p">,</span> <span class="n">environment</span><span class="o">=</span><span class="s">'staging'</span><span class="p">)</span>
+
+<span class="n">transaction_token</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_token</span><span class="p">(</span><span class="n">amount</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s">'Hipster T-Shirt'</span><span class="p">)</span>
+
+<span class="c">#Pass this along to your payment form</span>
+<span class="n">txn_id</span> <span class="o">=</span> <span class="n">transaction_token</span><span class="o">.</span><span class="nb">id</span>
+</code></pre>
+<pre class="highlight php"><code></code></pre>
+
+<h4 id="see-transaction-token-object-for-a-complete-description-of-the-retrieved-transaction-object">See <a href="dynamic_kit_full_api.html#transaction-tokens">Transaction Token Object</a> for a complete description of the retrieved transaction object</h4>
+
+<h2 id="retrieve-and-verify-a-charge">Retrieve and verify a charge</h2>
+
+<p>When a charge has been completed on a client running an <em>AcceptOn</em> payment form, the client will receive a <code class="prettyprint">charge identifier</code>
+through a callback. </p>
+
+<p>This <code class="prettyprint">charge identifier</code> can then be passed along to your server running <em>DynamicKit</em>, through your own web-service 
+endpoint.  </p>
+
+<p>Once your server receives the <code class="prettyprint">charge identifier</code>, your server can use <em>DynamicKit</em> to retrieve the trustable <code class="prettyprint">charge object</code> of the 
+<code class="prettyprint">charge identifier</code>. </p>
+
+<p>Let&rsquo;s lookup a charge and verify the charge amount for a completed transaction:</p>
+
+<h3 id="code-sample">Code Sample</h3>
+<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'accepton'</span>
+
+<span class="c1">#Located under 'My Profile' in your accepton.com dashboard</span>
+<span class="no">ACCEPTON_SECRET_KEY</span> <span class="o">=</span> <span class="s1">'skey_xxx'</span>
+
+<span class="c1">#The environment may be either 'production' or 'staging'</span>
+<span class="n">client</span> <span class="o">=</span> <span class="no">AcceptOn</span><span class="o">::</span><span class="no">Client</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">api_key: </span><span class="no">ACCEPTON_SECRET_KEY</span><span class="p">,</span> <span class="ss">environment: :staging</span><span class="p">)</span>
+
+<span class="c1">#The charge identifier to lookup</span>
+<span class="n">charge_id</span> <span class="o">=</span> <span class="s2">"chg_xxx"</span>
+
+<span class="c1">#Lookup the charge</span>
+<span class="n">charge</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="nf">charge</span><span class="p">(</span><span class="n">charge_id</span><span class="p">)</span>
+
+<span class="c1">#Retrieve information on charge</span>
+<span class="n">amount</span> <span class="o">=</span> <span class="n">charge</span><span class="p">.</span><span class="nf">amount</span>
+<span class="n">status</span> <span class="o">=</span> <span class="n">charge</span><span class="p">.</span><span class="nf">status</span>
+
+<span class="c1">#Verify charge was for the correct amount ($10.00 ~ 1000 cents)</span>
+<span class="k">if</span> <span class="n">amount</span> <span class="o">!=</span> <span class="mi">1000</span>
+  <span class="nb">puts</span> <span class="s2">"Charge was invalid"</span>
+<span class="k">else</span>
+  <span class="nb">puts</span> <span class="s2">"Charge was valid"</span>
+<span class="k">end</span>
+</code></pre>
+<pre class="highlight python"><code><span class="kn">from</span> <span class="nn">accepton</span> <span class="kn">import</span> <span class="n">Client</span>
+
+<span class="c">#Located under 'My Profile' in your accepton.com dashboard</span>
+<span class="n">ACCEPTON_SECRET_KEY</span> <span class="o">=</span> <span class="s">'skey_xxx'</span>
+
+<span class="c">#The environment may be either 'production' or 'staging'</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">ACCEPTON_SECRET_KEY</span><span class="p">,</span> <span class="n">environment</span><span class="o">=</span><span class="s">'staging'</span><span class="p">)</span>
+
+<span class="c">#The charge identifier to lookup</span>
+<span class="n">charge_id</span> <span class="o">=</span> <span class="s">"chg_xxx"</span>
+
+<span class="c">#Lookup the charge</span>
+<span class="n">charge</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">charge</span><span class="p">(</span><span class="n">charge_id</span><span class="p">)</span>
+
+<span class="c">#Retrieve information on charge</span>
+<span class="n">amount</span> <span class="o">=</span> <span class="n">charge</span><span class="o">.</span><span class="n">amount</span>
+<span class="n">status</span> <span class="o">=</span> <span class="n">charge</span><span class="o">.</span><span class="n">status</span>
+
+<span class="c">#Verify charge was for the correct amount ($10.00 ~ 1000 cents)</span>
+<span class="k">if</span> <span class="n">amount</span> <span class="o">!=</span> <span class="mi">1000</span><span class="p">:</span>
+  <span class="k">print</span><span class="p">(</span><span class="s">"Charge was invalid"</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+  <span class="k">print</span><span class="p">(</span><span class="s">"Charge was valid"</span><span class="p">)</span>
+
+</code></pre>
+<pre class="highlight php"><code></code></pre>
+
+<h4 id="see-charge-object-for-a-complete-description-of-the-retrieved-charge-object">See <a href="dynamic_kit_full_api.html#charges">Charge Object</a> for a complete description of the retrieved charge object</h4>
+
+<h2 id="refunding-a-charge">Refunding a charge</h2>
+
+<p>Given a <em>charge identifier</em>, you are able to refund a charge in partial increments up to the value of the original charge.</p>
+
+<h3 id="code-sample">Code Sample</h3>
+<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'accepton'</span>
+
+<span class="c1">#Located under 'My Profile' in your accepton.com dashboard</span>
+<span class="no">ACCEPTON_SECRET_KEY</span> <span class="o">=</span> <span class="s1">'skey_xxx'</span>
+
+<span class="c1">#The environment may be either 'production' or 'staging'</span>
+<span class="n">client</span> <span class="o">=</span> <span class="no">AcceptOn</span><span class="o">::</span><span class="no">Client</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">api_key: </span><span class="no">ACCEPTON_SECRET_KEY</span><span class="p">,</span> <span class="ss">environment: :staging</span><span class="p">)</span>
+
+<span class="c1">#The charge identifier for the charge that you want to refund</span>
+<span class="n">charge_id</span> <span class="o">=</span> <span class="s2">"chg_xxxx"</span>
+
+<span class="c1">#Refund some amount, multiple partial refunds are allowed up-to the original charge.</span>
+<span class="n">client</span><span class="p">.</span><span class="nf">refund</span><span class="p">(</span><span class="ss">amount: </span><span class="mi">10_00</span><span class="p">,</span> <span class="ss">charge_id: </span><span class="n">charge_id</span><span class="p">)</span>
+</code></pre>
+<pre class="highlight python"><code><span class="kn">from</span> <span class="nn">accepton</span> <span class="kn">import</span> <span class="n">Client</span>
+
+<span class="c">#Located under 'My Profile' in your accepton.com dashboard</span>
+<span class="n">ACCEPTON_SECRET_KEY</span> <span class="o">=</span> <span class="s">'skey_xxx'</span>
+
+<span class="c">#The environment may be either 'production' or 'staging'</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">ACCEPTON_SECRET_KEY</span><span class="p">,</span> <span class="n">environment</span><span class="o">=</span><span class="s">'staging'</span><span class="p">)</span>
+
+<span class="c">#The charge identifier for the charge that you want to refund</span>
+<span class="n">charge_id</span> <span class="o">=</span> <span class="s">"chg_xxx"</span>
+
+<span class="c">#Refund some amount, multiple partial refunds are allowed up-to the original charge.</span>
+<span class="n">client</span><span class="o">.</span><span class="n">refund</span><span class="p">(</span><span class="n">amount</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">charge_id</span><span class="o">=</span><span class="n">charge_id</span><span class="p">)</span>
+</code></pre>
+<pre class="highlight php"><code></code></pre>
+
+<h4 id="see-charge-object-for-a-complete-description-of-the-retrieved-charge-object">See <a href="dynamic_kit_full_api.html#charges">Charge Object</a> for a complete description of the retrieved charge object</h4>
+
+<h2 id="create-and-retrieve-plans">Create and retrieve plans</h2>
+
+<p>Plans are used as a prototype subscription that users are able to subscribe to. A <em>Subscription</em> is the instance of a <em>Plan</em>.</p>
+
+<p>In this example, we&rsquo;re going to create a new plan, demonstrate how to retrieve the plan we just created,
+and then list all of our plans:</p>
+
+<h3 id="code-sample">Code Sample</h3>
+<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'accepton'</span>
+
+<span class="c1">#Located under 'My Profile' in your accepton.com dashboard</span>
+<span class="no">ACCEPTON_SECRET_KEY</span> <span class="o">=</span> <span class="s1">'skey_xxx'</span>
+
+<span class="c1">#The environment may be either 'production' or 'staging'</span>
+<span class="n">client</span> <span class="o">=</span> <span class="no">AcceptOn</span><span class="o">::</span><span class="no">Client</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">api_key: </span><span class="no">ACCEPTON_SECRET_KEY</span><span class="p">,</span> <span class="ss">environment: :staging</span><span class="p">)</span>
+
+<span class="c1">#Create a new plan for $10.00 that will be charged monthly</span>
+<span class="n">created_plan</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="nf">create_plan</span><span class="p">(</span><span class="ss">name: </span><span class="s1">'Test Plan'</span><span class="p">,</span> <span class="ss">amount: </span><span class="mi">1000</span><span class="p">,</span> <span class="ss">currency: </span><span class="s1">'usd'</span><span class="p">,</span> <span class="ss">period_unit: </span><span class="s1">'month'</span><span class="p">)</span>
+
+<span class="c1">#Retrieve that same plan</span>
+<span class="n">retrieved_plan</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="nf">plan</span><span class="p">(</span><span class="n">created_plan</span><span class="p">.</span><span class="nf">id</span><span class="p">)</span>
+
+<span class="c1">#List all plans</span>
+<span class="n">plans</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="nf">plans</span>
+
+<span class="k">def</span> <span class="nf">plan_to_s</span> <span class="n">plan</span>
+  <span class="s2">"</span><span class="si">#{</span><span class="n">plan</span><span class="p">.</span><span class="nf">name</span><span class="si">}</span><span class="s2"> - </span><span class="si">#{</span><span class="n">plan</span><span class="p">.</span><span class="nf">amount</span><span class="si">}#{</span><span class="n">plan</span><span class="p">.</span><span class="nf">currency</span><span class="si">}</span><span class="s2"> every </span><span class="si">#{</span><span class="n">plan</span><span class="p">.</span><span class="nf">period_unit</span><span class="si">}</span><span class="s2">"</span>
+<span class="k">end</span>
+
+<span class="nb">puts</span> <span class="s2">"Created plan: </span><span class="si">#{</span><span class="n">plan_to_s</span><span class="p">(</span><span class="n">created_plan</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+<span class="nb">puts</span> <span class="s2">"Retrieved plan: </span><span class="si">#{</span><span class="n">plan_to_s</span><span class="p">(</span><span class="n">retrieved_plan</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+
+<span class="nb">puts</span> <span class="s2">"Plans listing"</span>
+<span class="nb">puts</span> <span class="s2">"-------------------------------------------"</span>
+<span class="n">plans</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">plan</span><span class="o">|</span>
+  <span class="nb">puts</span> <span class="n">plan_to_s</span> <span class="n">plan</span>
+<span class="k">end</span>
+</code></pre>
+<pre class="highlight python"><code><span class="kn">from</span> <span class="nn">accepton</span> <span class="kn">import</span> <span class="n">Client</span>
+
+<span class="c">#Located under 'My Profile' in your accepton.com dashboard</span>
+<span class="n">ACCEPTON_SECRET_KEY</span> <span class="o">=</span> <span class="s">'skey_xxx'</span>
+
+<span class="c">#The environment may be either 'production' or 'staging'</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">ACCEPTON_SECRET_KEY</span><span class="p">,</span> <span class="n">environment</span><span class="o">=</span><span class="s">'staging'</span><span class="p">)</span>
+
+<span class="c">#Create a new plan for $10.00 that will be charged monthly</span>
+<span class="n">created_plan</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_plan</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'Test Plan13'</span><span class="p">,</span> <span class="n">amount</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">currency</span><span class="o">=</span><span class="s">'usd'</span><span class="p">,</span> <span class="n">period_unit</span><span class="o">=</span><span class="s">'month'</span><span class="p">)</span>
+
+<span class="c">#Retrieve that same plan</span>
+<span class="n">retrieved_plan</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">plan</span><span class="p">(</span><span class="n">created_plan</span><span class="o">.</span><span class="nb">id</span><span class="p">)</span>
+
+<span class="c">#List all plans</span>
+<span class="n">plans</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">plans</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">plan_to_s</span><span class="p">(</span><span class="n">plan</span><span class="p">):</span>
+  <span class="k">return</span> <span class="s">"{} - {}{} every {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">plan</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">plan</span><span class="o">.</span><span class="n">amount</span> <span class="p">,</span> <span class="n">plan</span><span class="o">.</span><span class="n">currency</span> <span class="p">,</span> <span class="n">plan</span><span class="o">.</span><span class="n">period_unit</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">"Created plan: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">plan_to_s</span><span class="p">(</span><span class="n">created_plan</span><span class="p">)))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Retrieved plan: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">plan_to_s</span><span class="p">(</span><span class="n">retrieved_plan</span><span class="p">)))</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">"Plans listing"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"-------------------------------------------"</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">plan</span> <span class="ow">in</span> <span class="n">plans</span><span class="p">:</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">plan_to_s</span><span class="p">(</span><span class="n">plan</span><span class="p">))</span>
+
+</code></pre>
+<pre class="highlight php"><code></code></pre>
+
+<h4 id="see-plan-object-for-a-complete-description-of-the-retrieved-plan-object">See <a href="dynamic_kit_full_api.html#plans">Plan Object</a> for a complete description of the retrieved plan object</h4>
+
+<h2 id="subscription-management">Subscription Management</h2>
+
+<p>A <em>Subscriptions</em> is an instance of a <em>Plan</em> bound to a particular user.</p>
+
+<p>In this example, we&rsquo;re going to show you how to cancel an active subscription,
+retrieve a subscription, and then list all subscriptions:</p>
+
+<h3 id="code-sample">Code Sample</h3>
+<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'accepton'</span>
+
+<span class="c1">#Located under 'My Profile' in your accepton.com dashboard</span>
+<span class="no">ACCEPTON_SECRET_KEY</span> <span class="o">=</span> <span class="s1">'skey_xxx'</span>
+
+<span class="c1">#The environment may be either 'production' or 'staging'</span>
+<span class="n">client</span> <span class="o">=</span> <span class="no">AcceptOn</span><span class="o">::</span><span class="no">Client</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">api_key: </span><span class="no">ACCEPTON_SECRET_KEY</span><span class="p">,</span> <span class="ss">environment: :staging</span><span class="p">)</span>
+
+<span class="c1">#Cancel a subscription by id</span>
+<span class="n">client</span><span class="p">.</span><span class="nf">cancel_subscription</span><span class="p">(</span><span class="s1">'sub_123'</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">subscription_to_s</span> <span class="n">subscription</span>
+  <span class="n">plan</span> <span class="o">=</span> <span class="n">subscription</span><span class="p">.</span><span class="nf">plan</span>
+  <span class="n">plan_str</span> <span class="o">=</span> <span class="s2">"</span><span class="si">#{</span><span class="n">plan</span><span class="p">.</span><span class="nf">name</span><span class="si">}</span><span class="s2"> - </span><span class="si">#{</span><span class="n">plan</span><span class="p">.</span><span class="nf">amount</span><span class="si">}#{</span><span class="n">plan</span><span class="p">.</span><span class="nf">currency</span><span class="si">}</span><span class="s2"> every </span><span class="si">#{</span><span class="n">plan</span><span class="p">.</span><span class="nf">period_unit</span><span class="si">}</span><span class="s2">"</span>
+
+  <span class="s2">"</span><span class="si">#{</span><span class="n">subscription</span><span class="p">.</span><span class="nf">active</span> <span class="p">?</span> <span class="s1">'[active]'</span> <span class="p">:</span> <span class="s1">'[inactive]'</span><span class="si">}</span><span class="s2"> - </span><span class="si">#{</span><span class="n">plan_str</span><span class="si">}</span><span class="s2">"</span>
+<span class="k">end</span>
+
+<span class="c1">#Retrieve a subscription</span>
+<span class="n">retrieved_subscription</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="nf">subscription</span><span class="p">(</span><span class="s1">'sub_123'</span><span class="p">)</span>
+
+<span class="c1">#List subscriptions, paged response</span>
+<span class="n">subscriptions</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="nf">subscriptions</span><span class="p">(</span><span class="ss">page: </span><span class="mi">1</span><span class="p">,</span> <span class="ss">per_page: </span><span class="mi">20</span><span class="p">,</span> <span class="ss">active: </span><span class="kp">true</span><span class="p">)</span>
+
+<span class="nb">puts</span> <span class="s2">"Retrieved subscription - </span><span class="si">#{</span><span class="n">subscription_to_s</span> <span class="n">retrieved_subscription</span><span class="si">}</span><span class="s2">"</span>
+<span class="n">subscriptions</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">subscription</span><span class="o">|</span>
+  <span class="nb">puts</span> <span class="n">subscription_to_s</span> <span class="n">subscription</span>
+<span class="k">end</span>
+</code></pre>
+<pre class="highlight python"><code><span class="kn">from</span> <span class="nn">accepton</span> <span class="kn">import</span> <span class="n">Client</span>
+
+<span class="c">#Located under 'My Profile' in your accepton.com dashboard</span>
+<span class="n">ACCEPTON_SECRET_KEY</span> <span class="o">=</span> <span class="s">'skey_xxx'</span>
+
+<span class="c">#The environment may be either 'production' or 'staging'</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">ACCEPTON_SECRET_KEY</span><span class="p">,</span> <span class="n">environment</span><span class="o">=</span><span class="s">'staging'</span><span class="p">)</span>
+
+<span class="c">#Cancel a subscription by id</span>
+<span class="n">client</span><span class="o">.</span><span class="n">cancel_subscription</span><span class="p">(</span><span class="s">'sub_123'</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">subscription_to_s</span><span class="p">(</span><span class="n">subscription</span><span class="p">):</span>
+  <span class="n">plan</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">plan</span>
+  <span class="n">plan_str</span> <span class="o">=</span> <span class="s">"{} - {}{} every {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">plan</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">plan</span><span class="o">.</span><span class="n">amount</span><span class="p">,</span> <span class="n">plan</span><span class="o">.</span><span class="n">currency</span><span class="p">,</span> <span class="n">plan</span><span class="o">.</span><span class="n">period_unit</span><span class="p">)</span>
+
+  <span class="k">return</span> <span class="s">"{} - {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s">'[active]'</span> <span class="k">if</span> <span class="n">subscription</span><span class="o">.</span><span class="n">active</span> <span class="k">else</span> <span class="s">'[inactive]'</span><span class="p">,</span> <span class="n">plan_str</span><span class="p">)</span>
+
+<span class="c">#Retrieve a subscription</span>
+<span class="n">retrieved_subscription</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">subscription</span><span class="p">(</span><span class="s">'sub_123'</span><span class="p">)</span>
+
+<span class="c">#List subscriptions, paged response</span>
+<span class="n">subscriptions</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">subscriptions</span><span class="p">(</span><span class="n">page</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">per_page</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">active</span><span class="o">=</span><span class="n">true</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">"Retrieved subscription - {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">subscription_to_s</span><span class="p">(</span><span class="n">retrieved_subscription</span><span class="p">)))</span>
+
+<span class="k">for</span> <span class="n">subscription</span> <span class="ow">in</span> <span class="n">subscriptions</span><span class="p">:</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">subscription_to_s</span><span class="p">(</span><span class="n">subscription</span><span class="p">))</span>
+</code></pre>
+<pre class="highlight php"><code></code></pre>
+
+<h4 id="see-subscription-object-for-a-complete-description-of-the-retrieved-subscription-object">See <a href="dynamic_kit_full_api.html#subscriptions">Subscription Object</a> for a complete description of the retrieved subscription object</h4>
+
+<h2 id="promo-code-management">Promo Code Management</h2>
+
+<p>Promotional codes are based on a percentage, amount, or fixed price. These apply to all items.</p>
+
+<p>Promo-codes are usable on the payment forms and must be entered by the user themselves upon
+purchasing in-order to be used on a transaction.</p>
+
+<p>Here we&rsquo;re going to create a <em>promo-code</em> and then list all of our available <em>promo-codes</em>:</p>
+
+<h3 id="code-sample">Code Sample</h3>
+<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'accepton'</span>
+<span class="nb">require</span> <span class="s1">'securerandom'</span>
+
+<span class="c1">#Located under 'My Profile' in your accepton.com dashboard</span>
+<span class="no">ACCEPTON_SECRET_KEY</span> <span class="o">=</span> <span class="s1">'skey_37b7e424a2682ff81ca772ae6fbd3642'</span>
+
+<span class="c1">#The environment may be either 'production' or 'staging'</span>
+<span class="n">client</span> <span class="o">=</span> <span class="no">AcceptOn</span><span class="o">::</span><span class="no">Client</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">api_key: </span><span class="no">ACCEPTON_SECRET_KEY</span><span class="p">,</span> <span class="ss">environment: :production</span><span class="p">)</span>
+
+<span class="c1">#Create a new promo-code. There are 3 `promo_type`s</span>
+<span class="c1">#  promo_type</span>
+<span class="c1">#    amount - `value` means take a N cents off purchase</span>
+<span class="c1">#    fixed_price - `value` means new price</span>
+<span class="c1">#    percentage - `value` is a percentage off, so 0.1 means 10% OFF (cost is 90%).</span>
+<span class="c1">#Here we are creating a promo-code with $20.00 off</span>
+<span class="n">promo_name</span> <span class="o">=</span> <span class="s2">"rad_discount"</span>
+<span class="n">client</span><span class="p">.</span><span class="nf">create_promo_code</span><span class="p">(</span><span class="ss">name: </span><span class="n">promo_name</span><span class="p">,</span> <span class="ss">promo_type: </span><span class="s1">'amount'</span><span class="p">,</span> <span class="ss">value: </span><span class="mi">20_00</span><span class="p">)</span>
+
+<span class="c1">#Lookup the code that we just made.  Un-necessary but we're just demonstrating an example</span>
+<span class="n">created_promo_code</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="nf">promo_code</span><span class="p">(</span><span class="n">promo_name</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">promo_code_to_s</span> <span class="n">pc</span>
+  <span class="k">case</span> <span class="n">pc</span><span class="p">.</span><span class="nf">promo_type</span>
+  <span class="k">when</span>  <span class="s1">'amount'</span>
+    <span class="s2">"</span><span class="si">#{</span><span class="n">pc</span><span class="p">.</span><span class="nf">name</span><span class="si">}</span><span class="s2"> - </span><span class="si">#{</span><span class="n">pc</span><span class="p">.</span><span class="nf">value</span><span class="si">}</span><span class="s2"> cents off"</span>
+  <span class="k">when</span>  <span class="s1">'percentage'</span>
+    <span class="s2">"</span><span class="si">#{</span><span class="n">pc</span><span class="p">.</span><span class="nf">name</span><span class="si">}</span><span class="s2"> - </span><span class="si">#{</span><span class="n">pc</span><span class="p">.</span><span class="nf">value</span><span class="si">}</span><span class="s2">% off"</span>
+  <span class="k">when</span>  <span class="s1">'fixed_price'</span>
+    <span class="s2">"</span><span class="si">#{</span><span class="n">pc</span><span class="p">.</span><span class="nf">name</span><span class="si">}</span><span class="s2"> - price is </span><span class="si">#{</span><span class="n">pc</span><span class="p">.</span><span class="nf">value</span><span class="si">}</span><span class="s2">"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="c1">#List all 'amount' type promo-code</span>
+<span class="n">promo_codes</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="nf">promo_codes</span><span class="p">(</span><span class="ss">page: </span><span class="mi">1</span><span class="p">,</span> <span class="ss">per_page: </span><span class="mi">20</span><span class="p">,</span> <span class="ss">promo_type: </span><span class="s1">'amount'</span><span class="p">)</span> 
+
+<span class="nb">puts</span> <span class="s2">"Created promo code - </span><span class="si">#{</span><span class="n">promo_code_to_s</span> <span class="n">created_promo_code</span><span class="si">}</span><span class="s2">"</span>
+
+<span class="nb">puts</span> <span class="s2">"Listing promo codes"</span>
+<span class="nb">puts</span> <span class="s2">"-----------------------------------------"</span>
+<span class="n">promo_codes</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">promo_code</span><span class="o">|</span>
+  <span class="nb">puts</span> <span class="n">promo_code_to_s</span> <span class="n">promo_code</span>
+<span class="k">end</span>
+</code></pre>
+<pre class="highlight python"><code><span class="kn">from</span> <span class="nn">accepton</span> <span class="kn">import</span> <span class="n">Client</span>
+
+<span class="c">#Located under 'My Profile' in your accepton.com dashboard</span>
+<span class="n">ACCEPTON_SECRET_KEY</span> <span class="o">=</span> <span class="s">'skey_xxx'</span>
+
+<span class="c">#The environment may be either 'production' or 'staging'</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">ACCEPTON_SECRET_KEY</span><span class="p">,</span> <span class="n">environment</span><span class="o">=</span><span class="s">'staging'</span><span class="p">)</span>
+
+<span class="c">#Create a new promo-code. There are 3 `promo_type`s</span>
+<span class="c">#  promo_type</span>
+<span class="c">#    amount - `value` means take a N cents off purchase</span>
+<span class="c">#    fixed_price - `value` means new price</span>
+<span class="c">#    percentage - `value` is a percentage off, so 0.1 means 10% OFF (cost is 90%).</span>
+<span class="c">#Here we are creating a promo-code with $20.00 off</span>
+<span class="n">promo_name</span> <span class="o">=</span> <span class="s">"rad_discount"</span>
+<span class="n">client</span><span class="o">.</span><span class="n">create_promo_code</span><span class="p">(</span><span class="n">name</span><span class="o">=</span> <span class="n">promo_name</span><span class="p">,</span> <span class="n">promo_type</span><span class="o">=</span> <span class="s">'amount'</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">2000</span><span class="p">)</span>
+
+<span class="c">#Lookup the code that we just made.  Un-necessary but we're just demonstrating an example</span>
+<span class="n">created_promo_code</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">promo_code</span><span class="p">(</span><span class="n">promo_name</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">promo_code_to_s</span><span class="p">(</span><span class="n">pc</span><span class="p">):</span>
+  <span class="k">return</span> <span class="p">{</span>
+    <span class="s">'amount'</span><span class="p">:</span> <span class="s">"{} - {} cents off"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pc</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">pc</span><span class="o">.</span><span class="n">value</span><span class="p">),</span>
+    <span class="s">'percentage'</span><span class="p">:</span> <span class="s">"{} - {}</span><span class="si">% </span><span class="s">off"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pc</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">pc</span><span class="o">.</span><span class="n">value</span><span class="p">),</span>
+    <span class="s">'fixed_price'</span><span class="p">:</span> <span class="s">"{} - price is {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pc</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">pc</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+  <span class="p">}[</span><span class="n">pc</span><span class="o">.</span><span class="n">promo_type</span><span class="p">]</span>
+
+<span class="c">#List all 'amount' type promo-code</span>
+<span class="n">promo_codes</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">promo_codes</span><span class="p">(</span><span class="n">page</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">per_page</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">promo_type</span><span class="o">=</span><span class="s">'amount'</span><span class="p">)</span> 
+
+<span class="k">print</span><span class="p">(</span><span class="s">"Created promo code - {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">promo_code_to_s</span><span class="p">(</span><span class="n">created_promo_code</span><span class="p">)))</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">"Listing promo codes"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"-----------------------------------------"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">promo_code</span> <span class="ow">in</span> <span class="n">promo_codes</span><span class="p">:</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">promo_code_to_s</span><span class="p">(</span><span class="n">promo_code</span><span class="p">))</span>
+
+</code></pre>
+<pre class="highlight php"><code></code></pre>
+
+<h4 id="see-promo-code-object-for-a-complete-description-of-the-promo-code-object">See <a href="dynamic_kit_full_api.html#promo-codes">Promo Code Object</a> for a complete description of the promo-code object</h4>
+
+            <h1 id="support">Support</h1>
+
+<p>Please contact support@accepton.com with any questions or problems.</p>
+
+        </div>
+        <div class="dark-box">
+            <div class="lang-selector">
+                  <a href="#" data-language-name="ruby">ruby</a>
+                  <a href="#" data-language-name="python">python</a>
+                  <a href="#" data-language-name="php">php</a>
+            </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
