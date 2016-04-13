@@ -1,1143 +1,204 @@
 ---
-title: AcceptOn API Reference
-
-language_tabs:
-  - shell: cURL
-  - php: PHP
-  - python: Python
-  - ruby: Ruby
+title: AcceptOn Documentation
 
 toc_footers:
- - <a href='guides/applications.html'>Applications guide</a>
- - <a href='guides/form_configuration.html'>Form Configuration</a>
-
-includes:
-  - errors
-  - support
+ - <a href='/guides/form_configuration.html'>Advanced Web Form Configuration</a>
+ - <a href='/guides/dynamic_kit.html'>DynamicKit Getting Started Guide</a>
+ - <a href='/guides/dynamic_kit_full_api.html'>DynamicKit Complete API Reference</a>
+ - <a href='/guides/applications.html'>Applications Guide</a>
 
 search: true
+
+breadcrums:
+  - Documentation Overview: "/"
+
+includes:
+  - support
+
+
 ---
 
-# Introduction
+<div class='hidden-attr'></div>
+#Overview
 
-Welcome to AcceptOn's API! Our API is heavily inspired by [REST][rest]. All
-responses from our API should be returned in [JSON][json] format. Please
-only use HTTPS to ensure data privacy, otherwise, we will send flying monkeys
-to hunt you down. Beware the monkeys! Seriously, they hurt.
+<div class='full-banner-attr'></div>
+![Doc Header](doc_header.png)
 
-Available client libraries are located at:
+## About AcceptOn
 
-* [PHP](https://github.com/accepton/accepton-php)
-* [Python](https://github.com/accepton/accepton-python)
-* [Ruby](https://github.com/accepton/accepton-ruby)
-* More to come Real Soon Now, pinky swear!
+*AcceptOn* is a service that allows you to **deploy payments anywhere, across any provider, with one integration**.
 
-[json]: http://www.json.org
-[rest]: https://en.wikipedia.org/wiki/Representational_state_transfer
+![What is Accepton](./images/what_is_accepton.png)
 
-# Environments
 
-In order to allow for testing, the AcceptOn API is available in the following
-locations:
+AcceptOn supports a variety of [payment processors](./#payment-processors), e.g. *Stripe*, *PayPal*, via one of our simple payment forms. This allows you to accept 
+payments in all your platforms with the least amount of code, in a native idiom, and in the most elegant fashion.
 
-* Staging: https://staging-checkout.accepton.com
-* Production: https://checkout.accepton.com
+Additionally, after using one of our simple payment forms to integrate into your desired platform, transactions
+are aggregated for all [payment processors](./#payment-processors) into one simple backend API.  You may choose to have your own servers
+collect this information ([See Dynamic Kit](./#dynamickit)) for verification purposes or to commit actions such as sending a purchased item.
 
-The staging environment should be used for testing. Please keep in mind that
-the data can be deleted at any time.
+## Getting Started
 
-**Important**: Your staging credentials do not work in the production environment
-and vice versa. Thus, in order to test, you will need to create an account in
-staging and then create an account in production when you're ready to deploy.
+There are only a few steps to getting started.  You may have completed these steps during the onboarding procedures.
 
-To actually process payments, the production environment must be used. To
-switch to production, simply update the URL and corresponding API key, and if
-the moon is in the right (meaning both correct and directional) quadrant of the
-sky, it should "Just Work"!
+  1. [Setting up your payment processors](./#payment-processors)
+  2. [Setting up a payment form on a website or native app](./#payment-forms)
+  3. [Optionally, configure DynamicKit on your own servers](./#dynamickit)
 
-# Getting Started
+# Payment Processors
 
-First, you'll need to create an account and retrieve your API credentials:
+## Dashboard Configuration
 
-1. If you haven't done so already, please create an account in the staging environment
-[https://staging.accepton.com/sign_up](https://staging.accepton.com/sign_up)
-1. Link a payment processor such as Stripe or PayPal
-1. Retrieve your API key here: [https://staging.accepton.com/admin/user/profile](https://staging.accepton.com/admin/user/profile)
+*Payment processors* are configured on your AcceptOn dashboard under the **Payment Processors** tab. 
+You may have already configured a payment processor during the onboarding procedures. 
 
-Next, create a payment form that you'll use to collect payment:
+#### An example of what you will see on your dashboard:
 
-1. Click "Create a Form" in the bottom left area of the navigation
-1. Copy and paste the generated code to your site
+![Payment Processor Dashboard](payment_processors_dashboard.png)
 
-Then, make your first transaction using the form:
+Please go to the **Payment Processors** page on your dashboard for individualized
+instrutions on how to configure each payment processor.
 
-1. Generate a [transaction token](#create-a-transaction-token)
-1. Pass the id attribute of the response (aka the token) into the configuration
-   of the AcceptOn form
-1. Profit!
+## Supported payment processors
 
-# Authentication
+Currently, we provide support for the following payment processors:
 
-> To authorize, use this code:
+<table style='width: 80%'>
+<tr>
+<td style='padding: 0;'>
+ <img src='/images/amazon.png' width="32%" />
+ <img src='/images/stripe.png' width="32%" />
+ <img src='/images/braintree.png' width="32%" />
+</td>
+</tr>
 
-```shell
-curl "https://staging-checkout.accepton.com/ping" \
-  -H "Authorization: Bearer <API KEY>"
-```
-
-```ruby
-require 'accepton'
-
-client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
-```
-
-```php
-<?php
-
-/*
- * With service discovery
- * See: https://github.com/accepton/accepton-php#getting-started
- */
-
-use AcceptOn\Client;
-
-$client = Client.new(API_KEY, "staging");
-
-/* Without service discovery */
-
-use AcceptOn\Client;
-
-$client = Client.new(API_KEY, "staging");
-$client->setHttpClient(YOUR_HTTP_CLIENT);
-$client->setMessageFactory(YOUR_MESSAGE_FACTORY);
-```
-
-```python
-from accepton import Client
-
-client = Client(api_key=API_KEY, environment='staging')
-```
-
-AcceptOn requires an API key to gain access to, well, the actual API. After
-logging into accepton.com, you'll find your API key by clicking your email
-address in the top right, My Profile, and then use the Secret key found under
-the section entitled "API keys".
-
-AcceptOn expects for this super secret API key to be included in all API
-requests found in a header that looks like the following:
-
-`Authorization: Bearer <API KEY>`
-
-For the work efficient types (aka lazy), you can also append your API key as
-a parameter named access_token to any request if modifying headers isn't your
-thing.
-
-<aside class="notice">
-  Remember, you must replace &lt;API KEY&gt; with your unique Secret API key.
-</aside>
-
-# Resources
-
-## Transaction Tokens
-
-A transaction token is used to allow for details such as the amount to charge,
-the currency, and application fee to be created dynamically from a trusted
-source. This is to ensure that no one has tampered with your transaction prior
-to the charge being completed.
-
-This can either be done one time using the "Create a Form" link after signing
-in to https://staging.accepton.com. This is useful for creating a form
-with a fixed price.
-
-Alternatively, these tokens can be generated programmatically to support
-dynamic pricing using an API client. For instance, this allows for the price
-and relevant options to be delayed until the end of the checkout process.
-
-### The Transaction Token object
-
-#### Attributes
-
- Attribute                          | Description
-------------------------------------|--------------
- **id** <br> *string*               | A unique id.
- **type** <br> *string*             | Always "transaction".
- **created** <br> *string*          | When the token was created, in [ISO 8601][iso8601] format.
- **amount** <br> *integer*          | The amount in cents of the transaction.
- **application_fee** <br> *integer* | The application fee in cents to be passed on to the processor. For use only by [Applications][applications].
- **currency** <br> *string*         | The currency to charge in [ISO 4217][iso4217] format (default: usd).
- **description** <br> *string*      | A description of the transaction for your own identification purposes. It could be used to include a name of the item purchased, a confirmation number, or any other identifier you want to use.
-
-[applications]: /guides/applications.html
-[iso8601]: https://en.wikipedia.org/wiki/ISO_8601
-[iso4217]: https://en.wikipedia.org/wiki/ISO_4217
-
-### Create a Transaction Token
-
-> Create a Transaction Token request
-
-```shell
-curl https://staging-checkout.accepton.com/v1/tokens \
-  -X POST \
-  -H "Authorization: Bearer <API KEY>" \
-  -d amount=1000 \
-  -d description="Hipster Flannel Tshirt"
-```
-
-```ruby
-require 'accepton'
-
-client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
-response = client.create_token(amount: 10_00, description: "Hipster Flannel Tshirt")
-```
-
-```php
-<?php
-
-use AcceptOn\Client;
-
-$client = Client.new(API_KEY, "staging");
-
-$params = array(
-  "amount" => 1000,
-  "description" => "Hipster Flannel Tshirt"
-);
-$response = $client->createToken($params);
-```
-
-```python
-from accepton import Client
-
-client = Client(api_key=API_KEY, environment='staging')
-response = client.create_token(amount=1000, currency='usd',
-                               description='Hipster Flannel Tshirt')
-```
-
-> Create a Transaction Token response
-
-```json
-{
-  "id":"txn_643f20df91f94ff3b6cd614b63228419",
-  "type":"transaction",
-  "created":"2015-01-16T20:08:17.837Z",
-  "amount":1000,
-  "application_fee":null,
-  "currency":null,
-  "description":"Hipster Flannel Tshirt"
-}
-```
-
-#### Arguments
-
- Argument                           | Description
-------------------------------------|----------------------------------------
- **amount** <br> *integer*          | The amount in cents of the transaction.
- **application_fee** <br> *integer* | The application fee in cents to be passed on to the processor. For use only by [Applications][applications].
- **currency** <br> *string*         | The currency to charge in [ISO 4217][iso4217] format (default: usd).
- **description** <br> *string*      | A description of the transaction for your own identification purposes. It could be used to include a name of the item purchased, a confirmation number, or any other identifier you want to use.
- **merchant_paypal_account** <br> *string, optional* | The merchant's Paypal account when you want to pay a merchant instead of yourself. Can be used with an application fee.
-
-#### Returns
-
-A transaction token object.
-
-### Retrieve an existing Transaction Token
-
-Used to retrieve the details of a transaction token that has previously been
-created.
-
-> Retreive a Transaction Token request
-
-```shell
-curl https://staging-checkout.accepton.com/v1/tokens/txn_643f20df91f94ff3b6cd614b63228419 \
-  -X GET \
-  -H "Authorization: Bearer <API KEY>"
-```
-
-```ruby
-require 'accepton'
-
-client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
-response = client.token('txn_b43a7e1e51410639979ab2047c156caa')
-```
-
-```python
-from accepton import Client
-
-client = Client(api_key=API_KEY, environment='staging')
-response = client.token('txn_b43a7e1e51410639979ab2047c156caa')
-```
-
-> Retreive a Transaction Token response
-
-```json
-{
-  "id":"txn_643f20df91f94ff3b6cd614b63228419",
-  "type":"transaction",
-  "created":"2015-01-16T20:08:17.837Z",
-  "amount":1000,
-  "application_fee":null,
-  "currency":null,
-  "description":"Hipster Flannel Tshirt"
-}
-```
-
-#### Arguments
-
- Argument                       | Description
---------------------------------|-----------------------------------
- **id** <br> *string, required* | The unique id of the transaction.
-
-#### Returns
-
-A Transaction Token object.
-
-## Charges
-To charge a customer, you create a charge object using the AcceptOn form.
-You can query charges singularly by the id or search through the history of
-charges on your account.
-
-### The Charge object
-<table>
-<tr><th>Attribute</th><th>Description</th></tr>
-<tr><td><strong>id</strong><br/><em>string</em></td><td>The unique charge identifier.</td></tr>
-<tr><td><strong>amount</strong><br/><em>integer</em></td><td>The amount charged in cents.</td></tr>
-<tr><td><strong>created</strong><br/><em>datetime</em></td><td>The time the charge was created.</td></tr>
-<tr><td><strong>currency</strong><br/><em>string</em></td><td>The currency to charge in ISO format (default: usd).</td></tr>
-<tr><td><strong>description</strong><br/><em>string</em></td><td>The description of the charge.</td></tr>
-<tr><td><strong>metadata</strong><br/><em>hash</em></td><td>Any metadata associated with the charge.</td></tr>
-<tr><td><strong>refunded</strong><br/><em>boolean</em></td><td>Whether the charge has been refunded.</td></tr>
-<tr><td><strong>remote_id</strong><br/><em>boolean</em></td><td>The identifier of the charge on the processor.</td></tr>
-<tr><td><strong>status</strong><br/><em>string</em></td><td>The status of the charge.</td></tr>
+<tr style='border-bottom-color: rgba(0, 0, 0, 0);'>
+<td style='padding: 0;'>
+ <img src='/images/paypal.png' width="33%" />
+ <img src='/images/authorize_net.png' width="33%" />
+</td>
+</tr>
 </table>
 
-> Retrieve a charge.
+#### Additionally, our iOS Payment Form SDK contains support for ApplePay.
+<p style='text-align: center'>
+<img src='/images/apple_pay.png' width=200 />
+</p>
 
-```shell
-curl https://staging-checkout.accepton.com/v1/charges/chg_123 \
-  -X GET \
-  -H "Authorization: Bearer <API KEY>"
-```
-
-```ruby
-require 'accepton-ruby'
-
-client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
-response = client.charge('chg_123')
-```
-
-```php
-<?php
-
-use AcceptOn\Client;
-
-$client = Client.new(API_KEY, "staging");
-
-$response = $client->charge("chg_123");
-```
-
-```python
-from accepton import Client
-
-client = Client(api_key=API_KEY, environment='staging')
-response = client.charge("chg_123")
-```
-
-### Retrieve a Charge
-
-Used to retrieve the details of a charge has previously been created.
-
-#### Arguments
+## Processing Credit Cards
 <table>
-<tr><th>Argument</th><th>Description</th></tr>
-<tr><td><strong>id</strong><br/><em>string, required</em></td><td>The unique id of the charge.</td></tr>
+<tr style='border-bottom-color: rgba(0, 0, 0, 0);'>
+<td style='width: 100px'>
+<img src='./images/credit_cards.png' />
+</td>
+
+<td>
+<em>All payment processors are capable of processing credit-cards</em> and may have the ability
+to process a special payment as-well.  For example, the <em>PayPal</em> and <em>PayPal
+REST</em> both provide the ability to process credit-card numbers or alternatively, use the
+traditional <em>PayPal</em> checkout experience with login information.
+
+</td>
+</tr>
 </table>
 
-#### Returns
-A Charge object.
+### Multiple payment processors
 
-> Search for previous charges within a data range, sorted by the field you
-specify.
+If you have multiple payment processors enabled, you will need to select which payment
+provider is used as the *default credit-card* payment processor. Even if you enable an
+SDK like PayPal with a login-like checkout flow, the AcceptOn payment forms will allow
+the user the option of either clicking *Checkout with PayPal* or enter credit-card
+information.
 
-```shell
-curl https://staging-checkout.accepton.com/v1/charges \
-  -X GET \
-  -H "Authorization: Bearer <API KEY>" \
-  -d amount=1000 \
-  -d start_date="2015-06-01" \
-  -d end_date="2015-07-01" \
-  -d order_by="created_at" \
-  -d order="asc"
-```
+#### Credit cards will be processed through this processor:
 
-```ruby
-require 'accepton-ruby'
+![PaymentProcessorsDashboardPrimaryCreditCardProcessor](payment_processors_dashboard_primary_credit_card_processor.png)
 
-client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
-response = client.charges(start_date: '2015-06-01', end_date: '2015-07-01', order_by: 'created_at', order: 'asc')
-```
+# Payment Forms
 
-```php
-<?php
+## Introduction
 
-use AcceptOn\Client;
+Payment forms are the *front-end* used to accept payments in AcceptOn. The payment forms come in several flavors:
 
-$client = Client.new(API_KEY, "staging");
+  * Web/HTML5 Edition
+  * iOS Native Edition
 
-$params = array(
-  "start_date" => "2015-06-01",
-  "end_date" => "2015-07-01",
-  "order_by" => "created_at",
-  "order" => "asc"
-);
-$response = $client->charges($params);
-```
 
-```python
-from accepton import Client
+![Payment forms](payment_forms_platforms.png)
 
-client = Client(api_key=API_KEY, environment='staging')
-response = client.charges(start_date='2015-06-01', end_date='2015-07-01', order_by='created_at', order='asc')
-```
+### Web/HTML5 Edition
+The Web/HTML5 edition of the payment forms allows you to embed an inline form or modal popup in your website.
 
-### List Previous Charges
+<div class='full-width-attr'></div>
+![Web Form](web_form.png)
 
-#### Arguments
+##### [Get started with the Web/HTML5 edition](./#setting-up-a-new-payment-form)
+
+### iOS Native Edition
+The iOS native edition of the payment forms allows you to request payment in your native app through a beatiful
+predesigned payment interface. Like the web counterpart, the iOS native version dyanmically updates the available
+payment methods based on your enabled payment processors. 
+
+##### [Get started with the iOS native edition]()
+
+<div class='full-width-attr'></div>
+![Web Form](ios_form.png)
+
+## Setting up a new payment form
+
+Inside your [dashboard](https://accepton.com/admin/dashboard), the *Payment Forms* tab contains instructions on how to set-up payment forms
+for both the *Web/HTML5* edition and *iOS native* editions.
+
+#### Payment Forms Tab
+![Payment Forms](payment_forms.png)
+
+## Web Payment Form Configuration
 <table>
-<tr><th>Argument</th><th>Description</th></tr>
-<tr><td><strong>amount</strong><br/><em>integer</em></td><td>List any charges with the amount.</td></tr>
-<tr><td><strong>start_date</strong><br/><em>string</em></td><td>List any charges created after the date.</td></tr>
-<tr><td><strong>end_date</strong><br/><em>string</em></td><td>List any charges created before the date.</td></tr>
-<tr><td><strong>order_by</strong><br/><em>string</em></td><td>The name of the attribute to order by.</td></tr>
-<tr><td><strong>order</strong><br/><em>string</em></td><td>The ordering of the list (asc, desc).</td></tr>
+<tr style='border-bottom-color: rgba(0, 0, 0, 0);'>
+<td style='width: 100px;'>
+<img src='/images/settings.png' />
+</td>
+
+<td>
+To view a listing of all options with the HTML form configurations, see:
+<a href='./guides/form_configuration.html' class='btn'>Advanced HTML Form Configuration</a>
+</td>
+</tr>
 </table>
 
-#### Returns
-An array of Charges.
+<hr />
 
-## Refunds
+<h1 id='dynamickit' class='hidden'>DynamicKit</h1>
 
-Refunds allow the reversal of a charge that has not already been fully
-refunded. Partial refunds are accepted up to the total amount of the
-original charge.
+![Dynamic Kit Small](dynamic_kit_small.png)
 
-### The Refund object
+DynamicKit is for your server personal backend.  This kit isn't required to process payments in AcceptOn, but you do need *DynamicKit* for things such as:
 
-#### Attributes
+### Examples where you might need DynamicKit
+  - Generating transaction tokens dynamically
+  - Verify that a charge completed and for the correct amount
+  - List and search charges
+  - Refunding a charge dynamically
+  - Create, read, and list plans dynamically
+  - Cancel, retrieve, and list subscriptions dynamically
+  - Modify promotional codes dynamically
 
- Attribute                   | Description
------------------------------|----------------------------------------------------------------------
- **id** <br> *string*        | A unique id.
- **amount** <br> *integer*   | The amount in cents of the refund.
- **created** <br> *datetime* | The time the refund was created, in [ISO 8601][iso8601] format.
- **currency** <br> *string*  | The currency to charge in [ISO 4217][iso4217] format (default: usd).
- **metadata** <br> *hash*    | Any metadata associated with the refund.
- **reason** <br> *string*    | The reason for the refund.
 
-### Create a Refund
+<a href='./guides/dynamic_kit.html' class='btn btn-tall'><i class='dynamic-kit-icon'></i>Get Started with DynamicKit</a>
 
-> Create a Refund request
+### Looking for the complete API Docs?
 
-```shell
-curl https://staging-checkout.accepton.com/v1/refunds \
-  -X POST \
-  -H "Authorization: Bearer <API KEY>" \
-  -d amount=1000 \
-  -d charge_id="chg_123"
-```
+<table>
+<tr style='border-bottom-color: rgba(0, 0, 0, 0);'>
+<td style='width: 100px;'>
+<img src='/images/docs.png' />
+</td>
 
-```ruby
-require 'accepton'
+<td>
+To view the complete <em>REST</em>ful API for the DynamicKit, along with all API calls for supported languages, see:
+<a href='./guides/dynamic_kit_full_api.html' class='btn'><i class='api-icon'></i>DynamicKit API Reference</a>
+</td>
+</tr>
+</table>
 
-client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
-response = client.refund(amount: 10_00, charge_id: "chg_123")
-```
-
-```php
-<?php
-
-use AcceptOn\Client;
-
-$client = Client.new(API_KEY, "staging");
-
-$params = array(
-  "amount" => 1000,
-  "charge_id" => "chg_123"
-);
-$response = $client->charges($params);
-```
-
-```python
-from accepton import Client
-
-client = Client(api_key=API_KEY, environment='staging')
-response = client.refund(amount=1000, charge_id="chg_123")
-```
-
-> Create a Refund response
-
-```json
-{
-  "id": "ref_123",
-  "amount": 1000,
-  "created_at": "2015-01-16T22:45:18.357Z",
-  "currency": "usd",
-  "metadata": null,
-  "reason": "requested_by_customer"
-}
-```
-
-#### Arguments
-
- Argument                              | Description
----------------------------------------|----------------------------------------------------
- **amount** <br> *integer, required*   | The amount in cents to refund.
- **charge_id** <br> *string, required* | The id of the charge to associate with the refund.
-
-#### Returns
-
-A Refund object.
-
-## Plans
-
-Plans are objects containing pricing information for a recurring product(s) (usually a service).
-An example of a plan is a monthly gym membership named Bronze for $25/month.
-
-### The Plan object
-
-#### Attributes
-
- Attribute                          | Description
-------------------------------------|----------------------------------------------------------------------
- **id** <br> *string*               | The unique id of the plan.
- **created_at** <br> *datetime*     | The time the plan was created, in [ISO 8601][iso8601] format.
- **name** <br> *string*             | The plan that you give your customers.
- **amount** <br> *integer*          | The amount in cents to be charged for the plan.
- **currency** <br> *string*         | The currency to charge in [ISO 4217][iso4217] format (default: usd).
- **period_unit** <br> *string*      | The unit of frequency of charge to be made (month or year).
-
-### Create a Plan
-
-> Create a Plan request
-
-```shell
-curl https://staging-checkout.accepton.com/v1/plans \
-  -X POST \
-  -H "Authorization: Bearer <API KEY>" \
-  -d name="Test Plan" \
-  -d amount=1000 \
-  -d currency="usd" \
-  -d period_unit="month"
-```
-
-```ruby
-require 'accepton'
-
-client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
-response = client.create_plan(name: 'Test Plan', amount: 1000, currency: 'usd', period_unit: 'month')
-```
-
-```python
-from accepton import Client
-
-client = Client(api_key=API_KEY, environment="staging")
-response = client.create_plan(name="Test Plan", amount=1000, currency="usd", period_unit="month")
-```
-
-> Create a Plan response
-
-```json
-{
-  "object": "plan",
-  "id": "pln_123",
-  "amount": 1000,
-  "created_at": "2015-08-21T20:20:14.690+00:00",
-  "currency": "usd",
-  "name": "Test Plan",
-  "period_unit": "month"
-}
-```
-
-#### Arguments
-
- Attribute                                | Description
-------------------------------------------|----------------------------------------------
- **name** <br> *string, required*         | The name of the plan.
- **amount** <br> *string, required*       | The amount to be charged in cents.
- **currency** <br> *string*               | The currency to charge in [ISO 4217][iso4217] format (default: usd).
- **period_unit** <br> *string, required*  | The unit of frequency of charge to be made (month or year).
-
-#### Returns
-
-A Plan object.
-
-### Retrieve a Plan
-
-> Retrieve a Plan request
-
-```shell
-curl https://staging-checkout.accepton.com/v1/plans/pln_123 \
-  -X GET \
-  -H "Authorization: Bearer <API KEY>"
-```
-
-```ruby
-require 'accepton'
-
-client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
-response = client.plan('pln_123')
-```
-
-```python
-from accepton import Client
-
-client = Client(api_key=API_KEY, environment="staging")
-response = client.plan("pln_123")
-```
-
-> Retrieve a Plan response
-
-```json
-{
-  "object": "plan",
-  "id": "pln_123",
-  "amount": 1000,
-  "created_at": "2015-08-21T20:20:14.690+00:00",
-  "currency": "usd",
-  "name": "Test Plan",
-  "period_unit": "month"
-}
-```
-
-#### Arguments
-
- Argument                         | Description
-----------------------------------|-----------------------------
- **id** <br> *string, required*   | The unique id of the plan.
-
-#### Returns
-
-A Plan object.
-
-### List Plans
-
-> List Plans request
-
-```shell
-curl https://staging-checkout.accepton.com/v1/plans \
-  -X GET \
-  -H "Authorization: Bearer <API KEY>"
-```
-
-```ruby
-require 'accepton'
-
-client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
-response = client.plans
-```
-
-```python
-from accepton import Client
-
-client = Client(api_key=API_KEY, environment="staging")
-response = client.plans()
-```
-
-> List Plans response
-
-```json
-[
-  {
-    "object": "plan",
-    "id": "pln_123",
-    "amount": 1000,
-    "created_at": "2015-08-21T20:20:14.690+00:00",
-    "currency": "usd",
-    "name": "Test Plan",
-    "period_unit": "month"
-  }
-]
-```
-
-#### Returns
-
-An array of Plans.
-
-## Subscriptions
-
-Subscriptions are recurring payments for a service or product from a customer for certain period of time. Subscriptions are associated to a Plan object.
-
-### The Subscription object
-
-#### Attributes
-
- Attribute                          | Description
-------------------------------------|----------------------------------------------------------------------
- **id** <br> *string*               | The unique id of the subscription.
- **last_billed_at** <br> *datetime* | The last time the subscription was charged, in [ISO 8601][iso8601] format.
- **email** <br> *string*            | The email address associated with the subscription.
- **active** <br> *boolean*          | The activity status of the subscription.
- **plan** <br> *hash*               | The plan associated with the subscription.
-
-### Cancel a Subscription
-
-> Cancel a Subscription request
-
-```shell
-curl https://staging-checkout.accepton.com/v1/subscriptions/sub_123/cancel \
-  -X POST \
-  -H "Authorization: Bearer <API KEY>"
-```
-
-```ruby
-require 'accepton'
-
-client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
-response = client.cancel_subscription('sub_123')
-```
-
-```python
-from accepton import Client
-
-client = Client(api_key=API_KEY, environment="staging")
-response = client.cancel_subscription("sub_123")
-```
-
-> Cancel a Subscription response
-
-```json
-{
-  "object": "subscription",
-  "id": "sub_123",
-  "active": false,
-  "email": "mycustomer@email.com",
-  "last_billed_at": "2015-08-21T22:43:34.096+00:00",
-  "plan": {
-    "object": "plan",
-    "id": "pln_965d6898b660d85b",
-    "amount": 1000,
-    "created_at": "2015-08-21T20:20:14.690Z",
-    "currency": "usd",
-    "name": "Test Plan",
-    "period_unit": "month"
-  }
-}
-```
-
-#### Arguments
-
- Attribute                                      | Description
-------------------------------------------------|----------------------------------------------
- **id** <br> *string, required*                 | The unique id of the subscription.
-
-#### Returns
-
-A Subscription object.
-
-### Retrieve a Subscription
-
-> Retrieve a Subscription request
-
-```shell
-curl https://staging-checkout.accepton.com/v1/subscriptions/sub_123 \
-  -X GET \
-  -H "Authorization: Bearer <API KEY>"
-```
-
-```ruby
-require 'accepton'
-
-client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
-response = client.subscription('sub_123')
-```
-
-```python
-from accepton import Client
-
-client = Client(api_key=API_KEY, environment="staging")
-response = client.subscription("sub_123")
-```
-
-> Retrieve a Subscription response
-
-```json
-{
-  "object": "subscription",
-  "id": "sub_123",
-  "active": true,
-  "email": "mycustomer@email.com",
-  "last_billed_at": "2015-08-21T22:43:34.096+00:00",
-  "plan": {
-    "object": "plan",
-    "id": "pln_965d6898b660d85b",
-    "amount": 1000,
-    "created_at": "2015-08-21T20:20:14.690Z",
-    "currency": "usd",
-    "name": "Test Plan",
-    "period_unit": "month"
-  }
-}
-```
-
-#### Arguments
-
- Argument                         | Description
-----------------------------------|-----------------------------
- **id** <br> *string, required*   | The unique id of the subscription.
-
-#### Returns
-
-A Subscription object.
-
-### List Subscriptions
-
-> List Subscriptions request
-
-```shell
-curl https://staging-checkout.accepton.com/v1/subscriptions \
-  -X GET \
-  -H "Authorization: Bearer <API KEY>" \
-  -d page=1 \
-  -d per_page=20 \
-  -d active="true"
-```
-
-```ruby
-require 'accepton'
-
-client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
-response = client.subscriptions(page: 1, per_page: 20, active: true)
-```
-
-```python
-from accepton import Client
-
-client = Client(api_key=API_KEY, environment="staging")
-response = client.subscriptions(page=1, per_page=20, active=True)
-```
-
-> List Subscriptions response
-
-```json
-{
-  "object": "list",
-  "total": 1,
-  "data": [
-    {
-      "object": "subscription",
-      "id": "sub_123",
-      "active": true,
-      "email": "mycustomer@email.com",
-      "last_billed_at": "2015-08-21T22:43:34.096+00:00",
-      "plan": {
-        "object": "plan",
-        "id": "pln_965d6898b660d85b",
-        "amount": 1000,
-        "created_at": "2015-08-21T20:20:14.690Z",
-        "currency": "usd",
-        "name": "Test Plan",
-        "period_unit": "month"
-      }
-    }
-  ]
-}
-```
-
-#### Arguments
-
- Argument                         | Description
-----------------------------------|-----------------------------
- **order_by** <br> *string*       | The name of the attribute to order by.
- **order** <br> *string*          | The ordering of the list (asc, desc).
- **page** <br> *integer*          | The page number to retrieve.
- **per_page** <br> *integer*      | The size of the page to retrieve (max: 100).
- **active** <br> *boolean*        | The activity status to filter by.
- **plan.token** <br> *string*     | The plan id to filter by.
-
-#### Returns
-
-An array of Subscriptions.
-
-## Promo Codes
-
-Promo codes allow you to create a code that offers a discount to your
-customers. When they are checking out, they will be offered the option on the
-form to enter a promo code, which you can give to them in marketing materials.
-
-### The Promo Code object
-
-#### Attributes
-
- Attribute                          | Description
-------------------------------------|----------------------------------------------------------------------
- **created_at** <br> *datetime*     | The time the promo code was created, in [ISO 8601][iso8601] format.
- **name** <br> *string*             | The promo code that you give your customers.
- **promo_type** <br> *string*       | The type of promotion. One of: "amount" (for amount off purchase), "fixed_price" (to set a transaction price, i.e. of $5.00), or "percentage" (for percent off purchase).
- **value** <br> *float or integer*  | The value of the promotion. For an "amount" or "fixed_price" type, the amount in cents (i.e. 1000 is $10.00). For a "percentage" type, the percent off as a decimal (i.e. 10.0 is 10%).
-
-### Create a Promo Code
-
-> Create a Promo Code request
-
-```shell
-curl https://staging-checkout.accepton.com/v1/promo_codes \
-  -X POST \
-  -H "Authorization: Bearer <API KEY>" \
-  -d name="20OFF" \
-  -d promo_type="amount" \
-  -d value=2000
-```
-
-```ruby
-require 'accepton'
-
-client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
-response = client.create_promo_code(name: '20OFF', promo_type: 'amount', value: 20_00)
-```
-
-```python
-from accepton import Client
-
-client = Client(api_key=API_KEY, environment='staging')
-response = client.create_promo_code(name="20OFF", promo_type="amount", value=2000)
-```
-
-> Create a Promo Code response
-
-```json
-{
-  "object": "promo_code",
-  "created_at": "2015-07-16T22:47:29.591+00:00",
-  "name": "20OFF",
-  "promo_type": "amount",
-  "value": 2000
-}
-```
-
-#### Arguments
-
- Attribute                          | Description
-------------------------------------|----------------------------------------------
- **name** <br> *string*             | The promo code that you give your customers.
- **promo_type** <br> *string*       | The type of promotion. One of: "amount" (for amount off purchase), "fixed_price" (to set a transaction price, i.e. of $5.00), or "percentage" (for percent off purchase).
- **value** <br> *float or integer*  | The value of the promotion. For an "amount" or "fixed_price" type, the amount in cents (i.e. 1000 is $10.00). For a "percentage" type, the percent off as a decimal (i.e. 10.0 is 10%).
-
-#### Returns
-
-A Promo Code object.
-
-### Retrieve a Promo Code
-
-> Retrieve a Promo Code request
-
-```shell
-curl https://staging-checkout.accepton.com/v1/promo_codes/20OFF \
-  -X GET \
-  -H "Authorization: Bearer <API KEY>"
-```
-
-```ruby
-require 'accepton'
-
-client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
-response = client.promo_code('20OFF')
-```
-
-```python
-from accepton import Client
-
-client = Client(api_key=API_KEY, environment='staging')
-response = client.promo_code("20OFF")
-```
-
-> Retrieve a Promo Code response
-
-```json
-{
-  "object": "promo_code",
-  "created_at": "2015-07-16T22:47:29.591+00:00",
-  "name": "20OFF",
-  "promo_type": "amount",
-  "value": 2000
-}
-```
-
-#### Arguments
-
- Argument                         | Description
-----------------------------------|-----------------------------
- **name** <br> *string, required* | The name of the promo code.
-
-#### Returns
-
-A Promo Code object.
-
-### List Promo Codes
-
-> List Promo Codes request
-
-```shell
-curl https://staging-checkout.accepton.com/v1/promo_codes \
-  -X GET \
-  -H "Authorization: Bearer <API KEY>" \
-  -d page=1 \
-  -d per_page=20 \
-  -d promo_type="amount"
-```
-
-```ruby
-require 'accepton'
-
-client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
-response = client.promo_codes(page: 1, per_page: 20, promo_type: 'amount')
-```
-
-```python
-from accepton import Client
-
-client = Client(api_key=API_KEY, environment='staging')
-response = client.promo_codes(page=1, per_page=20, promo_type='amount')
-```
-
-> List Promo Codes response
-
-```json
-{
-  "object": "list",
-    "total": 2,
-    "data": [
-      {
-        "object": "promo_code",
-        "created_at": "2015-09-08T21:32:56.164+00:00",
-        "name": "30OFF",
-        "promo_type": "amount",
-        "value": 3000
-      },
-      {
-        "object": "promo_code",
-        "created_at": "2015-07-16T22:47:29.591+00:00",
-        "name": "20OFF",
-        "promo_type": "amount",
-        "value": 2000
-      }
-    ]
-}
-```
-
-#### Arguments
-
- Argument                         | Description
-----------------------------------|-----------------------------
- **order_by** <br> *string*       | The name of the attribute to order by.
- **order** <br> *string*          | The ordering of the list (asc, desc).
- **page** <br> *integer*          | The page number to retrieve.
- **per_page** <br> *integer*      | The size of the page to retrieve (max: 100).
- **promo_type** <br> *string*     | The type of promo code to filter by.
-
-#### Returns
-
-An array of Promo Codes.
-
-### Update a Promo Code
-
-> Update a Promo Code request
-
-```shell
-curl https://staging-checkout.accepton.com/v1/promo_codes/20OFF \
-  -X PUT \
-  -H "Authorization: Bearer <API KEY>" \
-  -d name="21OFF" \
-  -d promo_type="amount" \
-  -d value=2100
-```
-
-```ruby
-require 'accepton'
-
-client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
-promo_code = client.promo_code('20OFF')
-promo_code.name = '21OFF'
-promo_code.value = 21_00
-promo_code = client.update_promo_code(promo_code)
-```
-
-```python
-from accepton import Client
-
-client = Client(api_key=API_KEY, environment='staging')
-promo_code = client.promo_code("20OFF")
-promo_code.name = "21OFF"
-promo_code.value = 2100
-promo_code = client.update_promo_code(promo_code)
-```
-
-> Update a Promo Code response
-
-```json
-{
-  "object": "promo_code",
-  "created_at": "2015-07-16T22:47:29.591+00:00",
-  "name": "21OFF",
-  "promo_type": "amount",
-  "value": 2100
-}
-```
-
-#### Arguments
-
- Argument                           | Description
-------------------------------------|-----------------------------
- **name** <br> *string*             | The new promo code that you give your customers.
- **promo_type** <br> *string*       | The new type of promotion. One of: "amount" (for amount off purchase), "fixed_price" (to set a transaction price, i.e. of $5.00), or "percentage" (for percent off purchase).
- **value** <br> *float or integer*  | The new value of the promotion. For an "amount" or "fixed_price" type, the amount in cents (i.e. 1000 is $10.00). For a "percentage" type, the percent off as a decimal (i.e. 10.0 is 10%).
-
-#### Returns
-
-The updated Promo Code object.
-
-### Delete a Promo Code
-
-> Delete a Promo Code request
-
-```shell
-curl https://staging-checkout.accepton.com/v1/promo_codes/20OFF \
-  -X DELETE \
-  -H "Authorization: Bearer <API KEY>"
-```
-
-```ruby
-require 'accepton'
-
-client = AcceptOn::Client.new(api_key: API_KEY, environment: :staging)
-promo_code = client.promo_code('20OFF')
-deleted = client.delete_promo_code(promo_code)
-```
-
-```python
-from accepton import Client
-
-client = Client(api_key=API_KEY, environment='staging')
-promo_code = client.promo_code("20OFF")
-deleted = client.delete_promo_code(promo_code)
-```
-
-> Delete a Promo Code response
-
-```json
-{
-  "object": "promo_code",
-  "created_at": "2015-07-16T22:47:29.591+00:00",
-  "name": "20OFF",
-  "promo_type": "amount",
-  "value": 2000
-}
-```
-
-#### Arguments
-
- Argument                           | Description
-------------------------------------|-----------------------------------------------------
- **name** <br> *string*             | The name of the promo code that you want to delete.
-
-#### Returns
-
-The deleted Promo Code object.

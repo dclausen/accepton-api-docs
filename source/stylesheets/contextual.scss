@@ -1,0 +1,30 @@
+@charset "utf-8";
+@import 'normalize';
+@import 'compass';
+@import 'variables';
+@import 'syntax';
+@import 'icon-font';
+
+/* 
+ ----------------------------------------------------------------------------------------------------------
+  Elements being adjancent to others, etc. can introduce special contextual cases
+ ----------------------------------------------------------------------------------------------------------
+*/
+
+/* Button in the block-table with a left or right image needs some space above it */
+td a.btn {
+  margin-top: 10px;
+}
+
+pre + p {
+  margin-top: 30px !important;
+}
+
+h1 + p {
+  margin-top: 20px !important;
+
+  //Banner image was first element, leave no space
+  img {
+    margin-top: -20px !important;
+  }
+}

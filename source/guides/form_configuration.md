@@ -3,9 +3,9 @@ title: AcceptOn Form Configuration Guide
 
 search: true
 
-toc_footers:
- - <a href="/">API docs</a>
- - <a href="/guides/applications.html">Applications guide</a>
+breadcrums:
+  - Documentation Overview: "/"
+  - Form Configuration: "."
 
 ---
 
@@ -14,6 +14,9 @@ toc_footers:
 When using the AcceptOn form, you can pass configuration values into the form
 via `data` attributes. These are all added to the `script` element for the
 form's JavaScript.
+
+
+### Example Form Code
 
 ```html
 <div id="my-container"></div>
@@ -28,6 +31,8 @@ form's JavaScript.
 </script>
 ```
 
+### Properties
+<div class='object-desc-attr'></div>
  Attribute                                  | Description
 --------------------------------------------|-------------
  **data-public-key** <br> *required*        | Your AcceptOn public key. Of the form `pkey_xxxxxx`.

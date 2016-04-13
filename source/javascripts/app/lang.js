@@ -25,37 +25,43 @@ under the License.
     if (!language) return;
     if (language === "") return;
 
+    var scroll = new ScrollPosition($("body")[0]);
+    scroll.prepareFor('down');
     $(".lang-selector a").removeClass('active');
     $(".lang-selector a[data-language-name='" + language + "']").addClass('active');
     for (var i=0; i < languages.length; i++) {
       $(".highlight." + languages[i]).hide();
     }
+
     $(".highlight." + language).show();
 
-    global.toc.calculateHeights();
+    scroll.restore();
+
+    //global.toc.calculateHeights();
 
     // scroll to the new location of the position
-    if ($(window.location.hash).get(0)) {
-      $(window.location.hash).get(0).scrollIntoView(true);
-    }
+    //if ($(window.location.hash).get(0)) {
+      //$(window.location.hash).get(0).scrollIntoView(true);
+    //}
   }
 
   // if a button is clicked, add the state to the history
   function pushURL(language) {
-    if (!history) { return; }
-    var hash = window.location.hash;
-    if (hash) {
-      hash = hash.replace(/^#+/, '');
-    }
-    history.pushState({}, '', '?' + language + '#' + hash);
+    //if (!history) { return; }
+    //var hash = window.location.hash;
+    //if (hash) {
+      //hash = hash.replace(/^#+/, '');
+    //}
+    ////history.pushState({}, '', '?' + language + '#' + hash);
 
-    // save language as next default
-    localStorage.setItem("language", language);
+    //// save language as next default
+    //localStorage.setItem("language", language);
   }
 
   function setupLanguages(l) {
     var currentLanguage = l[0];
     var defaultLanguage = localStorage.getItem("language");
+    window.languages = l;
 
     languages = l;
 
@@ -73,16 +79,18 @@ under the License.
     }
   }
 
-  // if we click on a language tab, activate that language
-  $(function() {
-    $(".lang-selector a").on("click", function() {
-      var language = $(this).data("language-name");
-      pushURL(language);
-      activateLanguage(language);
-      return false;
+  window.bindLanguageSelectors = function() {
+    // if we click on a language tab, activate that language
+    $(function() {
+      $(".lang-selector a").on("click", function() {
+        var language = $(this).data("language-name");
+        //pushURL(language);
+        activateLanguage(language);
+        return false;
+      });
+      //window.onpopstate = function(event) {
+        //activateLanguage(window.location.search.substr(1));
+      //};
     });
-    window.onpopstate = function(event) {
-      activateLanguage(window.location.search.substr(1));
-    };
-  });
+  }
 })(window);

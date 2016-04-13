@@ -14,6 +14,7 @@ License for the specific language governing permissions and limitations
 under the License.
 %>
 <% language_tabs = current_page.data.language_tabs %>
+<% breadcrums = current_page.data.breadcrums %>
 <!doctype html>
 <html>
   <head>
@@ -25,6 +26,11 @@ under the License.
     <%= stylesheet_link_tag :screen, media: :screen %>
     <%= stylesheet_link_tag :print, media: :print %>
     <%= stylesheet_link_tag :custom_screen, media: :screen %>
+    <%= stylesheet_link_tag :color_schemes, media: :screen %>
+    <%= stylesheet_link_tag :icons, media: :screen %>
+    <%= stylesheet_link_tag :buttons, media: :screen %>
+    <%= stylesheet_link_tag :attributes, media: :screen %>
+    <%= stylesheet_link_tag :contextual, media: :screen %>
     <%= stylesheet_link_tag :custom_print, media: :print %>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <% if current_page.data.search %>
@@ -43,69 +49,106 @@ under the License.
   </head>
 
   <body class="<%= page_classes %>">
-    <div id="top-menu">
-      <ul>
-        <li><a href="https://accepton.com/admin/dashboard" title="AcceptOn Dashboard">Return to Dashboard</a></li>
-      </ul>
-    </div>
-    <a href="#" id="nav-button">
-      <span>
-        NAV
-        <%= image_tag('navbar.png') %>
-      </span>
-    </a>
-    <div class="tocify-wrapper">
-      <a class="logo" href="https://accepton.com" title="AcceptOn">
-        <h1 class="toc-ignore">AcceptOn Developer Documentation</h1>
-        <%= image_tag "logo.png" %>
-      </a>
-      <% if language_tabs %>
-        <div class="lang-selector">
-          <% language_tabs.each do |lang| %>
-            <% if lang.is_a? Hash %>
-              <a href="#" data-language-name="<%= lang.keys.first %>"><%= lang.values.first %></a>
+
+      <!-- Top bar mimicking AcceptOn website -->
+      <div id="top-menu">
+        <a href='https://accepton.com'>
+          <div class='logo'> <span class='helper'></span>
+            <%= image_tag "logo.png" %>
+          </div>
+        </a>
+
+        <div class='title'>
+          <h1>Documentation Center</h1>
+        </div>
+
+        <div id='back-to-dash'>
+          <a href='https://accepton.com/admin/dashboard'>
+            <i class='back-arrow-icon'></i>
+            Return to Admin Dashboard
+          </a>
+        </div>
+      </div>
+
+    <div id="all-content">
+      <!-- Breadcrum -->
+      <% if breadcrums %>
+        <div id='breadcrums'>
+          <% breadcrums.each_with_index do |br, index| %>
+            <% if index == 0 and breadcrums.count == 1 %>
+              <p><%= br.keys.first %></p>
+            <% elsif index == breadcrums.count-1 %>
+              <p><span class='carrot'>></span> <%= br.keys.first %></p>
             <% else %>
-              <a href="#" data-language-name="<%= lang %>"><%= lang %></a>
+              <a href='<%= br.values.first %>'><%= br.keys.first %></a>
             <% end %>
           <% end %>
         </div>
       <% end %>
-      <% if current_page.data.search %>
-        <div class="search">
-          <input type="text" class="search" id="input-search" placeholder="Search">
-        </div>
-        <ul class="search-results"></ul>
-      <% end %>
-      <div id="toc">
-      </div>
-      <% if current_page.data.toc_footers %>
-        <ul class="toc-footer">
-          <% current_page.data.toc_footers.each do |footer| %>
-            <li><%= footer %></li>
-          <% end %>
-        </ul>
-      <% end %>
-    </div>
-    <div class="page-wrapper">
-      <div class="dark-box"></div>
-      <div class="content">
-        <%= yield %>
-        <% current_page.data.includes && current_page.data.includes.each do |include| %>
-          <%= partial "includes/#{include}" %>
-        <% end %>
-      </div>
-      <div class="dark-box">
+
+      <a href="#" id="nav-button">
+        <span>
+          NAV
+          <%= image_tag('navbar.png') %>
+        </span>
+      </a>
+
+      <!-- Table of contents -->
+      <div class="tocify-wrapper">
         <% if language_tabs %>
           <div class="lang-selector">
             <% language_tabs.each do |lang| %>
               <% if lang.is_a? Hash %>
                 <a href="#" data-language-name="<%= lang.keys.first %>"><%= lang.values.first %></a>
               <% else %>
-                <a href="#" data-language-name="<%= lang %>"><%= lang %></a>
-              <% end %>
+                <a href="#" data-language-name="<%= lang %>"><%= lang %></a> <% end %>
             <% end %>
           </div>
         <% end %>
+        <% if current_page.data.search %>
+          <div class="search">
+            <input type="text" class="search" id="input-search" placeholder="Search">
+          </div>
+          <ul class="search-results"></ul>
+        <% end %>
+        <div id="toc">
+        </div>
+        <% if current_page.data.toc_footers %>
+          <div class='toc-footer-container'>
+            <h2>Related Articles</h2>
+            <ul class="toc-footer">
+              <% current_page.data.toc_footers.each do |footer| %>
+                <li><%= footer %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+      </div>
+      <div class="page-wrapper">
+        <div class="dark-box"></div>
+        <div id='fixed-above-content'>
+          <div class='pseudo-vanish'></div>
+          <div class='bar'></div>
+        </div>
+        <div class="content">
+          <%= yield %>
+          <% current_page.data.includes && current_page.data.includes.each do |include| %>
+            <%= partial "includes/#{include}" %>
+          <% end %>
+        </div>
+        <div class="dark-box">
+          <% if language_tabs %>
+            <div class="lang-selector">
+              <% language_tabs.each do |lang| %>
+                <% if lang.is_a? Hash %>
+                  <a href="#" data-language-name="<%= lang.keys.first %>"><%= lang.values.first %></a>
+                <% else %>
+                  <a href="#" data-language-name="<%= lang %>"><%= lang %></a>
+                <% end %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
       </div>
     </div>
   </body>
