@@ -3,9 +3,9 @@ title: AcceptOn Form Configuration Guide
 
 search: true
 
-toc_footers:
- - <a href="/">API docs</a>
- - <a href="/guides/applications.html">Applications guide</a>
+breadcrums:
+  - Documentation Overview: "/"
+  - Form Configuration: "."
 
 ---
 
@@ -14,6 +14,9 @@ toc_footers:
 When using the AcceptOn form, you can pass configuration values into the form
 via `data` attributes. These are all added to the `script` element for the
 form's JavaScript.
+
+
+### Example Form Code
 
 ```html
 <div id="my-container"></div>
@@ -28,6 +31,8 @@ form's JavaScript.
 </script>
 ```
 
+### Properties
+<div class='object-desc-attr'></div>
  Attribute                                  | Description
 --------------------------------------------|-------------
  **data-public-key** <br> *required*        | Your AcceptOn public key. Of the form `pkey_xxxxxx`.
@@ -42,33 +47,33 @@ form's JavaScript.
 
 ## Public Key
 
+The public key associates the form to your account. You can retrieve your
+public key from within the AcceptOn web application.
+
+
+### Code Sample
 ```html
 <script data-public-key="pkey_xxxxxxxxxxxxxxxx">
 </script>
 ```
 
-The public key associates the form to your account. You can retrieve your
-public key from within the AcceptOn web application.
 
 ## Token
-
-```html
-<script data-token="txn_yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy">
-</script>
-```
 
 The transaction token sets up the form for the specific transaction you want to
 make. You can generate this using the form builder within the AcceptOn web
 application or via our API libraries.
 
+
+### Code Sample
+```html
+<script data-token="txn_yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy">
+</script>
+```
+
 # Optional Attributes
 
 ## Additional Fields
-
-```html
-<script data-additional-fields="name">
-</script>
-```
 
 The form can gather metadata about the transaction for you. If any particular
 piece of information is required for your payment processor(s), we
@@ -86,23 +91,25 @@ can collect include:
 * `billing_address` - The customer's billing address.
 * `shipping_address` - The customer's shipping address.
 
-## Customer Email
+### Customer Name
+```html
+<script data-additional-fields="name">
+</script>
+```
+
+
+### Customer Email
+
+If you have a dynamic system where you already know the customer's email
+address, you can prepopulate the form with it by passing it as a value to the
+`customer-email` attribute.
 
 ```html
 <script data-customer-email="customer@example.com">
 </script>
 ```
 
-If you have a dynamic system where you already know the customer's email
-address, you can prepopulate the form with it by passing it as a value to the
-`customer-email` attribute.
-
 ## Redirect URI
-
-```html
-<script data-redirect-uri="https://example.com">
-</script>
-```
 
 The `redirect-uri` designates the URI to which we should POST any resulting
 charges from the form. We POST the redirect as a `x-www-form-urlencoded` POST
@@ -114,8 +121,27 @@ customer a page acknowledging the payment.
 We **highly** recommend that this endpoint be SSL-enabled with a strong
 certificate.
 
+### Code Sample
+```html
+<script data-redirect-uri="https://example.com">
+</script>
+```
+
 ## Success Callback
 
+If you need to perform some behavior on the current page after a charge is
+successful, you can use a success callback. Specify a success callback as the
+name of a function on the global `window` object. The form calls this function
+after a successful charge, but before performing a redirect.
+
+The callback function should take one argument that is the response from the
+form's charging API. That parameter has a `charge` property that is a JSON
+representation of the successful charge action.
+
+By default the callback does not prevent a redirect after it fires. To prevent
+a redirect to the `redirect-uri`, return `false` from the callback.
+
+### Code Sample
 ```html
 <script data-success-callback="myFunction">
 </script>
@@ -130,25 +156,7 @@ certificate.
 </script>
 ```
 
-If you need to perform some behavior on the current page after a charge is
-successful, you can use a success callback. Specify a success callback as the
-name of a function on the global `window` object. The form calls this function
-after a successful charge, but before performing a redirect.
-
-The callback function should take one argument that is the response from the
-form's charging API. That parameter has a `charge` property that is a JSON
-representation of the successful charge action.
-
-By default the callback does not prevent a redirect after it fires. To prevent
-a redirect to the `redirect-uri`, return `false` from the callback.
-
 ## Target
-
-```html
-<div id="my-identifier"></div>
-<script data-target="my-identifier">
-</script>
-```
 
 Specifying a `target` turns the form into an inline iframe instead of a modal.
 The `target` should be the ID of the container in which you'd like the form to
@@ -158,3 +166,10 @@ has a minimum width of at least 300px.
 The `target` can appear anywhere on the page. By default the form generator
 creates the `target` immediately prior to the `script` element to keep them
 logically grouped.
+
+### Code Sample
+```html
+<div id="my-identifier"></div>
+<script data-target="my-identifier">
+</script>
+```

@@ -3,8 +3,12 @@ title: AcceptOn Application Guide
 
 search: true
 
-toc_footers:
- - <a href='/'>API docs</a>
+breadcrums:
+  - Documentation Overview: "/"
+  - Application Guide: "."
+
+includes:
+  - support
 
 ---
 
@@ -36,8 +40,8 @@ using this URL will be associated with your Application.
 
 As well, any payment providers that allow for application fees to be
 collected by a Marketplace will work as expected when using AcceptOn
-by ensuring that the application_fee argument is used when [creating a
-Transaction Token](/#create-a-transaction-token)
+by ensuring that the application_fee argument is used when
+ [creating a Transaction Token](/guides/dynamic_kit_full_api.html#transaction-tokens)
 
 # Store the keys
 
@@ -49,7 +53,14 @@ to perform any API requests on the user's behalf.
 
 # Configure the form
 
-> If you'd like to use a modal popup to display the payment form, use this:
+
+Now, we need to configure the payment form. To do so, you'll need your
+user's public key, a Transaction token, and an optional URL to redirect
+the user to once the transaction is successful. 
+
+Here are two examples: one for a modal and one for an iframe:
+
+### Show a Modal Popup Example
 
 ```html
 <script src="https://staging-js.accepton.com/scripts/accepton.js"
@@ -61,8 +72,8 @@ to perform any API requests on the user's behalf.
 </script>
 ```
 
-> Or, to use an inline iframe for the payment form, try this:
 
+### Show an inline iFrame Example
 ```html
 <div id="accepton-form"></div>
 <script src="https://staging-js.accepton.com/scripts/accepton.js"
@@ -75,13 +86,5 @@ to perform any API requests on the user's behalf.
 </script>
 ```
 
-Now, we need to configure the payment form. To do so, you'll need your
-user's public key, a Transaction token, and an optional URL to redirect
-the user to once the transaction is successful. Please select from the
-following 2 methods of displaying the payment form: modal or iframe.
-
-Please see [creating a Transaction Token](/#create-a-transaction-token)
-for more information on the available options.
-
-# Webhooks
-TODO
+Please see [creating a Transaction Token](/guides/dynamic_kit_full_api.html#transaction-tokens) for more 
+information on the available options.

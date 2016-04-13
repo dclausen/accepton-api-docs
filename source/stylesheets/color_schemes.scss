@@ -1,0 +1,13 @@
+/* This hosts specific color-schemes such as gradients for marketing specific items like DynamicKit */
+
+/* DynamicKit related */
+/* ---------------------------------------------------- */
+$dk-gradient-top-left-color: rgb(95, 63, 183);
+$dk-gradient-bottom-right-color: rgb(152, 87, 200);
+.dk_bg {
+  background: -webkit-linear-gradient(left top, $dk-gradient-top-left-color, $dk-gradient-bottom-right-color);
+  background: -o-linear-gradient(bottom right, $dk-gradient-top-left-color, $dk-gradient-bottom-right-color);
+  background: -moz-linear-gradient(bottom right, $dk-gradient-top-left-color, $dk-gradient-bottom-right-color);
+  background: linear-gradient(to bottom right, $dk-gradient-top-left-color, $dk-gradient-bottom-right-color);
+}
+/* ---------------------------------------------------- */

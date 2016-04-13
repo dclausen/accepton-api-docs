@@ -1,0 +1,125 @@
+@charset "utf-8";
+@import 'normalize';
+@import 'compass';
+@import 'variables';
+@import 'syntax';
+@import 'icon-font';
+
+/* 
+ ----------------------------------------------------------------------------------------------------------
+  Attributes are adjancent elements used in markdown to influence the behaviour of the elements below them 
+ ----------------------------------------------------------------------------------------------------------
+*/
+
+/* Make image full width */
+.full-width-attr + p {
+  img {
+    max-width: 100% !important;
+    width: 100%;
+    margin: 0;
+  }
+}
+
+/* Object description table with attributes, description, and type */
+.object-desc-attr + table {
+  font-size: 14px;
+  border: 1px solid $code-bg;
+  border-radius: 3px;
+  padding: 0 !important;
+  width: 500px;
+  background-color: $code-bg;
+  font-family: "HelveticaNeue-Light";
+  border-collapse: separate;
+  width: 80%;
+  line-height: 1.5em;
+
+  tbody, tr, td {
+    width: 400px;
+    background-color: $code-bg !important;
+    color: white;
+  }
+
+  td br + em {
+    color: #1fb4da;
+  }
+
+  tr {
+    //border-bottom: 1px solid #AAA;
+    border-radius: 20px !important;
+  }
+
+  tr {
+    background-color: none !important;
+    border: 15px solid #1fb4da;
+  }
+
+  tbody tr:nth-child(odd) {
+    td {
+      //background-color: rgba(1, 1, 1, 0.1) !important;
+    }
+
+  }
+
+  tbody tr:nth-child(even) {
+    bgcolor: blue !important;
+  }
+}
+
+/* Show an 'API' tag and accordian */
+.api-attr + div + h2 {
+  margin-bottom: -30px;
+
+  &:before {
+    content: "API Request";
+    background-color: #66d9ef;
+    border-radius: 20px;
+    color: white;
+    font-size: 13px;
+    font-family: "HelveticaNeue-Light";
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 1px;
+    line-height: 20px;
+    position: relative;
+    top: -4px;
+    margin-right: 5px;
+  }
+}
+
+.percent-25-width-attr + p {
+  img {
+    width: 25%;
+  }
+}
+
+.inline-attr + p {
+  display: inline;
+  img {
+    width: 25%;
+  }
+}
+
+.full-banner-attr + p {
+  img {
+    //margin-top: 40px;
+    max-width: 100% !important;
+    width: 100%;
+    margin: 0;
+  }
+
+  padding: 0;
+}
+
+
+/* 
+  Hides the element while maintaing it's existance (for use in scroll-to)
+  Notes:
+    Markdown inserts a blank div after our attributed div in some cases 
+ */
+.hidden-attr + div + h1 {
+  opacity: 0;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+}

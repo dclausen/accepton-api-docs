@@ -2,6 +2,7 @@
 
 The AcceptOn API uses the following error codes:
 
+<div class='object-desc-attr'></div>
 Error Code | Meaning
 ---------- | -------
 400        | Bad Request -- Your request is invalid.

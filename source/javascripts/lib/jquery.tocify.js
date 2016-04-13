@@ -103,7 +103,7 @@
 
             // **highlightOffset**: Accepts a number
             // The offset distance in pixels to trigger the next active table of contents item
-            highlightOffset: 40,
+            highlightOffset: 0,
 
             // **theme**: Accepts a string: "bootstrap", "jqueryui", or "none"
             // Determines if Twitter Bootstrap, jQueryUI, or Tocify classes should be added to the table of contents
@@ -136,8 +136,10 @@
 
             // **highlightDefault**: Accepts a boolean: true or false
             // Set's the first TOC item as active if no other TOC item is active.
-            highlightDefault: true
+            highlightDefault: true,
 
+            // When scrolling to an element, offset the destination
+            scrollOffset: 55
         },
 
         // _Create
@@ -190,6 +192,7 @@
             $(window).load(function() {
 
                 // Sets the active TOC item
+                self.calculateHeights();
                 self._setActiveElement(true);
 
                 // Once all animations on the page are complete, this callback function will be called
@@ -345,12 +348,12 @@
                 self.element.find("." + self.focusClass).removeClass(self.focusClass);
 
                 if(!hash.length && pageload && self.options.highlightDefault) {
-
                     // Highlights the first TOC item if no other items are highlighted
                     self.element.find(itemClass).first().addClass(self.focusClass);
-
+                    var elem = self.element.find(itemClass + ":nth(1)");
+                    elem.addClass(self.focusClass);
+                    elem.parent().find('.tocify-subheader').addClass(self.focusClass)
                 }
-
             }
 
             return self;
@@ -548,10 +551,17 @@
                 }
 
                 // Removes highlighting from all of the list item's
-                self.element.find("." + self.focusClass).removeClass(self.focusClass);
+                $("." + self.focusClass).removeClass(self.focusClass);
 
                 // Highlights the current list item that was clicked
                 $(this).addClass(self.focusClass);
+
+                //It's a sub-header item
+                var isSubheaderItem = $(this).parent().hasClass("tocify-subheader");
+
+                if (isSubheaderItem === true) {
+                  $(this).parent().parent().find('> .tocify-item').addClass(self.focusClass);
+                }
 
                 // If the showAndHide option is true
                 if(self.options.showAndHide) {
@@ -685,7 +695,7 @@
 
                         // Determines the index of the closest anchor
                         self.cachedAnchors.each(function(idx) {
-                            if (self.cachedHeights[idx] - scrollTop < 0) {
+                            if (self.cachedHeights[idx] - scrollTop - self.options.scrollOffset <= 0) {
                                 closestAnchorIdx = idx;
                             } else {
                                 return false;
@@ -700,26 +710,36 @@
                         // If the `highlightOnScroll` option is true and a next element is found
                         if(self.options.highlightOnScroll && elem.length && !elem.hasClass(self.focusClass)) {
 
-                            // Removes highlighting from all of the list item's
-                            self.element.find("." + self.focusClass).removeClass(self.focusClass);
+                          //It's a sub-header item
+                          var isSubheaderItem = elem.parent().hasClass("tocify-subheader");
 
-                            // Highlights the corresponding list item
-                            elem.addClass(self.focusClass);
+                          // Remove all other focuses if it's a sub-header item
+                          $(".tocify-item").removeClass(self.focusClass);
+                          //if (isSubheaderItem === true) {
+                            //$("." + self.focusClass).removeClass(self.focusClass);
+                          //}
 
-                            // Scroll to highlighted element's header
-                            var tocifyWrapper = self.tocifyWrapper;
-                            var scrollToElem = $(elem).closest('.tocify-header');
+                          // Highlights the corresponding list item
+                          elem.addClass(self.focusClass);
 
-                            var elementOffset = scrollToElem.offset().top,
-                                wrapperOffset = tocifyWrapper.offset().top;
-                            var offset = elementOffset - wrapperOffset;
+                          if (isSubheaderItem === true) {
+                            elem.parent().parent().find('> .tocify-item').addClass(self.focusClass);
+                          }
 
-                            if (offset >= $(window).height()) {
-                              var scrollPosition = offset + tocifyWrapper.scrollTop();
-                              tocifyWrapper.scrollTop(scrollPosition);
-                            } else if (offset < 0) {
-                              tocifyWrapper.scrollTop(0);
-                            }
+                          // Scroll to highlighted element's header
+                          var tocifyWrapper = self.tocifyWrapper;
+                          var scrollToElem = $(elem).closest('.tocify-header');
+
+                          var elementOffset = scrollToElem.offset().top,
+                              wrapperOffset = tocifyWrapper.offset().top;
+                          var offset = elementOffset - wrapperOffset;
+
+                          if (offset >= $(window).height()) {
+                            var scrollPosition = offset + tocifyWrapper.scrollTop();
+                            tocifyWrapper.scrollTop(scrollPosition);
+                          } else if (offset < 0) {
+                            tocifyWrapper.scrollTop(0);
+                          }
                         }
 
                         if(self.options.scrollHistory) {
@@ -765,9 +785,10 @@
             var self = this;
             self.cachedHeights = [];
             self.cachedAnchors = [];
-            var anchors = $(self.options.context).find("div[data-unique]");
+            var anchors = $("div[data-unique]:not([data-unique=''])");
             anchors.each(function(idx) {
                 var distance = (($(this).next().length ? $(this).next() : $(this)).offset().top - self.options.highlightOffset);
+                //distance = disance - 20;
                 self.cachedHeights[idx] = distance;
             });
             self.cachedAnchors = anchors;
@@ -1022,7 +1043,7 @@
                 $("html, body").animate({
 
                     // Sets the jQuery `scrollTop` to the top offset of the HTML div tag that matches the current list item's `data-unique` tag
-                    "scrollTop": $('div[data-unique="' + elem.attr("data-unique") + '"]').next().offset().top - ($.isFunction(scrollTo) ? scrollTo.call() : scrollTo) + "px"
+                    "scrollTop": $('div[data-unique="' + elem.attr("data-unique") + '"]').next().offset().top - self.options.scrollOffset - ($.isFunction(scrollTo) ? scrollTo.call() : scrollTo) + "px"
 
                 }, {
 
