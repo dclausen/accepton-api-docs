@@ -53,7 +53,7 @@ There are only a few steps to getting started.  You may have completed these ste
 *Payment processors* are configured on your AcceptOn dashboard under the **Payment Processors** tab. 
 You may have already configured a payment processor during the onboarding procedures. 
 
-#### An example of what you will see on your dashboard:
+### An example of what you will see on your dashboard
 
 ![Payment Processor Dashboard](payment_processors_dashboard.png)
 
@@ -81,7 +81,7 @@ Currently, we provide support for the following payment processors:
 </tr>
 </table>
 
-#### Additionally, our iOS Payment Form SDK contains support for ApplePay.
+### Additionally, our iOS Payment Form SDK contains support for ApplePay.
 <p style='text-align: center'>
 <img src='/images/apple_pay.png' width=200 />
 </p>
