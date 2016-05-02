@@ -5,7 +5,7 @@ toc_footers:
  - <a href='guides/form_configuration.html'>Advanced Web Form Configuration</a>
  - <a href='guides/dynamic_kit.html'>DynamicKit Getting Started Guide</a>
  - <a href='guides/dynamic_kit_full_api.html'>DynamicKit Complete API Reference</a>
- - <a href='guides/applications.html'>Applications Guide</a>
+ - <a href='guides/marketplaces.html'>Marketplaces Guide</a>
 
 search: true
 
@@ -14,8 +14,6 @@ breadcrums:
 
 includes:
   - support
-
-
 ---
 
 <div class='hidden-attr'></div>
@@ -30,8 +28,7 @@ includes:
 
 ![What is Accepton](./images/what_is_accepton.png)
 
-
-AcceptOn supports a variety of [payment processors](./#payment-processors), e.g. *Stripe*, *PayPal*, via one of our simple payment forms. This allows you to accept 
+AcceptOn supports a variety of [payment processors](./#payment-processors), e.g. *Stripe*, *PayPal*, via one of our simple payment forms. This allows you to accept
 payments in all your platforms with the least amount of code, in a native idiom, and in the most elegant fashion.
 
 Additionally, after using one of our simple payment forms to integrate into your desired platform, transactions
@@ -50,8 +47,8 @@ There are only a few steps to getting started.  You may have completed these ste
 
 ## Dashboard Configuration
 
-*Payment processors* are configured on your AcceptOn dashboard under the **Payment Processors** tab. 
-You may have already configured a payment processor during the onboarding procedures. 
+*Payment processors* are configured on your AcceptOn dashboard under the **Payment Processors** tab.
+You may have already configured a payment processor during the onboarding procedures.
 
 ### An example of what you will see on your dashboard
 
@@ -138,7 +135,7 @@ The Web/HTML5 edition of the payment forms allows you to embed an inline form or
 ### iOS Native Edition
 The iOS native edition of the payment forms allows you to request payment in your native app through a beatiful
 predesigned payment interface. Like the web counterpart, the iOS native version dyanmically updates the available
-payment methods based on your enabled payment processors. 
+payment methods based on your enabled payment processors.
 
 ##### [Get started with the iOS native edition]()
 
